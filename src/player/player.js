@@ -28,6 +28,7 @@ export class Player {
       y
     };
     this.direction = 'right';
+    this.aimDirection = 'right';
     this.jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.shootButton = game.input.activePointer.leftButton;
 
@@ -104,6 +105,7 @@ export class Player {
    */
   update () {
     this.playerControls();
+    this.getAimDirection();
   }
 
   playerControls () {
@@ -118,17 +120,17 @@ export class Player {
 
     // Shoot
     if (this.shootButton.isDown) {
-      if (!this.shotDelay) {
+      if (!this.followThrough) {
         const shot = this.weapon.fire();
         if ( shot ) {
           this.calculateKickback();
         }
         if (!this.hasAutoFire) {
-          this.shotDelay = true;
+          this.followThrough = true;
         }
       }
     } else {
-      this.shotDelay = false;
+      this.followThrough = false;
     }
 
     // Jump
@@ -139,6 +141,14 @@ export class Player {
       } else if ( this.standing ) {
         this.jumpTimer = this.game.time.now + 250;
       }
+    }
+  }
+
+  getAimDirection () {
+    if ( this.sprite.x > this.reticle.x ) {
+      this.aimDirection = 'left';
+    } else {
+      this.aimDirection = 'right';
     }
   }
 
