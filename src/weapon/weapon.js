@@ -6,7 +6,7 @@ export class Weapon extends Phaser.State {
     super();
     this.game = game;
     this.character = character;
-    this.speed = 400;
+    this.velocity = 400;
     this.rate = 60;
     this.spread = 2;
     this.numBullets = 5;
