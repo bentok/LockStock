@@ -19,8 +19,8 @@ export class Player {
     this.maxHealth = maxHealth;
     this.speed = speed;
     this.currentLocation = {
-      x: 10,
-      y: 10
+      x: 100,
+      y: 100
     };
     this.direction = 'right';
     this.fallVelocity = 0;

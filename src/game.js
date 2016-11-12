@@ -4,7 +4,7 @@ import { Sprites } from './sprites/sprites'
 /**
  * Bootstraps the game and execute Phaser lifecycle hooks
  */
-export const game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, '', { preload, create, update });
+export const game = new Phaser.Game(4900, 3360, Phaser.AUTO, '', { preload, create, update });
 
 let world;
 
@@ -18,10 +18,9 @@ function preload () {
   // game.stage.backgroundColor = '#2d2d2d';
 
   game.stage.backgroundColor = '#2d2d2d';
-  game.load.tilemap('level1', 'maps/Level1/map.json', null, Phaser.Tilemap.TILED_JSON);
-  game.load.image('Tiles', 'images/tile_sprites.png');
 
   game.playerLayer = game.add.group();
+  game.landLayer = game.add.group();
 
   game.world.bringToTop(game.playerLayer);
 
