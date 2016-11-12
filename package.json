@@ -1,5 +1,5 @@
 {
-  "name": "nko2016-sample",
+  "name": "LockStock",
   "version": "0.0.1",
   "description": "A barebones Node.js app using Express 4",
   "main": "index.js",
@@ -11,7 +11,7 @@
     "phaser": "^2.6.2"
   },
   "engines": {
-    "node": "4.4.5"
+    "node": "6.7.0"
   },
   "repository": {
     "type": "git",
