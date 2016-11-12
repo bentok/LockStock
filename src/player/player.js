@@ -17,18 +17,23 @@ export class Player {
     this.game = game;
     this.move = new Move({ character: this });
     this.weapon = new Weapon({ character: this });
-    this.health = health;
-    this.maxHealth = maxHealth;
-    this.speed = speed;
     this.currentLocation = {
       x: 10,
       y: 10
     };
     this.direction = 'right';
-    this.fallVelocity = 0;
     this.jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.shootButton = game.input.activePointer.leftButton;
     this.game.input.addMoveCallback(this.moveReticle, this);
+
+    /**
+     * Character stats can have modifiers
+     */
+    this.fallVelocity = 0;
+    this.hasAutoFire = false;
+    this.health = health;
+    this.maxHealth = maxHealth;
+    this.speed = speed;
   }
 
 /**
@@ -88,11 +93,18 @@ export class Player {
       this.move.idle();
     }
 
-    if (this.shootButton.isDown ) {
-      let shot = this.weapon.fire();
-      if ( shot ) {
-        this.calculateKickback();
+    if (this.shootButton.isDown) {
+      if (!this.shotDelay) {
+        let shot = this.weapon.fire();
+        if ( shot ) {
+          this.calculateKickback();
+        }
+        if (!this.hasAutoFire) {
+          this.shotDelay = true;
+        }
       }
+    } else {
+      this.shotDelay = false;
     }
 
     if (this.jumpButton.isDown ) {
