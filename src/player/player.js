@@ -104,18 +104,22 @@ export class Player {
     }  else {
       this.move.idle();
     }
+
     // Shoot
-    if (this.shootButton.isDown ) {
-      const shot = this.weapon.fire();
-      if (shot) {
-        this.calculateKickback();
-      }
-      if (!this.hasAutoFire) {
-        this.shotDelay = true;
+    if (this.shootButton.isDown) {
+      if (!this.shotDelay) {
+        let shot = this.weapon.fire();
+        if ( shot ) {
+          this.calculateKickback();
+        }
+        if (!this.hasAutoFire) {
+          this.shotDelay = true;
+        }
       }
     } else {
       this.shotDelay = false;
     }
+
     // Jump
     if (this.jumpButton.isDown ) {
       if (this.jumpTimer > this.game.time.now) {
@@ -125,7 +129,6 @@ export class Player {
         this.jumpTimer = this.game.time.now + 250;
       }
     }
-
   }
 
   /**
@@ -160,6 +163,7 @@ export class Player {
   addHealth (amount) {
     this.health = this.health + amount <= this.maxHealth ? this.health += amount : this.maxHealth;
   }
+
   /**
    * Subtract health from the characters current health.
    * @param  {Number} amount Amount of health to subtract from the character
@@ -179,6 +183,7 @@ export class Player {
     this.sprite.position.x = this.currentLocation.x = x;
     this.sprite.position.y = this.currentLocation.y = y;
   }
+
   /**
    * Get the location of the character.
    */
