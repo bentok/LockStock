@@ -69,6 +69,10 @@ export class Player {
    * Update event in Phaser cycle
    */
   update () {
+    this.playerControls();
+  }
+
+  playerControls () {
     // Keyboard controls
     if (this.keys.left.isDown) {
       this.move.left();
@@ -80,27 +84,7 @@ export class Player {
 
     if (this.shootButton.isDown ) {
       this.weapon.projectile.fire();
-
-      if ( this.sprite.x > this.reticle.x ) {
-        let difference = (this.sprite.x - this.reticle.x) / 10;
-        difference = difference > 10 ? 10 : difference;
-        this.sprite.body.velocity.x = difference * this.speed;
-      } else {
-        let difference = (this.reticle.x - this.sprite.x) / 10;
-        difference = difference > 10 ? 10 : difference;
-        this.sprite.body.velocity.x = -(difference * this.speed);
-      }
-
-      if ( this.sprite.y > this.reticle.y ) {
-        let difference = (this.sprite.y - this.reticle.y) / 10;
-        difference = difference > 10 ? 10 : difference;
-        this.sprite.body.velocity.y = difference * this.speed;
-      } else {
-        let difference = (this.reticle.y - this.sprite.y) / 10;
-        difference = difference > 10 ? 10 : difference;
-        this.sprite.body.velocity.y = -(difference * this.speed );
-      }
-
+      this.calculateKickback();
     }
 
     if (this.jumpButton.isDown ) {
@@ -123,6 +107,28 @@ export class Player {
     } else {
       // player on a collider
       this.fallVelocity = 0;
+    }
+  }
+
+  calculateKickback () {
+    if ( this.sprite.x > this.reticle.x ) {
+      let difference = (this.sprite.x - this.reticle.x) / 10;
+      difference = difference > 10 ? 10 : difference;
+      this.sprite.body.velocity.x = difference * this.speed;
+    } else {
+      let difference = (this.reticle.x - this.sprite.x) / 10;
+      difference = difference > 10 ? 10 : difference;
+      this.sprite.body.velocity.x = -(difference * this.speed);
+    }
+
+    if ( this.sprite.y > this.reticle.y ) {
+      let difference = (this.sprite.y - this.reticle.y) / 10;
+      difference = difference > 10 ? 10 : difference;
+      this.sprite.body.velocity.y = difference * this.speed;
+    } else {
+      let difference = (this.reticle.y - this.sprite.y) / 10;
+      difference = difference > 10 ? 10 : difference;
+      this.sprite.body.velocity.y = -(difference * this.speed );
     }
   }
 
