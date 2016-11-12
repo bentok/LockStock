@@ -8,7 +8,7 @@ export class Weapon extends Phaser.State {
     this.character = character;
     this.velocity = 400;
     this.rate = 60;
-    this.spread = 2;
+    this.spread = 10;
     this.numPellets = 5;
     this.damage = 20 * this.numPellets;
     this.capacity = 2;
@@ -31,14 +31,62 @@ export class Weapon extends Phaser.State {
   fire () {
     if (this.game.time.now > this.nextFire && this.projectiles.countDead() > 0) {
         this.nextFire = this.game.time.now + this.rate;
-
-        let projectile = this.projectiles.getFirstDead();
-        projectile.reset(this.character.sprite.x, this.character.sprite.y);
-        this.discharge(1); //number of shells fired per shot
-        this.game.physics.arcade.moveToPointer(projectile, this.velocity);
+        let projectiles =  [];
+        for (let i = 0; i < this.numPellets; i++) {
+          projectiles.push(this.projectiles.getFirstDead());
+          projectiles[i].reset(this.character.sprite.x, this.character.sprite.y);
+          this.discharge(1); //number of shells fired per shot
+          const dest = {
+            projectile: projectiles[i],
+            x: this.calculateDestination({ i, numPellets: this.numPellets, coordinate: this.character.reticle.body.x }),
+            y: this.calculateDestination({ i, numPellets: this.numPellets, coordinate: this.character.reticle.body.y }),
+            velocity: this.velocity
+          }
+          this.game.physics.arcade.moveToXY(dest.projectile, dest.x, dest.y, dest.velocity);
+        }
         return true;
     }
     return false;
+  }
+
+  calculateDestination ({ i = 0, coordinate = 0, numPellets = 5 } = {}) {
+    let yCoord;
+    switch (i) {
+      case 0:
+        yCoord = coordinate;
+        break;
+      case 1:
+        yCoord = coordinate - 10;
+        break;
+      case 2:
+        yCoord = coordinate + 10;
+        break;
+      case 3:
+        yCoord = coordinate - 20;
+        break;
+      case 4:
+        yCoord = coordinate + 20;
+        break;
+      case 5:
+        yCoord = coordinate - 30;
+        break;
+      case 6:
+        yCoord = coordinate + 30;
+        break;
+      case 7:
+        yCoord = coordinate - 40;
+        break;
+      case 8:
+        yCoord = coordinate + 40;
+        break;
+      case 9:
+        yCoord = coordinate - 50;
+        break;
+      default:
+      yCoord = coordinate;
+    }
+    console.log(yCoord);
+    return yCoord;
   }
 
   discharge (shells) {
