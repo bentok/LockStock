@@ -28,7 +28,6 @@ const landTypes = [
 ];
 
 export class Sprites {
-
   static get landSpriteTransformedValues () {
     return landSpriteTransformedValues;
   }
@@ -48,6 +47,7 @@ export class Sprites {
     // Load images - arguments(name, path)
     this.game.load.image('reticle', './images/reticle.png');
     this.game.load.image('player', './images/character.png');
+    this.game.load.image('bullet', './images/bullet.png');
     this.loadLand(Sprites.landTypes[Math.floor(Math.random() * Sprites.landTypes.length)]);
 
   }
@@ -68,7 +68,5 @@ export class Sprites {
     this.game.load.image('HillRight', `./images/tile_sprites/${landType}HillRight.png`);
     this.game.load.image('HillLeft2', `./images/tile_sprites/${landType}HillLeft2.png`);
     this.game.load.image('HillRight2', `./images/tile_sprites/${landType}HillRight2.png`);
-
   }
-
 }

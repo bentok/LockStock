@@ -32,7 +32,7 @@ function preload () {
  * create
  */
 function create () {
-
+  game.physics.startSystem(Phaser.Physics.ARCADE);
   game.physics.startSystem(Phaser.Physics.P2JS);
   game.physics.p2.setImpactEvents(true);
 

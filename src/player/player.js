@@ -1,5 +1,6 @@
 import { game } from '../game';
 import { Move } from '../move/move';
+import { Weapon } from '../weapon/weapon';
 
 /**
  * Player
@@ -15,18 +16,24 @@ export class Player {
   constructor ({ health = 100, maxHealth = 100, speed = 25 } = {}) {
     this.game = game;
     this.move = new Move({ character: this });
-    this.health = health;
-    this.maxHealth = maxHealth;
-    this.speed = speed;
+    this.weapon = new Weapon({ character: this });
     this.currentLocation = {
       x: 100,
       y: 100
     };
     this.direction = 'right';
-    this.fallVelocity = 0;
     this.jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.shootButton = game.input.activePointer.leftButton;
     this.game.input.addMoveCallback(this.moveReticle, this);
+
+    /**
+     * Character stats can have modifiers
+     */
+    this.fallVelocity = 0;
+    this.hasAutoFire = false;
+    this.health = health;
+    this.maxHealth = maxHealth;
+    this.speed = speed;
   }
 
 /**
@@ -45,6 +52,12 @@ export class Player {
     this.sprite.body.onBeginContact.add(contact, this);
 
     function contact (body, bodyB, shapeA, shapeB, equation) {
+      if ( body ) {
+        console.log(body);
+        if( body.sprite.key === 'bullet' ) {
+          this.subtractHealth(20);
+        }
+      }
       this.standing = true;
     }
 
@@ -53,6 +66,7 @@ export class Player {
     this.sprite.checkWorldBounds = true;
 
     this.reticle.body.static = true;
+    this.weapon.render();
 
     // Loads Phaser presets for arrow key input
 
@@ -66,6 +80,10 @@ export class Player {
    * Update event in Phaser cycle
    */
   update () {
+    this.playerControls();
+  }
+
+  playerControls () {
     // Keyboard controls
     if (this.keys.left.isDown) {
       this.move.left();
@@ -75,28 +93,18 @@ export class Player {
       this.move.idle();
     }
 
-    if (this.shootButton.isDown ) {
-
-      if ( this.sprite.x > this.reticle.x ) {
-        let difference = (this.sprite.x - this.reticle.x) / 10;
-        difference = difference > 10 ? 10 : difference;
-        this.sprite.body.velocity.x = difference * this.speed;
-      } else {
-        let difference = (this.reticle.x - this.sprite.x) / 10;
-        difference = difference > 10 ? 10 : difference;
-        this.sprite.body.velocity.x = -(difference * this.speed);
+    if (this.shootButton.isDown) {
+      if (!this.shotDelay) {
+        let shot = this.weapon.fire();
+        if ( shot ) {
+          this.calculateKickback();
+        }
+        if (!this.hasAutoFire) {
+          this.shotDelay = true;
+        }
       }
-
-      if ( this.sprite.y > this.reticle.y ) {
-        let difference = (this.sprite.y - this.reticle.y) / 10;
-        difference = difference > 10 ? 10 : difference;
-        this.sprite.body.velocity.y = difference * this.speed;
-      } else {
-        let difference = (this.reticle.y - this.sprite.y) / 10;
-        difference = difference > 10 ? 10 : difference;
-        this.sprite.body.velocity.y = -(difference * this.speed );
-      }
-
+    } else {
+      this.shotDelay = false;
     }
 
     if (this.jumpButton.isDown ) {
@@ -122,12 +130,52 @@ export class Player {
     }
   }
 
+  calculateKickback () {
+    if ( this.sprite.x > this.reticle.x ) {
+      let difference = (this.sprite.x - this.reticle.x) / 10;
+      difference = difference > 10 ? 10 : difference;
+      this.sprite.body.velocity.x = difference * this.speed;
+    } else {
+      let difference = (this.reticle.x - this.sprite.x) / 10;
+      difference = difference > 10 ? 10 : difference;
+      this.sprite.body.velocity.x = -(difference * this.speed);
+    }
+
+    if ( this.sprite.y > this.reticle.y ) {
+      let difference = (this.sprite.y - this.reticle.y) / 10;
+      difference = difference > 10 ? 10 : difference;
+      this.sprite.body.velocity.y = difference * this.speed;
+    } else {
+      let difference = (this.reticle.y - this.sprite.y) / 10;
+      difference = difference > 10 ? 10 : difference;
+      this.sprite.body.velocity.y = -(difference * this.speed );
+    }
+  }
+
 /**
  * Steadily increasing velocity downward.
  */
   falling () {
     this.fallVelocity += 10;
     this.sprite.body.velocity.y = this.fallVelocity;
+  }
+
+  /**
+   * Add health to the characters current health.
+   * @param {Number} amount The amount of health to add to the characters current health
+   */
+  addHealth (amount) {
+    this.health = this.health + amount <= this.maxHealth ? this.health += amount : this.maxHealth;
+  }
+  /**
+   * Subtract health from the characters current health.
+   * @param  {Number} amount Amount of health to subtract from the character
+   */
+  subtractHealth (amount) {
+    this.health = this.health - amount >= 0 ? this.health -= amount : 0;
+    console.log(this.health);
+    // death animation
+    // respawn?
   }
 
   /**
