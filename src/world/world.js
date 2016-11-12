@@ -4,6 +4,8 @@ import { Map1Json } from '../maps/Level1/map';
 import { Sprites } from '../sprites/sprites';
 
 export const LAND_SCALE = 0.2;
+export const WORLD_WIDTH = 4900;
+export const WORLD_HEIGHT = 3360;
 
 export class World {
 
@@ -23,7 +25,6 @@ export class World {
     // Add Phisics to world and apply to all objects
     this.game.physics.p2.gravity.y = 400;
     this.game.physics.p2.restitution = 0.05;
-
   }
 
   update () {
@@ -56,8 +57,8 @@ export class World {
         const currentTileY = y * (tileHeight * LAND_SCALE);
         if (currentTileType !== 0 && Sprites.landSpriteTransformedValues.has(currentTileType)) {
           const newTile = this.game.landLayer.create(currentTileX, currentTileY, Sprites.landSpriteTransformedValues.get(currentTileType));
-          this.game.physics.p2.enable(newTile, false);
           newTile.scale.setTo(LAND_SCALE, LAND_SCALE);
+          this.game.physics.p2.enable(newTile, false);
           newTile.body.kinematic = true;
         } // Else it's an empty space
       }

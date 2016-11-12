@@ -1,7 +1,7 @@
 import { game } from '../game';
 import { Move } from '../move/move';
 import { Weapon } from '../weapon/weapon';
-import { LAND_SCALE } from  '../world/world';
+import { LAND_SCALE, WORLD_WIDTH, WORLD_HEIGHT } from  '../world/world';
 
 const RETICLE_SCALE = 0.5; //always half of LAND_SCALE
 const PLAYER_SCALE = 3; // 4 times LAND_SCALE
@@ -21,9 +21,12 @@ export class Player {
     this.game = game;
     this.move = new Move({ character: this });
     this.weapon = new Weapon({ character: this });
+    /**
+     * Starts player in center of world
+     */
     this.currentLocation = {
-      x: 100,
-      y: 100
+      x: WORLD_WIDTH * LAND_SCALE / 2,
+      y: WORLD_HEIGHT * LAND_SCALE / 2
     };
     this.direction = 'right';
     this.jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -112,7 +115,7 @@ export class Player {
     // Shoot
     if (this.shootButton.isDown) {
       if (!this.shotDelay) {
-        let shot = this.weapon.fire();
+        const shot = this.weapon.fire();
         if ( shot ) {
           this.calculateKickback();
         }
