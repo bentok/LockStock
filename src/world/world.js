@@ -115,6 +115,5 @@ export class World {
       }
     }
     this.game.physics.p2.enable(this.game.landLayer, false);
-    this.game.world.resize();
   }
 }

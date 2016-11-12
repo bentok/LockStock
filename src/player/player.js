@@ -34,6 +34,7 @@ export class Player {
     this.aimDirection = 'right';
     this.jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.shootButton = game.input.activePointer.leftButton;
+    this.peerConnection = new PeerConnection(new Peer({ key: this.game.peerApiKey }));
 
     /**
      * Character stats can have modifiers
@@ -43,7 +44,6 @@ export class Player {
     this.health = health;
     this.maxHealth = maxHealth;
     this.speed = speed;
-    this.peerConnection = new PeerConnection(new Peer({ key: this.game.peerApiKey }));
     this.lives = 1;
   }
 
