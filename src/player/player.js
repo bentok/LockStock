@@ -8,6 +8,8 @@ import { LAND_SCALE, WORLD_WIDTH, WORLD_HEIGHT } from  '../world/world';
 const RETICLE_SCALE = 0.5; // always half of LAND_SCALE
 const PLAYER_SCALE = 3; // 4 times LAND_SCALE
 
+const PLAYER_MAX_HEALTH = 100;
+
 /**
  * Player
  * @class Player
@@ -34,17 +36,23 @@ export class Player {
     this.aimDirection = 'right';
     this.jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.shootButton = game.input.activePointer.leftButton;
+    this.peerConnection = new PeerConnection(new Peer({ key: this.game.peerApiKey }), this);
+    this.lives = 1;
 
     /**
      * Character stats can have modifiers
      */
-    this.fallVelocity = 0;
     this.hasAutoFire = false;
     this.health = health;
-    this.maxHealth = maxHealth;
     this.speed = speed;
-    this.peerConnection = new PeerConnection(new Peer({ key: this.game.peerApiKey }), this);
-    this.lives = 1;
+  }
+
+  respawn() {
+    this.hasAutoFire = false;
+    this.health = PLAYER_MAX_HEALTH;
+    this.speed = speed;
+    this.character.sprite.body.x = this.spawnLocation.x;
+    this.character.sprite.body.y = this.spawnLocation.y;
   }
 
 /**
