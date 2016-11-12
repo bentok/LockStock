@@ -47,6 +47,12 @@ export class Player {
     this.sprite.body.onBeginContact.add(contact, this);
 
     function contact (body, bodyB, shapeA, shapeB, equation) {
+      if ( body ) {
+        console.log(body);
+        if( body.sprite.key === 'bullet' ) {
+          this.subtractHealth(20);
+        }
+      }
       this.standing = true;
     }
 
@@ -138,6 +144,22 @@ export class Player {
   falling () {
     this.fallVelocity += 10;
     this.sprite.body.velocity.y = this.fallVelocity;
+  }
+
+  /**
+   * Add health to the characters current health.
+   * @param {Number} amount The amount of health to add to the characters current health
+   */
+  addHealth (amount) {
+    this.health = this.health + amount <= this.maxHealth ? this.health += amount : this.maxHealth;
+  }
+  /**
+   * Subtract health from the characters current health.
+   * @param  {Number} amount Amount of health to subtract from the character
+   */
+  subtractHealth (amount) {
+    this.health = this.health - amount >= 0 ? this.health -= amount : 0;
+    console.log(this.health);
   }
 
   /**
