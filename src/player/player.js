@@ -1,5 +1,6 @@
 import { game } from '../game';
 import { Move } from '../move/move';
+import { Weapon } from '../weapon/weapon';
 
 /**
  * Player
@@ -15,6 +16,7 @@ export class Player {
   constructor ({ health = 100, maxHealth = 100, speed = 25 } = {}) {
     this.game = game;
     this.move = new Move({ character: this });
+    this.weapon = new Weapon({ character: this });
     this.health = health;
     this.maxHealth = maxHealth;
     this.speed = speed;
@@ -53,6 +55,7 @@ export class Player {
     this.sprite.checkWorldBounds = true;
 
     this.reticle.body.static = true;
+    this.weapon.render();
 
     // Loads Phaser presets for arrow key input
 
@@ -76,6 +79,7 @@ export class Player {
     }
 
     if (this.shootButton.isDown ) {
+      this.weapon.projectile.fire();
 
       if ( this.sprite.x > this.reticle.x ) {
         let difference = (this.sprite.x - this.reticle.x) / 10;
