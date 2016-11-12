@@ -9,17 +9,48 @@ export class Weapon extends Phaser.State {
     this.velocity = 400;
     this.rate = 60;
     this.spread = 2;
-    this.numBullets = 5;
-    this.damage = 20 * this.numBullets;
+    this.numPellets = 5;
+    this.damage = 20 * this.numPellets;
     this.capacity = 2;
+    this.currentCapacity = this.capacity; //spawn with full clip
+    this.nextFire = 0;
+    this.reloadDelay = 200;
   }
 
   render () {
-    this.projectile = this.game.add.weapon(30, 'bullet');
-    this.projectile.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-    this.projectile.bulletSpeed = this.velocity;
-    this.projectile.fireRate = this.rate;
-    this.projectile.trackSprite(this.character.sprite, 0, 0, true);
+
+    this.projectiles = this.game.add.group();
+    this.projectiles.enableBody = true;
+    this.projectiles.physicsBodyType = Phaser.Physics.ARCADE;
+    this.projectiles.createMultiple(100, 'bullet');
+    this.projectiles.setAll('checkWorldBounds', true);
+    this.projectiles.setAll('outOfBoundsKill', true);
+
+  }
+
+  fire () {
+    if (this.game.time.now > this.nextFire && this.projectiles.countDead() > 0) {
+        this.nextFire = this.game.time.now + this.rate;
+
+        let projectile = this.projectiles.getFirstDead();
+        projectile.reset(this.character.sprite.x, this.character.sprite.y);
+        this.discharge(1); //number of shells fired per shot
+        this.game.physics.arcade.moveToPointer(projectile, this.velocity);
+
+    }
+  }
+
+  discharge (shells) {
+    this.currentCapacity = this.currentCapacity - shells > 0 ? this.currentCapacity - shells : 0;
+    // TEMP
+    if( this.currentCapacity === 0 ){
+      this.reload();
+    }
+  }
+
+  reload () {
+    this.nextFire = this.game.time.now + this.reloadDelay;
+    this.currentCapacity = this.capacity;
   }
 
   set bulletVelocity (newVelocity = this.velocity) {
@@ -29,7 +60,7 @@ export class Weapon extends Phaser.State {
   get bulletVelocity () {
     return this.velocity;
   }
-  
+
   set bulletRate (newrate = this.rate) {
     this.rate = newrate;
   }
@@ -37,7 +68,7 @@ export class Weapon extends Phaser.State {
   get bulletRate () {
     return this.rate;
   }
-  
+
   set bulletSpread (newspread = this.spread) {
     this.spread = newspread;
   }
@@ -45,7 +76,7 @@ export class Weapon extends Phaser.State {
   get bulletSpread () {
     return this.spread;
   }
-  
+
   set bulletNumBullets (newnumBullets = this.numBullets) {
     this.numBullets = newnumBullets;
   }
@@ -53,7 +84,7 @@ export class Weapon extends Phaser.State {
   get bulletNumBullets () {
     return this.numBullets;
   }
-  
+
   set bulletDamage (newdamage = this.damage) {
     this.damage = newdamage;
   }
@@ -61,7 +92,7 @@ export class Weapon extends Phaser.State {
   get bulletDamage () {
     return this.damage;
   }
-  
+
   set bulletCapacity (newcapacity = this.capacity) {
     this.capacity = newcapacity;
   }
@@ -69,5 +100,5 @@ export class Weapon extends Phaser.State {
   get bulletCapacity () {
     return this.capacity;
   }
-  
-} 
+
+}
