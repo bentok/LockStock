@@ -13,17 +13,16 @@ const PLAYER_SCALE = 3; // 4 times LAND_SCALE
 export class Player {
 
   /**
-   * @param  {Number} health Current health of the character
-   * @param  {Number} maxHealth Maximum possible health for the character
-   * @param  {Number} speed Walking speed for character
+   * @param {Number} health Current health of the character
+   * @param {Number} maxHealth Maximum possible health for the character
+   * @param {Number} speed Walking speed for character.
+   * @param {Number} x X coordinate of spawn location. Defaults to center of world.
+   * @param {Number} Y Y coordinate of spawn location. Defaults to center of world.
    */
   constructor ({ health = 100, maxHealth = 100, speed = 25, x = WORLD_WIDTH * LAND_SCALE / 2, y = WORLD_HEIGHT * LAND_SCALE / 2 } = {}) {
     this.game = game;
     this.move = new Move({ character: this });
     this.weapon = new Weapon({ character: this });
-    /**
-     * Starts player in center of world
-     */
     this.currentLocation = {
       x,
       y
@@ -31,7 +30,6 @@ export class Player {
     this.direction = 'right';
     this.jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.shootButton = game.input.activePointer.leftButton;
-
 
     /**
      * Character stats can have modifiers

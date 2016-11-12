@@ -19,20 +19,21 @@ export class Weapon extends Phaser.State {
 
   render () {
 
-    this.projectiles = this.game.add.group();
-    this.projectiles.enableBody = true;
-    this.projectiles.physicsBodyType = Phaser.Physics.ARCADE;
-    this.projectiles.createMultiple(100, 'bullet');
-    this.projectiles.setAll('checkWorldBounds', true);
-    this.projectiles.setAll('outOfBoundsKill', true);
+    this.game.projectilesLayer = this.game.add.group();
+    this.game.projectilesLayer.enableBody = true;
+    this.game.projectilesLayer.physicsBodyType = Phaser.Physics.P2;
+    this.game.projectilesLayer.createMultiple(100, 'bullet');
+    this.game.projectilesLayer.setAll('checkWorldBounds', true);
+    this.game.projectilesLayer.setAll('outOfBoundsKill', true);
+    this.game.physics.p2.enable(this.game.projectilesLayer, false, true);
   }
 
   fire () {
-    if (this.game.time.now > this.nextFire && this.projectiles.countDead() > 0) {
+    if (this.game.time.now > this.nextFire && this.game.projectilesLayer.countDead() > 0) {
         this.nextFire = this.game.time.now + this.rate;
         let projectiles =  [];
         for (let i = 0; i < this.numPellets; i++) {
-          projectiles.push(this.projectiles.getFirstDead());
+          projectiles.push(this.game.projectilesLayer.getFirstDead());
           projectiles[i].reset(this.character.sprite.x, this.character.sprite.y);
           this.discharge(1); //number of shells fired per shot
           const dest = {
