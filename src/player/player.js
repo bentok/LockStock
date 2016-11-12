@@ -3,7 +3,7 @@ import { Move } from '../move/move';
 import { Weapon } from '../weapon/weapon';
 import { LAND_SCALE, WORLD_WIDTH, WORLD_HEIGHT } from  '../world/world';
 
-const RETICLE_SCALE = 0.5; //always half of LAND_SCALE
+const RETICLE_SCALE = 0.5; // always half of LAND_SCALE
 const PLAYER_SCALE = 3; // 4 times LAND_SCALE
 
 /**
