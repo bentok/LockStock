@@ -58,16 +58,20 @@ export class World {
     for (const player of this.players) {
       player.update();
     }
+    this.gravityCycle();
+  }
+
+  gravityCycle() {
     if ( this.gravityTimer < this.game.time.now ) {
       if ( this.game.physics.p2.gravity.y === 0 ) {
         this.game.physics.p2.gravity.y = 400;
-        this.game.stage.backgroundColor = '#2d2d5d';
       } else {
         this.game.physics.p2.gravity.y = 0;
-        this.game.stage.backgroundColor = '#2d2d2d';
       }
-      this.gravityTimer = this.game.time.now + 10000;
+      console.log(`Gravity Change!! -- new Value: ${ this.game.physics.p2.gravity.y }`);
+      this.gravityTimer = this.game.time.now + 5000;
     }
+
   }
 
   buildMap () {
