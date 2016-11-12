@@ -24,7 +24,7 @@ export class Player {
     this.fallVelocity = 0;
     this.jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.shootButton = game.input.activePointer.leftButton;
-    // this.game.input.addMoveCallback(this.moveReticle, this);
+    this.game.input.addMoveCallback(this.moveReticle, this);
   }
 
 /**
@@ -33,11 +33,12 @@ export class Player {
   render () {
     this.sprite = this.game.playerLayer.create(this.currentLocation.x, this.currentLocation.y, 'player');
     this.reticle = this.game.playerLayer.create(this.currentLocation.x, this.currentLocation.y, 'reticle');
-    this.reticle.scale.setTo(0.2, 0.2);
+    this.reticle.scale.setTo(0.1, 0.1);
 
-    // Applies arcade physics to player, and collision with world bounds
+    // Applies p2 physics to player, and collision with world bounds
     this.game.physics.p2.enable([this.sprite, this.reticle], false);
 
+    this.keys = this.game.input.keyboard.createCursorKeys();
 
     this.sprite.body.onBeginContact.add(contact, this);
 
@@ -52,7 +53,6 @@ export class Player {
     this.reticle.body.static = true;
 
     // Loads Phaser presets for arrow key input
-    this.keys = this.game.input.keyboard.createCursorKeys();
 
   }
 
