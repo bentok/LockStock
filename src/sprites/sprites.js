@@ -48,6 +48,8 @@ export class Sprites {
     this.game.load.image('reticle', './images/reticle.png');
     this.game.load.image('player', './images/character.png');
     this.game.load.image('bullet', './images/bullet.png');
+    this.game.load.image('gravityPad', './images/gravityPad.png');
+    this.game.load.spritesheet('rain', './images/rain.png', 17, 17);
     this.loadLand(Sprites.landTypes[Math.floor(Math.random() * Sprites.landTypes.length)]);
 
   }

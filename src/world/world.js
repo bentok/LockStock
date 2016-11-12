@@ -2,6 +2,7 @@ import { game } from '../game';
 import { Player } from '../player/player';
 import { Map1Json } from '../maps/Level1/map';
 import { Sprites } from '../sprites/sprites';
+import { GravityPad } from '../gravityPad/gravityPad';
 
 export const LAND_SCALE = 0.2;
 export const WORLD_WIDTH = 4900;
@@ -41,6 +42,8 @@ export class World {
         window.prompt( 'Copy to clipboard and send to opponent', `${window.location.host}?id=${id}`);
       }
     });
+
+    this.gravityPads = [];
   }
 
   setup () {
@@ -52,6 +55,23 @@ export class World {
     // Add Phisics to world and apply to all objects
     this.game.physics.p2.gravity.y = 0;
     this.game.physics.p2.restitution = 0.05;
+
+    console.log(this.game.world);
+
+    this.gravityPads.push( new GravityPad({
+        x: 230,
+        y: 188
+      }) );
+
+    this.gravityPads.push( new GravityPad({
+        x: 800,
+        y: 228
+      }) );
+
+    for (const pad of this.gravityPads) {
+      pad.render();
+    }
+
   }
 
   update () {
