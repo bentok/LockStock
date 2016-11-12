@@ -6,19 +6,27 @@ import { Sprites } from '../sprites/sprites';
 export class World {
   constructor () {
     this.game = game;
-    console.log('new World');
     this.player = new Player();
+    this.gravityTimer = 0;
   }
 
   setup () {
     this.player.render();
 
     this.buildMap();
+    // Add Phisics to world and apply to all objects
+    this.game.physics.p2.gravity.y = 400;
+    this.game.physics.p2.restitution = 0.05;
 
   }
 
   update () {
     this.player.update();
+    if ( this.gravityTimer < this.game.time.now ) {
+      this.game.physics.p2.gravity.y = this.game.physics.p2.gravity.y === 0 ? 400 : 0;
+      console.log(`Gravity Change!! -- new Value: ${ this.game.physics.p2.gravity.y }`);
+      this.gravityTimer = this.game.time.now + 10000;
+    }
   }
 
   buildMap () {
