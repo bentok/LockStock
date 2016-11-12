@@ -1,4 +1,4 @@
-import { game } from '../game';
+import { game, world } from '../game';
 import { Death } from './death';
 import { Move } from '../move/move';
 import { Weapon } from '../weapon/weapon';
@@ -43,7 +43,7 @@ export class Player {
     this.health = health;
     this.maxHealth = maxHealth;
     this.speed = speed;
-    this.peerConnection = new PeerConnection(new Peer({ key: this.game.peerApiKey }));
+    this.peerConnection = new PeerConnection(new Peer({ key: this.game.peerApiKey }), this);
     this.lives = 1;
   }
 
@@ -111,6 +111,15 @@ export class Player {
     this.playerControls();
     this.getAimDirection();
     this.checkForFallToDeath();
+  }
+
+  updatePositionAndVelocity (position, velocity) {
+    this.sprite.position.x = position.x;
+    this.sprite.position.y = position.y;
+    this.sprite.body.velocity.x = velocity.x;
+    this.sprite.body.velocity.y = velocity.y;
+    this.sprite.body.velocity.mx = velocity.mx;
+    this.sprite.body.velocity.my = velocity.my;
   }
 
   playerControls () {
@@ -211,6 +220,10 @@ export class Player {
     this.peerConnection.connect(opponentId);
   }
 
+  addOpponent(position) {
+    world.addOpponent(position);
+  }
+
   /**
    * Set the location of the character.
    */
@@ -233,6 +246,22 @@ export class Player {
 
   get id () {
     return this.peerConnection.id;
+  }
+
+  get positionPayload () {
+    return {
+      type: 'OPPONENT_POSITION',
+      velocity: {
+        x: this.sprite.body.velocity.x,
+        y: this.sprite.body.velocity.y,
+        mx: this.sprite.body.velocity.mx,
+        my: this.sprite.body.velocity.my,
+      },
+      position: {
+        x: this.sprite.position.x,
+        y: this.sprite.position.y
+      }
+    };
   }
 
 }

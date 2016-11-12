@@ -2,8 +2,9 @@
  * Wrapper class for peerJS peer.
  */
 export class PeerConnection {
-  constructor (peerInstance) {
+  constructor (peerInstance, parentPlayer) {
     this.peer = peerInstance;
+    this.parentPlayer = parentPlayer;
 
     this.id = new Promise((resolve, reject) => {
       if (!!this._id) {
@@ -17,13 +18,13 @@ export class PeerConnection {
     });
 
     this.peer.on('connection', (conn) => {
-      this.connection = new Connection(conn);
+      this.connection = new Connection(conn, this.parentPlayer);
       console.info('Connection initiated with', this.connection);
     });
   }
 
   connect (opponentId) {
-    this.connection = new Connection(this.peer.connect(opponentId));
+    this.connection = new Connection(this.peer.connect(opponentId), this.parentPlayer);
     console.info('Connection initiated with', this.connection);
   }
 
@@ -33,11 +34,25 @@ export class PeerConnection {
 
 }
 class Connection {
-  constructor (conn) {
+  constructor (conn, parentPlayer) {
     this.connection = conn;
+    this.parentPlayer = parentPlayer;
 
     this.connection.on('data', (data) => {
-      console.info('Data received', data);
+      switch (data.type) {
+      case 'INITIAL_OPPONENT_POSITION':
+        this.parentPlayer.addOpponent(data.position);
+        break;
+      case 'OPPONENT_POSITION':
+        this.parentPlayer.opponent.updatePositionAndVelocity(data.position, data.velocity);
+        break;
+      }
+    });
+
+    this.connection.on('open', (data) => {
+      const initialPostionPayload = this.parentPlayer.positionPayload;
+      initialPostionPayload.type = 'INITIAL_OPPONENT_POSITION';
+      this.send(initialPostionPayload);
     });
   }
 

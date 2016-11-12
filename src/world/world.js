@@ -1,5 +1,5 @@
 import { game } from '../game';
-import { Player } from '../player/player';
+import { Player, Enemy } from '../player';
 import { Map1Json } from '../maps/Level1/map';
 import { Sprites } from '../sprites/sprites';
 import { GravityPad } from '../gravityPad/gravityPad';
@@ -58,14 +58,14 @@ export class World {
     this.game.physics.p2.restitution = 0.05;
 
     this.gravityPads.push( new GravityPad({
-        x: 230,
-        y: 190
-      }) );
+      x: 230,
+      y: 190
+    }) );
 
     this.gravityPads.push( new GravityPad({
-        x: 800,
-        y: 231
-      }) );
+      x: 800,
+      y: 231
+    }) );
 
     for (const pad of this.gravityPads) {
       pad.render();
@@ -80,12 +80,12 @@ export class World {
     this.gravityCycle();
   }
 
-  removeGravity() {
+  removeGravity () {
     this.game.physics.p2.gravity.y = 0;
     this.gravityTimer = this.game.time.now + 5000;
   }
 
-  gravityCycle() {
+  gravityCycle () {
     if ( this.gravityTimer < this.game.time.now ) {
       if ( this.game.physics.p2.gravity.y === 0 ) {
         this.game.physics.p2.gravity.y = 400;
@@ -116,5 +116,12 @@ export class World {
     }
     this.game.physics.p2.enable(this.game.landLayer, false);
     this.game.world.resize();
+  }
+
+  addOpponent (position) {
+    const opponentPlayer = new Enemy(position);
+    this.players.push(opponentPlayer);
+    this.user.opponent = opponentPlayer;
+    opponentPlayer.render();
   }
 }
