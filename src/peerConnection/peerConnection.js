@@ -27,13 +27,21 @@ export class PeerConnection {
     console.info('Connection initiated with', this.connection);
   }
 
+  send (payload) {
+    this.connection.send(payload);
+  }
+
 }
 class Connection {
   constructor (conn) {
-    this.conn = conn;
+    this.connection = conn;
 
-    this.conn.on('data', (data) => {
+    this.connection.on('data', (data) => {
       console.info('Data received', data);
     });
+  }
+
+  send (payload) {
+    this.connection.send(payload);
   }
 }
