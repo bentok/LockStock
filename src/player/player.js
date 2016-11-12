@@ -60,12 +60,13 @@ export class Player {
 
     function contact (body, bodyB, shapeA, shapeB, equation) {
       if ( body ) {
-        if( body.sprite.key === 'bullet' ) {
-          console.log('you have been shot!');
+        if (body.sprite.key === 'bullet' ) {
+          console.info('you have been shot!');
           this.subtractHealth(20);
         }
-        if( body.sprite.key == 'map' )
+        if (body.sprite.key === 'map' ) {
           this.standing = true;
+        }
       }
       this.standing = true;
     }
@@ -78,6 +79,7 @@ export class Player {
     this.weapon.render();
 
   }
+
   /**
    *  Keep the reticle on the cursor position
    */
@@ -104,8 +106,8 @@ export class Player {
     }
     // Shoot
     if (this.shootButton.isDown ) {
-      let shot = this.weapon.fire();
-      if ( shot ) {
+      const shot = this.weapon.fire();
+      if (shot) {
         this.calculateKickback();
       }
       if (!this.hasAutoFire) {
@@ -114,7 +116,7 @@ export class Player {
     } else {
       this.shotDelay = false;
     }
-    //Jump
+    // Jump
     if (this.jumpButton.isDown ) {
       if (this.jumpTimer > this.game.time.now) {
         this.standing = false;
@@ -164,7 +166,6 @@ export class Player {
    */
   subtractHealth (amount) {
     this.health = this.health - amount >= 0 ? this.health -= amount : 0;
-    console.log(this.health);
     if ( this.health <= 0 ) {
     //  TODO: death animation
     // TODO: respawn?
