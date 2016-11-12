@@ -14,21 +14,31 @@ export class World {
   }
   constructor () {
     this.game = game;
-    this.player = new Player();
-    this.gravityTimer = this.game.time.now + 2000;
+    this.players = [
+      new Player({
+        x: 300,
+        y: 170
+      }),
+      new Player()
+    ];
+    this.gravityTimer = 0;
   }
 
   setup () {
-    this.player.render();
+    for (const player of this.players) {
+      player.render();
+    }
 
     this.buildMap();
     // Add Phisics to world and apply to all objects
-    this.game.physics.p2.gravity.y = 400;
+    this.game.physics.p2.gravity.y = 0;
     this.game.physics.p2.restitution = 0.05;
   }
 
   update () {
-    this.player.update();
+    for (const player of this.players) {
+      player.update();
+    }
     if ( this.gravityTimer < this.game.time.now ) {
       if ( this.game.physics.p2.gravity.y === 0 ) {
         this.game.physics.p2.gravity.y = 400;
