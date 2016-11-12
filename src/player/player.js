@@ -17,7 +17,7 @@ export class Player {
    * @param  {Number} maxHealth Maximum possible health for the character
    * @param  {Number} speed Walking speed for character
    */
-  constructor ({ health = 100, maxHealth = 100, speed = 25 } = {}) {
+  constructor ({ health = 100, maxHealth = 100, speed = 25, x = WORLD_WIDTH * LAND_SCALE / 2, y = WORLD_HEIGHT * LAND_SCALE / 2 } = {}) {
     this.game = game;
     this.move = new Move({ character: this });
     this.weapon = new Weapon({ character: this });
@@ -25,8 +25,8 @@ export class Player {
      * Starts player in center of world
      */
     this.currentLocation = {
-      x: WORLD_WIDTH * LAND_SCALE / 2,
-      y: WORLD_HEIGHT * LAND_SCALE / 2
+      x,
+      y
     };
     this.direction = 'right';
     this.jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
