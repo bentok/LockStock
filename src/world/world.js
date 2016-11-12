@@ -14,14 +14,33 @@ export class World {
   }
   constructor () {
     this.game = game;
+    this.user = new Player({
+      x: 300,
+      y: 170
+    });
     this.players = [
-      new Player({
-        x: 300,
-        y: 170
-      }),
-      new Player()
+      this.user
     ];
     this.gravityTimer = 0;
+
+    const userIdStyles = {
+      fill: '#00ff00',
+      fontSize: '14px',
+      font: 'Courier'
+    };
+    this.user.id.then((id) => {
+      const userIdText = this.game.add.text(WORLD_WIDTH * LAND_SCALE - 3, 24, id, userIdStyles);
+      userIdText.anchor.x = 1;
+      userIdText.anchor.y = 1;
+      const urlQuery = window.location.search.slice(1);
+      const idRegex = /id=(\w+)/;
+      const idMatches = idRegex.exec(urlQuery);
+      if (idMatches) {
+        this.user.connect(idMatches[1]);
+      } else {
+        window.prompt( 'Copy to clipboard and send to opponent', `${window.location.host}?id=${id}`);
+      }
+    });
   }
 
   setup () {
@@ -47,7 +66,6 @@ export class World {
         this.game.physics.p2.gravity.y = 0;
         this.game.stage.backgroundColor = '#2d2d2d';
       }
-      console.log(`Gravity Change!! -- new Value: ${ this.game.physics.p2.gravity.y }`);
       this.gravityTimer = this.game.time.now + 10000;
     }
   }

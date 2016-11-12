@@ -1,5 +1,5 @@
 import { World, LAND_SCALE, WORLD_WIDTH, WORLD_HEIGHT } from './world/world';
-import { Sprites } from './sprites/sprites'
+import { Sprites } from './sprites/sprites';
 
 /**
  * Bootstraps the game and execute Phaser lifecycle hooks
@@ -12,7 +12,7 @@ let world;
  * preload
  */
 function preload () {
-  game.time.advancedTiming = true; //Allows for FPS Meter
+  game.time.advancedTiming = true; // Allows for FPS Meter
   game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
   game.scale.pageAlignHorizontally = true;
   game.scale.pageAlignVertically = true;
@@ -28,7 +28,9 @@ function preload () {
 
   new Sprites().load();
 
-  world = new World();
+  getPeerKey(() => {
+    world = new World();
+  });
 }
 /**
  * create
@@ -55,4 +57,19 @@ function update () {
  */
 function render () {
   game.debug.text(game.time.fps, 2, 14, '#00ff00');
+}
+
+
+function getPeerKey (cb) {
+  const peerKeyRequest = new XMLHttpRequest();
+  peerKeyRequest.onreadystatechange = function (data, err) {
+    if (peerKeyRequest.readyState === XMLHttpRequest.DONE) {
+      game.peerApiKey = JSON.parse(peerKeyRequest.responseText).apiKey;
+      cb();
+    }
+  };
+
+  peerKeyRequest.open('GET', '/peerKey');
+  peerKeyRequest.setRequestHeader('Accept', 'application/json');
+  peerKeyRequest.send();
 }

@@ -1,6 +1,7 @@
 import { game } from '../game';
 import { Move } from '../move/move';
 import { Weapon } from '../weapon/weapon';
+import { PeerConnection } from '../peerConnection/peerConnection';
 import { LAND_SCALE, WORLD_WIDTH, WORLD_HEIGHT } from  '../world/world';
 
 const RETICLE_SCALE = 0.5; // always half of LAND_SCALE
@@ -41,6 +42,8 @@ export class Player {
     this.health = health;
     this.maxHealth = maxHealth;
     this.speed = speed;
+
+    this.peerConnection = new PeerConnection(new Peer({ key: this.game.peerApiKey }));
   }
 
 /**
@@ -189,6 +192,10 @@ export class Player {
     }
   }
 
+  connect (opponentId) {
+    this.peerConnection.connect(opponentId);
+  }
+
   /**
    * Set the location of the character.
    */
@@ -207,6 +214,10 @@ export class Player {
         y: this.sprite.position.y,
       };
     }
+  }
+
+  get id () {
+    return this.peerConnection.id;
   }
 
 }
