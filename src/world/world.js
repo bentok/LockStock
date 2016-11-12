@@ -15,7 +15,7 @@ export class World {
   constructor () {
     this.game = game;
     this.player = new Player();
-    this.gravityTimer = 0;
+    this.gravityTimer = this.game.time.now + 2000;
   }
 
   setup () {
