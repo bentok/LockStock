@@ -25,7 +25,6 @@ export class Player {
     this.jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.shootButton = game.input.activePointer.leftButton;
 
-    this.game.input.addMoveCallback(this.moveReticle, this);
 
     /**
      * Character stats can have modifiers
@@ -43,7 +42,8 @@ export class Player {
   render () {
     this.sprite = this.game.playerLayer.create(this.currentLocation.x, this.currentLocation.y, 'player');
     this.reticle = this.game.uiLayer.create(this.currentLocation.x, this.currentLocation.y, 'reticle');
-    this.reticle.scale.setTo(0.1, 0.1);
+    this.reticle.scale.setTo(0.4, 0.4);
+    this.sprite.scale.setTo(2, 2);
 
     // Applies p2 physics to player, and collision with world bounds
     this.game.physics.p2.enable(this.game.playerLayer, false, true);

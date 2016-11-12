@@ -25,7 +25,7 @@ export class Weapon extends Phaser.State {
     this.projectiles.createMultiple(100, 'bullet');
     this.projectiles.setAll('checkWorldBounds', true);
     this.projectiles.setAll('outOfBoundsKill', true);
-
+    this.projectiles.scale.set(2, 2)
   }
 
   fire () {
@@ -34,12 +34,12 @@ export class Weapon extends Phaser.State {
         let projectiles =  [];
         for (let i = 0; i < this.numPellets; i++) {
           projectiles.push(this.projectiles.getFirstDead());
-          projectiles[i].reset(this.character.sprite.x, this.character.sprite.y);
+          projectiles[i].reset(this.character.sprite.x / 2, this.character.sprite.y / 2);
           this.discharge(1); //number of shells fired per shot
           const dest = {
             projectile: projectiles[i],
-            x: this.calculateDestination({ i, numPellets: this.numPellets, coordinate: this.character.reticle.body.x }),
-            y: this.calculateDestination({ i, numPellets: this.numPellets, coordinate: this.character.reticle.body.y }),
+            x: this.calculateDestination({ i, numPellets: this.numPellets, coordinate: this.character.reticle.body.x / 2 }),
+            y: this.calculateDestination({ i, numPellets: this.numPellets, coordinate: this.character.reticle.body.y / 2 }),
             velocity: this.velocity
           }
           this.game.physics.arcade.moveToXY(dest.projectile, dest.x, dest.y, dest.velocity);
