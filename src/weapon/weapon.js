@@ -37,8 +37,8 @@ export class Weapon extends Phaser.State {
           this.discharge(1); //number of shells fired per shot
           const dest = {
             projectile: projectiles[i],
-            x: this.calculateDestination({ i, numPellets: this.numPellets, coordinate: this.character.reticle.body.x / 2 }),
-            y: this.calculateDestination({ i, numPellets: this.numPellets, coordinate: this.character.reticle.body.y / 2 }),
+            x: this.calculateTrajectory({ i, coordinate: this.character.reticle.body.x / 2 }),
+            y: this.calculateTrajectory({ i, coordinate: this.character.reticle.body.y / 2 }),
             velocity: this.velocity
           }
           this.game.physics.arcade.moveToXY(dest.projectile, dest.x, dest.y, dest.velocity);
@@ -48,43 +48,9 @@ export class Weapon extends Phaser.State {
     return false;
   }
 
-  calculateDestination ({ i = 0, coordinate = 0, numPellets = 5 } = {}) {
-    let yCoord;
-    switch (i) {
-      case 0:
-        yCoord = coordinate;
-        break;
-      case 1:
-        yCoord = coordinate - 10;
-        break;
-      case 2:
-        yCoord = coordinate + 10;
-        break;
-      case 3:
-        yCoord = coordinate - 20;
-        break;
-      case 4:
-        yCoord = coordinate + 20;
-        break;
-      case 5:
-        yCoord = coordinate - 30;
-        break;
-      case 6:
-        yCoord = coordinate + 30;
-        break;
-      case 7:
-        yCoord = coordinate - 40;
-        break;
-      case 8:
-        yCoord = coordinate + 40;
-        break;
-      case 9:
-        yCoord = coordinate - 50;
-        break;
-      default:
-      yCoord = coordinate;
-    }
-    return yCoord;
+  calculateTrajectory ({ i = 0, coordinate = 0, spread = this.spread } = {}) {
+    const verticalOffset = i / 2 * spread;
+    return i % 2 === 0 ? coordinate - verticalOffset : coordinate + verticalOffset;
   }
 
   discharge (shells) {
