@@ -3,7 +3,7 @@ const browserify = require('browserify');
 const source = require('vinyl-source-stream');
 
 gulp.task('default', ['build', 'watch']);
-gulp.task('build', ['copyImages', 'browserify']);
+gulp.task('build', ['copyImages', 'copyVendorAssets', 'browserify']);
 
 gulp.task('watch', () => {
   gulp.watch('src/**/*.js', ['browserify']);
@@ -31,4 +31,11 @@ gulp.task('browserify', () => {
   .bundle()
   .pipe(source('main.bundle.js'))
   .pipe(gulp.dest('public/js'));
+});
+
+gulp.task('copyVendorAssets', () => {
+   return gulp.src([
+     'node_modules/phaser/build/phaser.min.js'
+   ])
+   .pipe(gulp.dest('public/vendor'));
 });
