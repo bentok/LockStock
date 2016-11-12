@@ -47,9 +47,10 @@ export class World {
   }
 
   setup () {
-    for (const player of this.players) {
+    this.players.forEach((player, i) => {
+      player.name = `Player ${i + 1}`;
       player.render();
-    }
+    });
 
     this.buildMap();
     // Add Phisics to world and apply to all objects

@@ -1,4 +1,5 @@
 import { game } from '../game';
+import { Death } from './death';
 import { Move } from '../move/move';
 import { Weapon } from '../weapon/weapon';
 import { PeerConnection } from '../peerConnection/peerConnection';
@@ -22,9 +23,10 @@ export class Player {
    */
   constructor ({ health = 100, maxHealth = 100, speed = 25, x = WORLD_WIDTH * LAND_SCALE / 2, y = WORLD_HEIGHT * LAND_SCALE / 2 } = {}) {
     this.game = game;
+    this.death = new Death({ character: this });
     this.move = new Move({ character: this });
     this.weapon = new Weapon({ character: this });
-    this.currentLocation = {
+    this.spawnLocation = {
       x,
       y
     };
@@ -41,16 +43,16 @@ export class Player {
     this.health = health;
     this.maxHealth = maxHealth;
     this.speed = speed;
-
     this.peerConnection = new PeerConnection(new Peer({ key: this.game.peerApiKey }));
+    this.lives = 1;
   }
 
 /**
  * Render event in the Phaser cycle.
  */
   render () {
-    this.sprite = this.game.playerLayer.create(this.currentLocation.x, this.currentLocation.y, 'player');
-    this.reticle = this.game.uiLayer.create(this.currentLocation.x, this.currentLocation.y, 'reticle');
+    this.sprite = this.game.playerLayer.create(this.spawnLocation.x, this.spawnLocation.y, 'player');
+    this.reticle = this.game.uiLayer.create(this.spawnLocation.x, this.spawnLocation.y, 'reticle');
     this.reticle.scale.setTo(RETICLE_SCALE * LAND_SCALE, RETICLE_SCALE * LAND_SCALE);
     this.sprite.scale.setTo(PLAYER_SCALE * LAND_SCALE, PLAYER_SCALE * LAND_SCALE);
 
@@ -76,7 +78,6 @@ export class Player {
     function contact (body, bodyB, shapeA, shapeB, equation) {
       if ( body ) {
         if (body.sprite.key === 'bullet' ) {
-          console.info('you have been shot!');
           this.subtractHealth(20);
         }
         if (body.sprite.key === 'map' ) {
@@ -109,6 +110,7 @@ export class Player {
   update () {
     this.playerControls();
     this.getAimDirection();
+    this.checkForFallToDeath();
   }
 
   playerControls () {
@@ -195,8 +197,13 @@ export class Player {
   subtractHealth (amount) {
     this.health = this.health - amount >= 0 ? this.health -= amount : 0;
     if ( this.health <= 0 ) {
-    //  TODO: death animation
-    // TODO: respawn?
+      this.death.subtractLife();
+    }
+  }
+
+  checkForFallToDeath () {
+    if ( this.sprite.y > WORLD_HEIGHT * LAND_SCALE + 200 ) {
+      this.death.subtractLife();
     }
   }
 
@@ -208,8 +215,8 @@ export class Player {
    * Set the location of the character.
    */
   set location ({ x = 0, y = 0 } = {}) {
-    this.sprite.position.x = this.currentLocation.x = x;
-    this.sprite.position.y = this.currentLocation.y = y;
+    this.sprite.position.x = this.spawnLocation.x = x;
+    this.sprite.position.y = this.spawnLocation.y = y;
   }
 
   /**
