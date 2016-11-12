@@ -25,7 +25,6 @@ export class Weapon extends Phaser.State {
     this.projectiles.createMultiple(100, 'bullet');
     this.projectiles.setAll('checkWorldBounds', true);
     this.projectiles.setAll('outOfBoundsKill', true);
-    this.projectiles.scale.set(2, 2)
   }
 
   fire () {
@@ -85,7 +84,6 @@ export class Weapon extends Phaser.State {
       default:
       yCoord = coordinate;
     }
-    console.log(yCoord);
     return yCoord;
   }
 

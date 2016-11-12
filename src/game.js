@@ -1,10 +1,10 @@
-import { World } from './world/world';
+import { World, LAND_SCALE } from './world/world';
 import { Sprites } from './sprites/sprites'
 
 /**
  * Bootstraps the game and execute Phaser lifecycle hooks
  */
-export const game = new Phaser.Game(4900 * World.LAND_SCALE, 3360 * World.LAND_SCALE, Phaser.AUTO, '', { preload, create, update, render });
+export const game = new Phaser.Game(4900 * LAND_SCALE, 3360 * LAND_SCALE, Phaser.AUTO, '', { preload, create, update, render });
 
 let world;
 
