@@ -57,16 +57,14 @@ export class World {
     this.game.physics.p2.gravity.y = 0;
     this.game.physics.p2.restitution = 0.05;
 
-    console.log(this.game.world);
-
     this.gravityPads.push( new GravityPad({
         x: 230,
-        y: 188
+        y: 190
       }) );
 
     this.gravityPads.push( new GravityPad({
         x: 800,
-        y: 228
+        y: 231
       }) );
 
     for (const pad of this.gravityPads) {
@@ -82,17 +80,17 @@ export class World {
     this.gravityCycle();
   }
 
+  removeGravity() {
+    this.game.physics.p2.gravity.y = 0;
+    this.gravityTimer = this.game.time.now + 5000;
+  }
+
   gravityCycle() {
     if ( this.gravityTimer < this.game.time.now ) {
       if ( this.game.physics.p2.gravity.y === 0 ) {
         this.game.physics.p2.gravity.y = 400;
-      } else {
-        this.game.physics.p2.gravity.y = 0;
       }
-      console.log(`Gravity Change!! -- new Value: ${ this.game.physics.p2.gravity.y }`);
-      this.gravityTimer = this.game.time.now + 5000;
     }
-
   }
 
   buildMap () {

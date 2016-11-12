@@ -6,7 +6,7 @@ import { Sprites } from './sprites/sprites';
  */
 export const game = new Phaser.Game(WORLD_WIDTH * LAND_SCALE, WORLD_HEIGHT * LAND_SCALE, Phaser.AUTO, '', { preload, create, update, render });
 
-let world;
+export let world;
 
 /**
  * preload
@@ -21,7 +21,11 @@ function preload () {
 
   game.playerLayer = game.add.group();
   game.landLayer = game.add.group();
+  game.gravityPadsLayer = game.add.group();
   game.uiLayer = game.add.group();
+
+  game.world.bringToTop(game.gravityPadsLayer);
+  game.world.bringToTop(game.landLayer);
 
   game.world.bringToTop(game.playerLayer);
   game.world.bringToTop(game.uiLayer);
