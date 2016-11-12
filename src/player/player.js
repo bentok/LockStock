@@ -24,6 +24,7 @@ export class Player {
     this.direction = 'right';
     this.jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.shootButton = game.input.activePointer.leftButton;
+
     this.game.input.addMoveCallback(this.moveReticle, this);
 
     /**
@@ -41,22 +42,30 @@ export class Player {
  */
   render () {
     this.sprite = this.game.playerLayer.create(this.currentLocation.x, this.currentLocation.y, 'player');
-    this.reticle = this.game.playerLayer.create(this.currentLocation.x, this.currentLocation.y, 'reticle');
+    this.reticle = this.game.uiLayer.create(this.currentLocation.x, this.currentLocation.y, 'reticle');
     this.reticle.scale.setTo(0.1, 0.1);
 
     // Applies p2 physics to player, and collision with world bounds
-    this.game.physics.p2.enable([this.sprite, this.reticle], false);
+    this.game.physics.p2.enable(this.game.playerLayer, false, true);
+    this.game.physics.p2.enable(this.reticle, false);
+
+
+    this.reticle.body.kinematic = true;
+    this.reticle.body.data.shapes[0].sensor = true;
 
     this.keys = this.game.input.keyboard.createCursorKeys();
 
     this.sprite.body.onBeginContact.add(contact, this);
+    this.game.input.addMoveCallback(this.moveReticle, this);
 
     function contact (body, bodyB, shapeA, shapeB, equation) {
       if ( body ) {
-        console.log(body);
         if( body.sprite.key === 'bullet' ) {
+          console.log('you have been shot!');
           this.subtractHealth(20);
         }
+        if( body.sprite.key == 'map' )
+          this.standing = true;
       }
       this.standing = true;
     }
@@ -68,14 +77,15 @@ export class Player {
     this.reticle.body.static = true;
     this.weapon.render();
 
-    // Loads Phaser presets for arrow key input
-
   }
-
+  /**
+   *  Keep the reticle on the cursor position
+   */
   moveReticle (pointer, x, y, isDown) {
     this.reticle.body.x = x;
     this.reticle.body.y = y;
   }
+
   /**
    * Update event in Phaser cycle
    */
@@ -92,72 +102,53 @@ export class Player {
     }  else {
       this.move.idle();
     }
-
-    if (this.shootButton.isDown) {
-      if (!this.shotDelay) {
-        let shot = this.weapon.fire();
-        if ( shot ) {
-          this.calculateKickback();
-        }
-        if (!this.hasAutoFire) {
-          this.shotDelay = true;
-        }
+    // Shoot
+    if (this.shootButton.isDown ) {
+      let shot = this.weapon.fire();
+      if ( shot ) {
+        this.calculateKickback();
+      }
+      if (!this.hasAutoFire) {
+        this.shotDelay = true;
       }
     } else {
       this.shotDelay = false;
     }
-
+    //Jump
     if (this.jumpButton.isDown ) {
       if (this.jumpTimer > this.game.time.now) {
         this.standing = false;
-        this.sprite.body.velocity.y = this.speed * -25;
+        this.sprite.body.velocity.y = this.speed * -10;
       } else if ( this.standing ) {
         this.jumpTimer = this.game.time.now + 250;
       }
     }
 
-    if ( !this.standing ) {
-      // if no collider and jump duration expired the player should fall
-      if ( this.jumpTimer <= this.game.time.now ) {
-        this.falling();
-        // if no collider and during jump duration but not holding jump the player should start falling
-      } else if (!this.jumpButton.isDown) {
-        this.falling();
-      }
-    } else {
-      // player on a collider
-      this.fallVelocity = 0;
-    }
   }
 
+  /**
+   * Calculate the velocity push-back when weapon is fired.
+   */
   calculateKickback () {
     if ( this.sprite.x > this.reticle.x ) {
       let difference = (this.sprite.x - this.reticle.x) / 10;
       difference = difference > 10 ? 10 : difference;
-      this.sprite.body.velocity.x = difference * this.speed;
+      this.sprite.body.velocity.x = difference * 40;
     } else {
       let difference = (this.reticle.x - this.sprite.x) / 10;
       difference = difference > 10 ? 10 : difference;
-      this.sprite.body.velocity.x = -(difference * this.speed);
+      this.sprite.body.velocity.x = -(difference * 40);
     }
 
     if ( this.sprite.y > this.reticle.y ) {
       let difference = (this.sprite.y - this.reticle.y) / 10;
       difference = difference > 10 ? 10 : difference;
-      this.sprite.body.velocity.y = difference * this.speed;
+      this.sprite.body.velocity.y = difference * 40;
     } else {
       let difference = (this.reticle.y - this.sprite.y) / 10;
       difference = difference > 10 ? 10 : difference;
-      this.sprite.body.velocity.y = -(difference * this.speed );
+      this.sprite.body.velocity.y = -(difference * 40 );
     }
-  }
-
-/**
- * Steadily increasing velocity downward.
- */
-  falling () {
-    this.fallVelocity += 10;
-    this.sprite.body.velocity.y = this.fallVelocity;
   }
 
   /**
@@ -174,8 +165,10 @@ export class Player {
   subtractHealth (amount) {
     this.health = this.health - amount >= 0 ? this.health -= amount : 0;
     console.log(this.health);
-    // death animation
-    // respawn?
+    if ( this.health <= 0 ) {
+    //  TODO: death animation
+    // TODO: respawn?
+    }
   }
 
   /**

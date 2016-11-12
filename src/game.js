@@ -15,14 +15,15 @@ function preload () {
   game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
   game.scale.pageAlignHorizontally = true;
   game.scale.pageAlignVertically = true;
-  // game.stage.backgroundColor = '#2d2d2d';
 
   game.stage.backgroundColor = '#2d2d2d';
 
   game.playerLayer = game.add.group();
   game.landLayer = game.add.group();
+  game.uiLayer = game.add.group();
 
   game.world.bringToTop(game.playerLayer);
+  game.world.bringToTop(game.uiLayer);
 
   new Sprites().load();
 
