@@ -21,7 +21,7 @@ export class Player {
    * @param {Number} x X coordinate of spawn location. Defaults to center of world.
    * @param {Number} Y Y coordinate of spawn location. Defaults to center of world.
    */
-  constructor ({ health = 100, maxHealth = 100, speed = 25, x = WORLD_WIDTH * LAND_SCALE / 2, y = WORLD_HEIGHT * LAND_SCALE / 2 } = {}) {
+  constructor ({ health = 100, maxHealth = 100, speed = 15, x = WORLD_WIDTH * LAND_SCALE / 2, y = WORLD_HEIGHT * LAND_SCALE / 2 } = {}) {
     this.game = game;
     this.death = new Death({ character: this });
     this.move = new Move({ character: this });
