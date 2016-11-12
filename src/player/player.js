@@ -61,6 +61,12 @@ export class Player {
     this.reticle.body.data.shapes[0].sensor = true;
 
     this.keys = this.game.input.keyboard.createCursorKeys();
+    this.wasd = {
+      up: this.game.input.keyboard.addKey(Phaser.Keyboard.W),
+      left: this.game.input.keyboard.addKey(Phaser.Keyboard.A),
+      down: this.game.input.keyboard.addKey(Phaser.Keyboard.S),
+      right: this.game.input.keyboard.addKey(Phaser.Keyboard.D),
+    };
 
     this.sprite.body.onBeginContact.add(contact, this);
     this.game.input.addMoveCallback(this.moveReticle, this);
@@ -104,9 +110,9 @@ export class Player {
 
   playerControls () {
     // Keyboard controls
-    if (this.keys.left.isDown) {
+    if (this.keys.left.isDown || this.wasd.left.isDown) {
       this.move.left();
-    } else if (this.keys.right.isDown) {
+    } else if (this.keys.right.isDown || this.wasd.right.isDown) {
       this.move.right();
     }  else {
       this.move.idle();
