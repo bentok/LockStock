@@ -33,12 +33,12 @@ export class Weapon extends Phaser.State {
         let projectiles =  [];
         for (let i = 0; i < this.numPellets; i++) {
           projectiles.push(this.projectiles.getFirstDead());
-          projectiles[i].reset(this.character.sprite.x / 2, this.character.sprite.y / 2);
+          projectiles[i].reset(this.character.sprite.x, this.character.sprite.y);
           this.discharge(1); //number of shells fired per shot
           const dest = {
             projectile: projectiles[i],
-            x: this.calculateTrajectory({ i, coordinate: this.character.reticle.body.x / 2 }),
-            y: this.calculateTrajectory({ i, coordinate: this.character.reticle.body.y / 2 }),
+            x: this.calculateTrajectory({ i, coordinate: this.character.reticle.body.x }),
+            y: this.calculateTrajectory({ i, coordinate: this.character.reticle.body.y }),
             velocity: this.velocity
           }
           this.game.physics.arcade.moveToXY(dest.projectile, dest.x, dest.y, dest.velocity);
