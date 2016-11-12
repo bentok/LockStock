@@ -3,7 +3,7 @@ import { Player } from '../player/player';
 import { Map1Json } from '../maps/Level1/map';
 import { Sprites } from '../sprites/sprites';
 
-const LAND_SCALE = 0.2;
+export const LAND_SCALE = 0.2;
 
 export class World {
 
@@ -29,7 +29,13 @@ export class World {
   update () {
     this.player.update();
     if ( this.gravityTimer < this.game.time.now ) {
-      this.game.physics.p2.gravity.y = this.game.physics.p2.gravity.y === 0 ? 400 : 0;
+      if ( this.game.physics.p2.gravity.y === 0 ) {
+        this.game.physics.p2.gravity.y = 400;
+        this.game.stage.backgroundColor = '#2d2d5d';
+      } else {
+        this.game.physics.p2.gravity.y = 0;
+        this.game.stage.backgroundColor = '#2d2d2d';
+      }
       console.log(`Gravity Change!! -- new Value: ${ this.game.physics.p2.gravity.y }`);
       this.gravityTimer = this.game.time.now + 10000;
     }

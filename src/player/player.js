@@ -1,6 +1,10 @@
 import { game } from '../game';
 import { Move } from '../move/move';
 import { Weapon } from '../weapon/weapon';
+import { LAND_SCALE } from  '../world/world';
+
+const RETICLE_SCALE = 0.5; //always half of LAND_SCALE
+const PLAYER_SCALE = 3; // 4 times LAND_SCALE
 
 /**
  * Player
@@ -42,8 +46,8 @@ export class Player {
   render () {
     this.sprite = this.game.playerLayer.create(this.currentLocation.x, this.currentLocation.y, 'player');
     this.reticle = this.game.uiLayer.create(this.currentLocation.x, this.currentLocation.y, 'reticle');
-    this.reticle.scale.setTo(0.4, 0.4);
-    this.sprite.scale.setTo(2, 2);
+    this.reticle.scale.setTo(RETICLE_SCALE * LAND_SCALE, RETICLE_SCALE * LAND_SCALE);
+    this.sprite.scale.setTo(PLAYER_SCALE * LAND_SCALE, PLAYER_SCALE * LAND_SCALE);
 
     // Applies p2 physics to player, and collision with world bounds
     this.game.physics.p2.enable(this.game.playerLayer, false, true);
