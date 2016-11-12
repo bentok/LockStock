@@ -1,7 +1,11 @@
+import { World } from './world/world';
+
 /**
  * Bootstraps the game and execute Phaser lifecycle hooks
  */
 export const game = new Phaser.Game(window.innerWidth, window.innerHeight, Phaser.AUTO, '', { preload, create, update });
+
+let world;
 
 /**
  * preload
@@ -22,9 +26,11 @@ function create () {
   game.physics.p2.setImpactEvents(true);
 
   game.input.mouse.capture = true;
+
+  world = new World();
 }
 
-/**ß
+/**
  * update
  */
 function update () {
