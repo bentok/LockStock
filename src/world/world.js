@@ -85,9 +85,31 @@ export class World {
 
   gravityCycle () {
     if ( this.gravityTimer < this.game.time.now ) {
-      if ( this.game.physics.p2.gravity.y === 0 ) {
+      if ( this.game.physics.p2.gravity.y !== 400 || this.game.physics.p2.gravity.x !== 0 ) {
         this.game.physics.p2.gravity.y = 400;
+        this.game.physics.p2.gravity.x = 0;
       }
+    }
+  }
+
+  changeGravityDirection(newDirection) {
+    this.gravityTimer = this.game.time.now + 5000;
+    switch ( newDirection ) {
+      case 'up' :
+        this.game.physics.p2.gravity.y = -400;
+        this.game.physics.p2.gravity.x = 0;
+        break;
+      case 'right' :
+        this.game.physics.p2.gravity.y = 0;
+        this.game.physics.p2.gravity.x = 400;
+        break;
+      case 'left' :
+        this.game.physics.p2.gravity.y = 0;
+        this.game.physics.p2.gravity.x = -400;
+        break;
+      default :
+        this.game.physics.p2.gravity.y = 400;
+        this.game.physics.p2.gravity.x = 0;
     }
   }
 
