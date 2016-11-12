@@ -89,7 +89,7 @@ export class Player {
     }
 
     if (this.shootButton.isDown ) {
-      this.weapon.projectile.fire();
+      let shot = this.weapon.fire();
       this.calculateKickback();
     }
 
@@ -160,6 +160,8 @@ export class Player {
   subtractHealth (amount) {
     this.health = this.health - amount >= 0 ? this.health -= amount : 0;
     console.log(this.health);
+    // death animation
+    // respawn?
   }
 
   /**

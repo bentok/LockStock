@@ -19,8 +19,8 @@ export class Move {
   }
 
   idle () {
-    this.character.sprite.body.velocity.x = 0;
-    this.character.sprite.body.velocity.y = 0;
+    // this.character.sprite.body.velocity.x = 0;
+    // this.character.sprite.body.velocity.y = 0;
   }
 
 }
