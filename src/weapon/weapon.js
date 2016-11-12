@@ -37,7 +37,7 @@ export class Weapon extends Phaser.State {
           projectiles.push(this.game.projectilesLayer.getFirstDead());
           projectiles[i].reset(this.character.sprite.x + aimOffset, this.character.sprite.y);
           // Number of shells fired per shot
-          this.discharge(this.bulletsPerShot); 
+          this.discharge(this.bulletsPerShot);
           const dest = {
             projectile: projectiles[i],
             x: this.calculateTrajectory({ i, coordinate: this.character.reticle.body.x }),
