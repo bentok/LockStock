@@ -10,7 +10,7 @@ gulp.task('watch', () => {
 });
 
 // Copy images to public
-gulp.task('copyImages', () => gulp.src('src/images/*.*')
+gulp.task('copyImages', () => gulp.src('src/images/**/*.*')
   .pipe(gulp.dest('public/images')));
 
   // Copy images to public
