@@ -91,6 +91,8 @@ export class Player {
         if (body.sprite.key === 'map' ) {
           this.standing = true;
         }
+      } else {
+        this.death.subtractLife();
       }
       this.standing = true;
     }
