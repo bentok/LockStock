@@ -4,7 +4,7 @@ import { Sprites } from './sprites/sprites'
 /**
  * Bootstraps the game and execute Phaser lifecycle hooks
  */
-export const game = new Phaser.Game(4900, 3360, Phaser.AUTO, '', { preload, create, update });
+export const game = new Phaser.Game(4900 * World.LAND_SCALE, 3360 * World.LAND_SCALE, Phaser.AUTO, '', { preload, create, update, render });
 
 let world;
 
@@ -12,6 +12,7 @@ let world;
  * preload
  */
 function preload () {
+  game.time.advancedTiming = true; //Allows for FPS Meter
   game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
   game.scale.pageAlignHorizontally = true;
   game.scale.pageAlignVertically = true;
@@ -47,4 +48,11 @@ function create () {
  */
 function update () {
   world.update();
+}
+
+/**
+ * Adds fps meter to top left
+ */
+function render () {
+  game.debug.text(game.time.fps, 2, 14, '#00ff00');
 }

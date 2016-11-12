@@ -3,7 +3,13 @@ import { Player } from '../player/player';
 import { Map1Json } from '../maps/Level1/map';
 import { Sprites } from '../sprites/sprites';
 
+const LAND_SCALE = 0.2;
+
 export class World {
+
+  static get LAND_SCALE () {
+    return LAND_SCALE;
+  }
   constructor () {
     this.game = game;
     this.player = new Player();
@@ -40,11 +46,12 @@ export class World {
       for (let x = 0; x < mapWidth; ++x) {
         const currentTileArrayPosition = mapWidth * y + x;
         const currentTileType = mapTilesArray[currentTileArrayPosition];
-        const currentTileX = x * 70;
-        const currentTileY = y * 70;
+        const currentTileX = x * (tileWidth * LAND_SCALE);
+        const currentTileY = y * (tileHeight * LAND_SCALE);
         if (currentTileType !== 0 && Sprites.landSpriteTransformedValues.has(currentTileType)) {
           const newTile = this.game.landLayer.create(currentTileX, currentTileY, Sprites.landSpriteTransformedValues.get(currentTileType));
           this.game.physics.p2.enable(newTile, false);
+          newTile.scale.setTo(LAND_SCALE, LAND_SCALE);
           newTile.body.kinematic = true;
         } // Else it's an empty space
       }
