@@ -90,7 +90,9 @@ export class Player {
 
     if (this.shootButton.isDown ) {
       let shot = this.weapon.fire();
-      this.calculateKickback();
+      if ( shot ) {
+        this.calculateKickback();
+      }
     }
 
     if (this.jumpButton.isDown ) {

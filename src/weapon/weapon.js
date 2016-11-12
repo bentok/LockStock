@@ -14,7 +14,7 @@ export class Weapon extends Phaser.State {
     this.capacity = 2;
     this.currentCapacity = this.capacity; //spawn with full clip
     this.nextFire = 0;
-    this.reloadDelay = 200;
+    this.reloadDelay = 1000;
   }
 
   render () {
@@ -36,8 +36,9 @@ export class Weapon extends Phaser.State {
         projectile.reset(this.character.sprite.x, this.character.sprite.y);
         this.discharge(1); //number of shells fired per shot
         this.game.physics.arcade.moveToPointer(projectile, this.velocity);
-
+        return true;
     }
+    return false;
   }
 
   discharge (shells) {
