@@ -1,4 +1,5 @@
 import { game } from '../game';
+import { Move } from '../move/move';
 
 /**
  * Player
@@ -13,6 +14,7 @@ export class Player {
    */
   constructor ({ health = 100, maxHealth = 100, speed = 25 } = {}) {
     this.game = game;
+    this.move = new Move({ character: this });
     this.health = health;
     this.maxHealth = maxHealth;
     this.speed = speed;
@@ -66,13 +68,11 @@ export class Player {
   update () {
     // Keyboard controls
     if (this.keys.left.isDown) {
-      console.log("run left");
+      this.move.left();
     } else if (this.keys.right.isDown) {
-      console.log("run right");
-    } else if (this.direction === 'left') {
-      console.log("idle left");
-    } else {
-      console.log("idle right");
+      this.move.right();
+    }  else {
+      this.move.idle();
     }
 
     if (this.shootButton.isDown ) {

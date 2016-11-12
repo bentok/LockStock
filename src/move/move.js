@@ -2,23 +2,25 @@ import { game } from '../game';
 
 export class Move {
 
-  constructor ({ character } = {}) {
+  constructor ({ character = {} } = {}) {
+    console.log(character);
     this.game = game;
     this.character = character;
   }
 
   left () {
-    this.character.sprite.body.velocity.set(this.character.speed * -20, 0);
+    this.character.sprite.body.velocity.x = this.character.speed * -20;
     this.character.direction = 'left';
   }
 
   right () {
-    this.character.sprite.body.velocity.set(this.character.speed * 20, 0);
+    this.character.sprite.body.velocity.x = this.character.speed * 20;
     this.character.direction = 'right';
   }
 
   idle () {
-    this.character.sprite.body.velocity.set(0, 0);
+    this.character.sprite.body.velocity.x = 0;
+    this.character.sprite.body.velocity.y = 0;
   }
 
 }
