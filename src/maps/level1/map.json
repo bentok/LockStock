@@ -23,7 +23,7 @@
     {  
       "columns":12,
       "firstgid":1,
-      "image":"./level_tile_spritesheet.png",
+      "image":"../images/tile_sprites.png",
       "imageheight":936,
       "imagewidth":914,
       "margin":0,

@@ -16,6 +16,10 @@ function preload () {
   game.scale.pageAlignVertically = true;
 
   game.stage.backgroundColor = '#2d2d2d';
+
+  game.load.tilemap('level1', 'maps/Level1/map.json', null, Phaser.Tilemap.TILED_JSON);
+
+  game.load.image('Tiles', 'images/tile_sprites.png');
 }
 /**
  * create
