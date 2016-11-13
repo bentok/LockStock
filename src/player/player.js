@@ -45,7 +45,7 @@ export class Player {
     this.jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.shootButton = game.input.activePointer.leftButton;
     this.peerConnection = new PeerConnection(new Peer({ key: this.game.peerApiKey }), this);
-    this.lives = 1;
+    this.lives = 5;
     this.spawnPoint = this.host ? SpawnPoints.getLeftSpawnPoint() : SpawnPoints.getRightSpawnPoint();
     this.spawnSettings = {
       hasAutoFire,
