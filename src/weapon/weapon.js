@@ -46,14 +46,6 @@ export class Weapon extends Phaser.State {
             velocity: this.velocity
           }
           this.game.physics.arcade.moveToXY(dest.projectile, dest.x, dest.y, dest.velocity);
-          console.log(projectiles[i]);
-          projectiles[i].body.onBeginContact.add(contact, projectiles[i]);
-
-          function contact (body) {
-            if (body && body.sprite.key !== 'bullet' ) {
-              projectiles[i].destroy();
-            }
-          }
         }
       }
       return true;
