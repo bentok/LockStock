@@ -47,7 +47,7 @@ function preload () {
  * create
  */
 function create () {
-  game.music = game.add.audio('music');
+  game.music = game.add.audio('music', 1, true);
   game.music.play();
   const backdrop = game.add.tileSprite(0, 0, 1024, 1024, 'backdrop');
   game.backdropLayer.add(backdrop);
@@ -55,6 +55,20 @@ function create () {
   game.physics.startSystem(Phaser.Physics.P2JS);
   game.physics.p2.setImpactEvents(true);
 
+  const muteStyles = {
+    fill: '#00ff00',
+    fontSize: '14px',
+    font: 'Courier'
+  };
+  const muteText = game.add.text(WORLD_WIDTH * LAND_SCALE - 3, 40, 'M - Toggle Mute', muteStyles);
+
+  muteText.anchor.x = 1;
+  muteText.anchor.y = 1;
+
+  const mute = game.input.keyboard.addKey(Phaser.Keyboard.M);
+  mute.onDown.add(() => {
+    game.music.mute = !game.music.mute;
+  }, this);
   game.input.mouse.capture = true;
 
   world.setup();

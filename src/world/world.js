@@ -43,7 +43,7 @@ export class World {
       this.user.connect(idMatches[1]);
     }
     this.user.id.then((id) => {
-      const userIdText = this.game.add.text(WORLD_WIDTH * LAND_SCALE - 3, 24, id, userIdStyles);
+      const userIdText = this.game.add.text(WORLD_WIDTH * LAND_SCALE - 3, 24, `User token - ${id}`, userIdStyles);
       userIdText.anchor.x = 1;
       userIdText.anchor.y = 1;
       if (!idMatches) {
