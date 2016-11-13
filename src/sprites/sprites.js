@@ -53,6 +53,7 @@ export class Sprites {
     this.game.load.image('pinkPlayerInjured', '/images/player_sprites/p3_injured.png');
 
     // Load images - arguments(name, path)
+    this.game.load.spritesheet('waters', '/images/waters.png', 32, 400, 32);
     this.game.load.image('reticle', './images/reticle.png');
     this.game.load.image('player', './images/character.png');
     this.game.load.image('bullet', './images/bullet.png');
