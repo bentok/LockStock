@@ -47,7 +47,8 @@ function preload () {
  * create
  */
 function create () {
-  game.backdropLayer.create(0, 0, 'backdrop');
+  const backdrop = game.add.tileSprite(0, 0, 1024, 1024, 'backdrop');
+  game.backdropLayer.add(backdrop);
   game.physics.startSystem(Phaser.Physics.ARCADE);
   game.physics.startSystem(Phaser.Physics.P2JS);
   game.physics.p2.setImpactEvents(true);

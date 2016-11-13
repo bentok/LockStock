@@ -20,6 +20,8 @@ export class World {
     const idRegex = /id=(\w+)/;
     const idMatches = idRegex.exec(urlQuery);
 
+    this.gravity = { x: 0, y: 0 };
+
     this.game = game;
     this.healthBar = new HealthBar();
     this.user = new Player({
@@ -130,6 +132,10 @@ export class World {
       powerUp.render();
     }
     this.gravityCycle();
+    if (game.backdropLayer && game.backdropLayer.children[0] && game.backdropLayer.children[0].tilePosition) {
+      game.backdropLayer.children[0].tilePosition.x += 5 * this.gravity.x;
+      game.backdropLayer.children[0].tilePosition.y += 5 * this.gravity.y;
+    }
   }
 
   gravityCycle () {
@@ -152,6 +158,24 @@ export class World {
       'antiGravity': { x: 0, y: 5 }
     };
 
+    if (direction !== 'antiGravity') {
+      if (gravityValues[direction].x === 0 ) {
+        this.gravity.x = 0;
+      } else {
+        this.gravity.x = gravityValues[direction].x > 0 ? 1 : -1;
+      }
+      if (gravityValues[direction].y === 0 ) {
+        this.gravity.y = 0;
+      } else {
+        this.gravity.y = gravityValues[direction].y > 0 ? 0 : -1;
+      }
+    } else {
+      this.gravity = {
+        x: (Math.floor(Math.random() * 1) + 1) / 25 * (Math.floor(Math.random() * 2) === 0),
+        y: (Math.floor(Math.random() * 1) + 1) / 25 * (Math.floor(Math.random() * 2) === 0)
+      };
+    }
+
     this.game.physics.p2.gravity.x = gravityValues[direction].x;
     this.game.physics.p2.gravity.y = gravityValues[direction].y;
   }
@@ -161,7 +185,7 @@ export class World {
 
     this.star.animations.add('waves', [0, 1, 2, 3, 4, 3, 2, 1]);
 
-    this.star.animations.play(`waves`, 8, true);
+    this.star.animations.play('waves', 8, true);
   }
 
   buildMap () {
