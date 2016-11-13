@@ -59,12 +59,26 @@ export class World {
 
     this.gravityPads.push( new GravityPad({
       x: 230,
-      y: 190
+      y: 188,
+      type: 'antiGravity'
     }) );
 
     this.gravityPads.push( new GravityPad({
-      x: 800,
-      y: 231
+      x: 819,
+      y: 235,
+      type: 'left'
+    }) );
+
+    this.gravityPads.push( new GravityPad({
+      x: 290,
+      y: 380,
+      type: 'right'
+    }) );
+
+    this.gravityPads.push( new GravityPad({
+      x: 520,
+      y: 414,
+      type: 'up'
     }) );
 
     for (const pad of this.gravityPads) {
@@ -108,6 +122,10 @@ export class World {
       case 'left' :
         this.game.physics.p2.gravity.y = 0;
         this.game.physics.p2.gravity.x = -400;
+        break;
+      case 'antiGravity' :
+        this.game.physics.p2.gravity.y = 0;
+        this.game.physics.p2.gravity.x = 0;
         break;
       default :
         this.game.physics.p2.gravity.y = 400;
