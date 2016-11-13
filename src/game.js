@@ -17,6 +17,7 @@ function preload () {
   game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
   game.scale.pageAlignHorizontally = true;
   game.scale.pageAlignVertically = true;
+  game.stage.disableVisibilityChange = true;
 
   //game.input.onDown.add(() => game.scale.startFullScreen(false), this);
 
