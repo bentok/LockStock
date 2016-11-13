@@ -24,7 +24,7 @@ export class HealthBar {
     this.containerSprite = this.game.uiLayer.create(20, 20, healthBarContainer);
     this.healthSprite = this.game.uiLayer.create(22, 22, healthBar);
 
-    this.lives = this.game.add.text(this.game.world.centerX, this.game.world.centerY, `Lives: ${ this.character.lives }`, { font: '16px Arial', fill: '#fff' });
+    this.lives = this.game.add.text(150, 32, `Lives: ${ this.character.lives }`, { font: '12px Arial', fill: '#000000' });
   }
 
   update () {
@@ -33,6 +33,13 @@ export class HealthBar {
      * Tween method arguments: (spriteToTween)
      * To method argumetns: (proptertiesToTween, durationInMilliSeconds, TransitionType, autoStart)
      */
+    if ( this.character.lives > 0 ) {
+      this.lives.fill = '#000000';
+      this.lives.text = `Lives: ${ this.character.lives }`;
+    } else {
+      this.lives.text = 'Perdedor!';
+      this.lives.fill = '#9a3334';
+    }
     this.game.add.tween(this.healthSprite).to({ width: this.character.health / this.character.maxHealth * this.healthBarWidth }, 200, Phaser.Easing.Linear.None, true);
   }
 
