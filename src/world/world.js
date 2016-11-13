@@ -34,7 +34,7 @@ export class World {
     const idRegex = /id=(\w+)/;
     const idMatches = idRegex.exec(urlQuery);
     if (idMatches) {
-      this.user.spawnPoint.x = 750;
+      this.user.spawnLocation.x = 750;
       this.user.connect(idMatches[1]);
     }
     this.user.id.then((id) => {
@@ -102,6 +102,9 @@ export class World {
   update () {
     for (const player of this.players) {
       player.update();
+    }
+    for (const powerUp of this.powerUps) {
+      powerUp.render();
     }
     this.gravityCycle();
   }

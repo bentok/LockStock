@@ -15,6 +15,8 @@ export class PowerUp {
       y
     };
     this.type = type;
+    this.reActivate = 5000;
+    this.fadeTimer = 0;
   }
 
 /**
@@ -34,8 +36,28 @@ export class PowerUp {
     this.powerUp.body.onBeginContact.add(contact, this);
 
     function contact (body, bodyB, shapeA, shapeB, equation) {
-      if ( body ) {
-        // console.log(body);
+      if( body ){
+        if ( (body.sprite.key === 'greenPlayer' || body.sprite.key === 'bluePlayer' || body.sprite.key === 'pinkPlayer') && this.fadeTimer <= this.game.time.now ) {
+          this.fadeTimer = this.game.time.now + this.reActivate;
+        }
+      }
+    }
+  }
+
+  render() {
+    if( this.fadeTimer > this.game.time.now ){
+      this.powerUp.body.active = false;
+      if( this.powerUp.alpha >= 0.2 ) {
+        this.powerUp.alpha -= 0.1;
+        this.powerUp.scale.x = this.powerUp.scale.x > 0 ? this.powerUp.scale.x - 0.1 : 0;
+        this.powerUp.scale.y = this.powerUp.scale.y > 0 ? this.powerUp.scale.y - 0.1 : 0;
+      }
+    } else {
+      this.powerUp.body.active = true;
+      if( this.powerUp.alpha < 1 ) {
+        this.powerUp.scale.x = this.powerUp.scale.x < POWERUP_SCALE ? this.powerUp.scale.x + 0.1 : POWERUP_SCALE;
+        this.powerUp.scale.y = this.powerUp.scale.y < POWERUP_SCALE ? this.powerUp.scale.y + 0.1 : POWERUP_SCALE;
+        this.powerUp.alpha += 0.1;
       }
     }
   }

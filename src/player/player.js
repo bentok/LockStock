@@ -100,6 +100,7 @@ export class Player {
     };
 
     this.sprite.body.onBeginContact.add(contact, this);
+
     this.game.input.addMoveCallback(this.moveReticle, this);
 
     function contact (body, bodyB, shapeA, shapeB, equation) {
@@ -113,15 +114,17 @@ export class Player {
         if (body.sprite && body.sprite.key === 'map' ) {
           this.standing = true;
         }
-        if (body.sprite.key === 'autofire-power-up' ) {
-          this.hasAutoFire = true;
+        if (body.sprite && body.sprite.key === 'autofire-power-up' ) {
+          if ( body.active ) {
+            this.hasAutoFire = true;
+          }
         }
       } else {
         this.sprite.frame = 7;
         this.subtractHealth(10);
       }
       this.standing = true;
-    } 
+    }
 
     this.sprite.body.fixedRotation = true;
     this.sprite.body.collideWorldBounds = true;
