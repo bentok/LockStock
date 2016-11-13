@@ -53,15 +53,17 @@ export class GravityPad {
 
     function contact (body, bodyB, shapeA, shapeB, equation) {
       if ( body ) {
-        world.changeGravityDirection(this.type);
-        if (world.user.peerConnection && world.user.peerConnection.connection) {
-          world.user.peerConnection.connection.send({
-            type: 'GRAVITY_BUTTON_PRESSED',
-            key: this.key
-          });
+        if( body.sprite.key === 'greenPlayer' || body.sprite.key === 'bluePlayer' || body.sprite.key === 'pinkPlayer' ){
+          world.changeGravityDirection(this.type);
+          if (world.user.peerConnection && world.user.peerConnection.connection) {
+            world.user.peerConnection.connection.send({
+              type: 'GRAVITY_BUTTON_PRESSED',
+              key: this.key
+            });
+          }
+          this.pressed = true;
+          this.emitter.on = false;
         }
-        this.pressed = true;
-        this.emitter.on = false;
       }
     }
   }
