@@ -6,7 +6,7 @@ export class Weapon extends Phaser.State {
     super();
     this.game = game;
     this.character = character;
-    this.velocity = 400;
+    this.velocity = 1000;
     this.rate = 60;
     this.spread = 10;
     this.bulletsPerShot = 5;
@@ -14,7 +14,7 @@ export class Weapon extends Phaser.State {
     this.capacity = 2;
     this.currentCapacity = this.capacity; //spawn with full clip
     this.nextFire = 0;
-    this.reloadDelay = 1000;
+    this.reloadDelay = 400;
   }
 
   render () {

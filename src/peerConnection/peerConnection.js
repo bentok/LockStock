@@ -29,7 +29,7 @@ export class PeerConnection {
   }
 
   send (payload) {
-    this.connection.send(payload);
+    // this.connection.send(payload);
   }
 
 }
@@ -57,6 +57,6 @@ class Connection {
   }
 
   send (payload) {
-    this.connection.send(payload);
+    // this.connection.send(payload);
   }
 }

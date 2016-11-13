@@ -53,7 +53,8 @@ export class GravityPad {
 
     function contact (body, bodyB, shapeA, shapeB, equation) {
       if ( body ) {
-        world.removeGravity();
+        world.changeGravityDirection('up');
+
       }
     }
 

@@ -8,6 +8,8 @@ import { LAND_SCALE, WORLD_WIDTH, WORLD_HEIGHT } from  '../world/world';
 const RETICLE_SCALE = 0.5; // always half of LAND_SCALE
 const PLAYER_SCALE = 3; // 4 times LAND_SCALE
 
+const PLAYER_MAX_HEALTH = 100;
+
 /**
  * Player
  * @class Player
@@ -21,7 +23,7 @@ export class Player {
    * @param {Number} x X coordinate of spawn location. Defaults to center of world.
    * @param {Number} Y Y coordinate of spawn location. Defaults to center of world.
    */
-  constructor ({ health = 100, maxHealth = 100, speed = 15, x = WORLD_WIDTH * LAND_SCALE / 2, y = WORLD_HEIGHT * LAND_SCALE / 2 } = {}) {
+  constructor ({ health = 100, maxHealth = 100, speed = 15, hasAutoFire = false, x = WORLD_WIDTH * LAND_SCALE / 2, y = WORLD_HEIGHT * LAND_SCALE / 2 } = {}) {
     this.game = game;
     this.death = new Death({ character: this });
     this.move = new Move({ character: this });
@@ -34,17 +36,30 @@ export class Player {
     this.aimDirection = 'right';
     this.jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.shootButton = game.input.activePointer.leftButton;
+    this.peerConnection = new PeerConnection(new Peer({ key: this.game.peerApiKey }), this);
+    this.lives = 1;
+    this.spawnSettings = {
+      hasAutoFire,
+      health,
+      speed,
+      x,
+      y
+    };
 
     /**
      * Character stats can have modifiers
      */
-    this.fallVelocity = 0;
-    this.hasAutoFire = false;
+    this.hasAutoFire = hasAutoFire;
     this.health = health;
-    this.maxHealth = maxHealth;
     this.speed = speed;
-    this.peerConnection = new PeerConnection(new Peer({ key: this.game.peerApiKey }), this);
-    this.lives = 1;
+  }
+
+  respawn() {
+    this.hasAutoFire = this.spawnSettings.hasAutoFire;
+    this.health = this.spawnSettings.health;
+    this.speed = this.spawnSettings.speed;
+    this.sprite.body.x = this.spawnSettings.x;
+    this.sprite.body.y = this.spawnSettings.y;
   }
 
 /**
@@ -83,6 +98,8 @@ export class Player {
         if (body.sprite.key === 'map' ) {
           this.standing = true;
         }
+      } else {
+        this.death.subtractLife();
       }
       this.standing = true;
     }
