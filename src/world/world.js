@@ -3,6 +3,7 @@ import { Player, Enemy } from '../player';
 import { Map1Json } from '../maps/Level1/map';
 import { Sprites } from '../sprites/sprites';
 import { GravityPad } from '../gravityPad/gravityPad';
+import { PowerUp } from '../powerUp/powerUp';
 
 export const LAND_SCALE = 0.2;
 export const WORLD_WIDTH = 4900;
@@ -46,6 +47,7 @@ export class World {
     });
 
     this.gravityPads = [];
+    this.powerUps = [];
   }
 
   setup () {
@@ -83,6 +85,16 @@ export class World {
 
     for (const pad of this.gravityPads) {
       pad.render();
+    }
+
+    this.powerUps.push( new PowerUp({
+      x: 500,
+      y: 320,
+      type: 'autofire'
+    }) );
+
+    for (const powerUp of this.powerUps) {
+      powerUp.setup();
     }
 
   }

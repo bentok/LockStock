@@ -32,7 +32,7 @@ export class Player {
    * @param {Number} x X coordinate of spawn location. Defaults to center of world.
    * @param {Number} Y Y coordinate of spawn location. Defaults to center of world.
    */
-  constructor ({ health = 100, maxHealth = 100, speed = 15, hasAutoFire = false } = {}) {
+  constructor ({ health = 100, maxHealth = 100, speed = 10, hasAutoFire = false } = {}) {
     this.playerColor = PLAYER_COLORS[0];
     this.game = game;
     this.death = new Death({ character: this });
@@ -112,6 +112,9 @@ export class Player {
         }
         if (body.sprite && body.sprite.key === 'map' ) {
           this.standing = true;
+        }
+        if (body.sprite.key === 'autofire-power-up' ) {
+          this.hasAutoFire = true;
         }
       } else {
         this.sprite.frame = 7;
