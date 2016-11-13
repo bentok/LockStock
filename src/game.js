@@ -19,8 +19,8 @@ function preload () {
   game.scale.pageAlignVertically = true;
   game.stage.disableVisibilityChange = true;
 
-  // game.input.onDown.add(() => game.scale.startFullScreen(false), this);
 
+  game.load.audio('music', '/music/song1.mp3');
   game.load.image('backdrop', `images/world_backgrounds/${Math.floor(Math.random() * 8) + 1}.jpg`);
 
   game.backdropLayer = game.add.group();
@@ -47,6 +47,8 @@ function preload () {
  * create
  */
 function create () {
+  game.music = game.add.audio('music');
+  game.music.play();
   const backdrop = game.add.tileSprite(0, 0, 1024, 1024, 'backdrop');
   game.backdropLayer.add(backdrop);
   game.physics.startSystem(Phaser.Physics.ARCADE);

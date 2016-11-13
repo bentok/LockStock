@@ -3,7 +3,7 @@ const browserify = require('browserify');
 const source = require('vinyl-source-stream');
 
 gulp.task('default', ['build', 'watch']);
-gulp.task('build', ['copyImages', 'copyMaps', 'copyVendorAssets', 'browserify']);
+gulp.task('build', ['copyImages', 'copyMusic', 'copyMaps', 'copyVendorAssets', 'browserify']);
 
 gulp.task('watch', () => {
   gulp.watch('src/**/*.js', ['browserify']);
@@ -12,6 +12,10 @@ gulp.task('watch', () => {
 // Copy images to public
 gulp.task('copyImages', () => gulp.src('src/images/**/*.*')
   .pipe(gulp.dest('public/images')));
+
+// Copy images to public
+gulp.task('copyMusic', () => gulp.src('src/music/**/*.*')
+  .pipe(gulp.dest('public/music')));
 
   // Copy images to public
 gulp.task('copyMaps', () => gulp.src('src/maps/**/*.*')
@@ -33,8 +37,7 @@ gulp.task('browserify', () => {
 });
 
 gulp.task('copyVendorAssets', () => {
-   return gulp.src([
-     'node_modules/phaser/build/phaser.min.js',
-   ])
-   .pipe(gulp.dest('public/vendor'));
+  return gulp.src([
+    'node_modules/phaser/build/phaser.min.js',
+  ]).pipe(gulp.dest('public/vendor'));
 });

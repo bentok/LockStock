@@ -20,7 +20,7 @@ export class World {
     const idRegex = /id=(\w+)/;
     const idMatches = idRegex.exec(urlQuery);
 
-    this.gravity = { x: 0, y: 0 };
+    this.gravity = { x: 0, y: 0, antiGravity: false };
 
     this.game = game;
     this.healthBar = new HealthBar();
@@ -53,6 +53,15 @@ export class World {
 
     this.gravityPads = [];
     this.powerUps = [];
+    const interval =  setInterval(() => {
+      if (game.music._sound) {
+        if (this.gravity.antiGravity && game.music._sound.playbackRate.value > 0.5) {
+          game.music._sound.playbackRate.value -= 0.1;
+        } else if (game.music._sound.playbackRate.value < 1) {
+          game.music._sound.playbackRate.value += 0.1;
+        }
+      }
+    }, 500);
   }
 
   setup () {
@@ -159,6 +168,7 @@ export class World {
     };
 
     if (direction !== 'antiGravity') {
+      this.gravity.antiGravity = false;
       if (gravityValues[direction].x === 0 ) {
         this.gravity.x = 0;
       } else {
@@ -170,10 +180,9 @@ export class World {
         this.gravity.y = gravityValues[direction].y > 0 ? 0 : -1;
       }
     } else {
-      this.gravity = {
-        x: (Math.floor(Math.random() * 1) + 1) / 25 * (Math.floor(Math.random() * 2) === 0),
-        y: (Math.floor(Math.random() * 1) + 1) / 25 * (Math.floor(Math.random() * 2) === 0)
-      };
+      this.gravity.antiGravity = true;
+      this.gravity.x = (Math.floor(Math.random() * 1) + 1) / 25 * (Math.floor(Math.random() * 2) === 0);
+      this.gravity.y = (Math.floor(Math.random() * 1) + 1) / 25 * (Math.floor(Math.random() * 2) === 0);
     }
 
     this.game.physics.p2.gravity.x = gravityValues[direction].x;
