@@ -14,7 +14,7 @@ export class Weapon extends Phaser.State {
     this.capacity = 2;
     this.currentCapacity = this.capacity; //spawn with full clip
     this.nextFire = 0;
-    this.reloadDelay = 1000;
+    this.reloadDelay = 400;
   }
 
   render () {
