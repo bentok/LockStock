@@ -21,7 +21,7 @@ export class Weapon extends Phaser.State {
     this.game.projectilesLayer = this.game.add.group();
     this.game.projectilesLayer.enableBody = true;
     this.game.projectilesLayer.physicsBodyType = Phaser.Physics.P2;
-    this.game.projectilesLayer.createMultiple(200, 'bullet');
+    this.game.projectilesLayer.createMultiple(1000, 'bullet');
     this.game.projectilesLayer.setAll('checkWorldBounds', true);
     this.game.projectilesLayer.setAll('outOfBoundsKill', true);
     this.game.physics.p2.enable(this.game.projectilesLayer, false, true);
@@ -90,32 +90,32 @@ export class Weapon extends Phaser.State {
     return this.rate;
   }
 
-  set bulletSpread (newspread = this.spread) {
-    this.spread = newspread;
+  set bulletSpread (newSpread = this.spread) {
+    this.spread = newSpread;
   }
 
   get bulletSpread () {
     return this.spread;
   }
 
-  set bulletNumBullets (newnumBullets = this.numBullets) {
-    this.numBullets = newnumBullets;
+  set numBullets (newnumBullets = this.numBullets) {
+    this.numBullets = newNumBullets;
   }
 
-  get bulletNumBullets () {
+  get numBullets () {
     return this.numBullets;
   }
 
-  set bulletDamage (newdamage = this.damage) {
-    this.damage = newdamage;
+  set bulletDamage (newDamage = this.damage) {
+    this.damage = newDamage;
   }
 
   get bulletDamage () {
     return this.damage;
   }
 
-  set bulletCapacity (newcapacity = this.capacity) {
-    this.capacity = newcapacity;
+  set bulletCapacity (newCapacity = this.capacity) {
+    this.capacity = newCapacity;
   }
 
   get bulletCapacity () {

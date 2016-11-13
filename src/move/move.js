@@ -28,7 +28,7 @@ export class Move {
   }
 
   airborne () {
-    this.character.sprite.frame = 9;
+    this.character.sprite.play('jump');
   }
 
   updatePeer () {
@@ -38,7 +38,7 @@ export class Move {
   }
 
   idle () {
-    this.character.sprite.frame = 5;
+    this.character.sprite.play('idle');
   }
 
   canJump () {
