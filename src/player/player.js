@@ -183,22 +183,23 @@ export class Player {
     }
     this.sprite.position.x = position.x;
     this.sprite.position.y = position.y;
-    // if (velocity) {
-    //  this.sprite.body.velocity.x = velocity.x;
-    //  this.sprite.body.velocity.y = velocity.y;
-    //  this.sprite.body.velocity.mx = velocity.mx;
-    //  this.sprite.body.velocity.my = velocity.my;
-    // }
-    //
-
   }
 
   playerControls () {
     // Keyboard controls
+    const canJump = this.move.canJump();
     if (this.keys.left.isDown || this.wasd.left.isDown) {
-      this.move.left();
+      this.sprite.play('run');
+      // Only run if touching ground
+      if (canJump) {
+        this.move.left();
+      }
     } else if (this.keys.right.isDown || this.wasd.right.isDown) {
-      this.move.right();
+      this.sprite.play('run');
+      // Only run if touching ground
+      if (canJump) {
+        this.move.right();
+      }
     } else if (!this.move.canJump()) {
       this.move.airborne();
     }  else {
