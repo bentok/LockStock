@@ -3,6 +3,7 @@ import { Player, Enemy } from '../player';
 import { Map1Json } from '../maps/Level1/map';
 import { Sprites } from '../sprites/sprites';
 import { GravityPad } from '../gravityPad/gravityPad';
+import { PowerUp } from '../powerUp/powerUp';
 
 export const LAND_SCALE = 0.2;
 export const WORLD_WIDTH = 4900;
@@ -33,7 +34,7 @@ export class World {
     const idRegex = /id=(\w+)/;
     const idMatches = idRegex.exec(urlQuery);
     if (idMatches) {
-      this.user.spawnPoint.x = 750;
+      this.user.spawnLocation.x = 750;
       this.user.connect(idMatches[1]);
     }
     this.user.id.then((id) => {
@@ -46,6 +47,7 @@ export class World {
     });
 
     this.gravityPads = [];
+    this.powerUps = [];
   }
 
   setup () {
@@ -85,11 +87,24 @@ export class World {
       pad.render();
     }
 
+    this.powerUps.push( new PowerUp({
+      x: 500,
+      y: 320,
+      type: 'autofire'
+    }) );
+
+    for (const powerUp of this.powerUps) {
+      powerUp.setup();
+    }
+
   }
 
   update () {
     for (const player of this.players) {
       player.update();
+    }
+    for (const powerUp of this.powerUps) {
+      powerUp.render();
     }
     this.gravityCycle();
   }
