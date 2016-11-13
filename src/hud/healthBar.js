@@ -8,7 +8,6 @@ export class HealthBar {
     this.containerHeight = height;
     this.healthBarWidth = width - 4;
     this.healthBarHeight = height - 4;
-
   }
 
   render () {
@@ -24,6 +23,8 @@ export class HealthBar {
 
     this.containerSprite = this.game.uiLayer.create(20, 20, healthBarContainer);
     this.healthSprite = this.game.uiLayer.create(22, 22, healthBar);
+
+    this.lives = this.game.add.text(this.game.world.centerX, this.game.world.centerY, `Lives: ${ this.character.lives }`, { font: '16px Arial', fill: '#fff' });
   }
 
   update () {

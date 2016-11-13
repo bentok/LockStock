@@ -120,10 +120,12 @@ export class Player {
         if (body.sprite && body.sprite.key === 'power-up' ) {
           if ( body.active ) {
             let powerUpType = body.powerUpType;
-            this.peerConnection.send({
-              type: 'OPPONENT_POWER_UP',
-              powerUpType
-            });
+            if ( this.peerConnection && this.peerConnection.connection ) {
+              this.peerConnection.send({
+                type: 'OPPONENT_POWER_UP',
+                powerUpType
+              });
+            }
             this.addPowerUp(powerUpType);
           }
         }
