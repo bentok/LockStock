@@ -1,7 +1,7 @@
 import { game, world } from '../game';
 import { LAND_SCALE } from  '../world/world';
 
-const POWERUP_SCALE = 0.5;
+const POWERUP_SCALE = 0.4;
 /**
  * Power Up
  */
@@ -16,17 +16,30 @@ export class PowerUp {
     this.type = type;
     this.reActivate = 5000;
     this.fadeTimer = 0;
+
+    switch ( this.type ){
+      case 'autofire':
+        this.frame = 6;
+        break;
+      case 'dblshot':
+        this.frame = 11;
+        break;
+      default:
+        this.frame = 0;
+    }
   }
 
 /**
  * Render event in the Phaser cycle.
  */
   setup () {
-    this.powerUp = this.game.gravityPadsLayer.create(this.currentLocation.x, this.currentLocation.y, 'autofire-power-up', 6);
+    console.log(this.type);
+    this.powerUp = this.game.gravityPadsLayer.create(this.currentLocation.x, this.currentLocation.y, 'power-up', this.frame);
+
     this.powerUp.scale.setTo(POWERUP_SCALE, POWERUP_SCALE);
 
     this.game.physics.p2.enable(this.powerUp, false);
-
+    this.powerUp.body.powerUpType = this.type;
     this.powerUp.body.kinematic = true;
     this.powerUp.body.data.shapes[0].sensor = true;
     this.powerUp.anchor.x = 0.5;
