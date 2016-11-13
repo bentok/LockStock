@@ -57,13 +57,22 @@ export class Sprites {
     this.game.load.image('reticle', './images/reticle.png');
     this.game.load.image('player', './images/character.png');
     this.game.load.image('bullet', './images/bullet.png');
-    this.game.load.image('gravityPad', './images/gravityPad.png');
     this.game.load.spritesheet('rain', './images/rain.png', 17, 17);
     this.game.load.spritesheet('power-up', './images/power-up.svg', 73, 73, 12);
-    this.game.load.image('blue_ball', './images/blue_ball.png', 17, 17);
-    this.game.load.image('purple_ball', './images/purple_ball.png', 17, 17);
-    this.game.load.image('green_ball', './images/green_ball.png', 17, 17);
-    this.game.load.image('red_ball', './images/red_ball.png', 17, 17);
+    this.game.load.image('blue_ball', './images/button_sprites/blue_ball.png', 17, 17);
+    this.game.load.image('green_ball', './images/button_sprites/green_ball.png', 17, 17);
+    this.game.load.image('red_ball', './images/button_sprites/red_ball.png', 17, 17);
+    this.game.load.image('yellow_ball', './images/button_sprites/yellow_ball.png', 17, 17);
+
+    // Gravity Buttons
+    this.game.load.image('button_blue', './images/button_sprites/button_blue.png');
+    this.game.load.image('button_blue_pressed', './images/button_sprites/button_blue_pressed.png');
+    this.game.load.image('button_green', './images/button_sprites/button_green.png');
+    this.game.load.image('button_green_pressed', './images/button_sprites/button_green_pressed.png');
+    this.game.load.image('button_yellow', './images/button_sprites/button_yellow.png');
+    this.game.load.image('button_yellow_pressed', './images/button_sprites/button_yellow_pressed.png');
+    this.game.load.image('button_red', './images/button_sprites/button_red.png');
+    this.game.load.image('button_red_pressed', './images/button_sprites/button_red_pressed.png');
 
     this.loadLand(Sprites.landTypes[Math.floor(Math.random() * Sprites.landTypes.length)]);
 

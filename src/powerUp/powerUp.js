@@ -24,6 +24,9 @@ export class PowerUp {
       case 'dblshot':
         this.frame = 11;
         break;
+      case 'highAcuracy':
+        this.frame = 7;
+        break;
       default:
         this.frame = 0;
     }
@@ -33,7 +36,6 @@ export class PowerUp {
  * Render event in the Phaser cycle.
  */
   setup () {
-    console.log(this.type);
     this.powerUp = this.game.gravityPadsLayer.create(this.currentLocation.x, this.currentLocation.y, 'power-up', this.frame);
 
     this.powerUp.scale.setTo(POWERUP_SCALE, POWERUP_SCALE);

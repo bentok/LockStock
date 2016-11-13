@@ -115,15 +115,17 @@ export class Player {
         if (body.sprite && body.sprite.key === 'power-up' ) {
           if ( body.active ) {
             switch ( body.powerUpType ) {
-            case 'autofire':
-              this.hasAutoFire = true;
-              break;
-            case 'dblshot':
-              this.weapon.doubleShot();
-              break;
-            default:
-              break;
-
+              case 'autofire':
+                this.hasAutoFire = true;
+                break;
+              case 'dblshot':
+                this.weapon.doubleShot();
+                break;
+              case 'highAcuracy':
+                this.weapon.highAcuracy();
+                break;
+              default:
+                break;
             }
           }
         }

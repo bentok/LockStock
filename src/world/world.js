@@ -53,7 +53,7 @@ export class World {
   setup () {
 
     this.makeWater();
-    
+
     this.user.name = 'Player 1';
     this.user.render();
 
@@ -63,27 +63,30 @@ export class World {
     this.game.physics.p2.restitution = 0.05;
 
     this.gravityPads.push( new GravityPad({
-      x: 230,
-      y: 188,
+      x: 500,
+      y: 342,
       type: 'antiGravity'
     }) );
 
     this.gravityPads.push( new GravityPad({
-      x: 819,
-      y: 235,
-      type: 'left'
+      x: 718,
+      y: 380,
+      type: 'left',
+      angle: 45
     }) );
 
     this.gravityPads.push( new GravityPad({
       x: 290,
       y: 380,
-      type: 'right'
+      type: 'right',
+      angle: -45
     }) );
 
     this.gravityPads.push( new GravityPad({
-      x: 520,
+      x: 500,
       y: 414,
-      type: 'up'
+      type: 'up',
+      angle: 180
     }) );
 
     for (const pad of this.gravityPads) {
@@ -91,16 +94,23 @@ export class World {
     }
 
     this.powerUps.push( new PowerUp({
-      x: 500,
-      y: 325,
+      x: 460,
+      y: 189,
       type: 'autofire'
     }) );
 
     this.powerUps.push( new PowerUp({
-      x: 600,
-      y: 145,
+      x: 282,
+      y: 470,
       type: 'dblshot'
     }) );
+
+    this.powerUps.push( new PowerUp({
+      x: 727,
+      y: 468,
+      type: 'highAcuracy'
+    }) );
+
 
     for (const powerUp of this.powerUps) {
       powerUp.setup();

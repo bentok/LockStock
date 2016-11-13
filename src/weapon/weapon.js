@@ -93,6 +93,13 @@ export class Weapon extends Phaser.State {
     this.bulletsPerShot = 10;
   }
 
+  highAcuracy() {
+    this.spread = 0;
+    this.reloadDelay = 100;
+    this.bulletsPerShot = 1;
+    this.velocity = 800;
+  }
+
   set bulletVelocity (newVelocity = this.velocity) {
     this.velocity = newVelocity;
   }
