@@ -90,6 +90,31 @@ export class Weapon extends Phaser.State {
     }
   }
 
+  /**
+   * Calculate the velocity push-back when weapon is fired.
+   */
+  calculateKickback () {
+    if ( this.character.sprite.x > this.character.reticle.x ) {
+      let difference = (this.character.sprite.x - this.character.reticle.x) / 10;
+      difference = difference > 10 ? 10 : difference;
+      this.character.sprite.body.velocity.x = difference * this.bulletsPerShot * 8;
+    } else {
+      let difference = (this.character.reticle.x - this.character.sprite.x) / 10;
+      difference = difference > 10 ? 10 : difference;
+      this.character.sprite.body.velocity.x = -(difference * this.bulletsPerShot * 8);
+    }
+
+    if ( this.character.sprite.y > this.character.reticle.y ) {
+      let difference = (this.character.sprite.y - this.character.reticle.y) / 10;
+      difference = difference > 10 ? 10 : difference;
+      this.character.sprite.body.velocity.y = difference * this.bulletsPerShot * 8;
+    } else {
+      let difference = (this.character.reticle.y - this.character.sprite.y) / 10;
+      difference = difference > 10 ? 10 : difference;
+      this.character.sprite.body.velocity.y = -(difference * this.bulletsPerShot * 8 );
+    }
+  }
+
   reload () {
     this.nextFire = this.game.time.now + this.reloadDelay;
     this.currentCapacity = this.capacity;
