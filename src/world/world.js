@@ -64,27 +64,27 @@ export class World {
 
     this.gravityPads.push( new GravityPad({
       x: 500,
-      y: 342,
+      y: 333,
       type: 'antiGravity'
     }) );
 
     this.gravityPads.push( new GravityPad({
-      x: 718,
-      y: 380,
+      x: 727,
+      y: 377,
       type: 'left',
       angle: 45
     }) );
 
     this.gravityPads.push( new GravityPad({
-      x: 290,
-      y: 380,
+      x: 282,
+      y: 377,
       type: 'right',
       angle: -45
     }) );
 
     this.gravityPads.push( new GravityPad({
       x: 500,
-      y: 414,
+      y: 423,
       type: 'up',
       angle: 180
     }) );

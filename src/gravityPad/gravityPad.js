@@ -1,7 +1,7 @@
 import { game, world } from '../game';
 import { LAND_SCALE } from  '../world/world';
 
-const PAD_SCALE = 0.2;
+const PAD_SCALE = 0.3;
 /**
  * Gravity Pad
  * @class Player
