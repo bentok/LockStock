@@ -157,6 +157,8 @@ export class Player {
       this.move.left();
     } else if (this.keys.right.isDown || this.wasd.right.isDown) {
       this.move.right();
+    } else if (!this.move.canJump()) {
+      this.move.airborne();
     }  else {
       this.move.idle();
     }
