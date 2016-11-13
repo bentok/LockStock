@@ -74,6 +74,8 @@ function create () {
   const fullScreenText = game.add.text(WORLD_WIDTH * LAND_SCALE - 3, 56, 'F - Toggle Fullscreen', textStyles);
 
   const fullScreen = game.input.keyboard.addKey(Phaser.Keyboard.F);
+  fullScreenText.anchor.x = 1;
+  fullScreenText.anchor.y = 1;
   fullScreen.onDown.add(() => {
     game.scale.startFullScreen(false);
   });
