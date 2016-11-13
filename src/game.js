@@ -35,14 +35,16 @@ function preload () {
   game.landLayer = game.add.group();
   game.gravityPadsLayer = game.add.group();
   game.uiLayer = game.add.group();
+  game.boundaryLayer = game.add.group();
 
   game.world.bringToTop(game.gravityPadsLayer);
   game.world.bringToTop(game.landLayer);
 
   game.world.bringToTop(game.playerLayer);
   game.world.bringToTop(game.projectilesLayer);
+  game.world.bringToTop(game.boundaryLayer);
   game.world.bringToTop(game.uiLayer);
-  game.world.bounds = new Phaser.Rectangle(50, 0, LAND_SCALE * WORLD_WIDTH - 100, LAND_SCALE * WORLD_HEIGHT);
+  // game.world.bounds = new Phaser.Rectangle(50, 0, LAND_SCALE * WORLD_WIDTH - 100, LAND_SCALE * WORLD_HEIGHT);
 
   new Sprites().load();
 
@@ -95,6 +97,30 @@ function create () {
   game.input.mouse.capture = true;
 
   world.setup();
+
+  const topBoundary = this.game.add.bitmapData(WORLD_WIDTH, 30);
+  topBoundary.ctx.rect(0, 0, WORLD_WIDTH, 30);
+  topBoundary.ctx.fillStyle = '#222222';
+  topBoundary.ctx.fill();
+  this.topBoundary = this.game.boundaryLayer.create(0, 0, topBoundary);
+  game.physics.p2.enable(this.topBoundary, false, true);
+  this.topBoundary.body.kinematic = true;
+
+  const leftBounary = this.game.add.bitmapData(30, WORLD_HEIGHT - 30);
+  leftBounary.ctx.rect(0, 0, 30, WORLD_HEIGHT);
+  leftBounary.ctx.fillStyle = '#222222';
+  leftBounary.ctx.fill();
+  this.leftBounary = this.game.boundaryLayer.create(0, 0, leftBounary);
+  game.physics.p2.enable(this.leftBounary, false, true);
+  this.leftBounary.body.kinematic = true;
+
+  const rightBoundary = this.game.add.bitmapData(30, WORLD_HEIGHT - 30);
+  rightBoundary.ctx.rect(0, 0, 30, WORLD_HEIGHT);
+  rightBoundary.ctx.fillStyle = '#222222';
+  rightBoundary.ctx.fill();
+  this.rightBoundary = this.game.boundaryLayer.create(980, 0, rightBoundary);
+  game.physics.p2.enable(this.rightBoundary, false, true);
+  this.rightBoundary.body.kinematic = true;
 }
 
 /**
