@@ -2,19 +2,34 @@ import { game } from '../game';
 
 export class Weapon extends Phaser.State {
 
-  constructor ({ character = {} } = {}) {
+  constructor ({ character = {}, velocity = 600, rate = 60, spread = 10, bulletsPerShot = 5, baseDamage = 20, capacity = 2, reloadDelay = 400 } = {}) {
     super();
     this.game = game;
+    this.spawnSettings = {
+      bulletsPerShot,
+      character,
+      velocity,
+      spread,
+      rate,
+    };
     this.character = character;
-    this.velocity = 600;
-    this.rate = 60;
-    this.spread = 10;
-    this.bulletsPerShot = 5;
-    this.damage = 20 * this.bulletsPerShot;
-    this.capacity = 2;
+    this.velocity = velocity;
+    this.rate = rate;
+    this.spread = spread;
+    this.bulletsPerShot = bulletsPerShot;
+    this.damage = baseDamage * this.bulletsPerShot;
+    this.capacity = capacity;
     this.currentCapacity = this.capacity; //spawn with full clip
     this.nextFire = 0;
-    this.reloadDelay = 400;
+    this.reloadDelay = reloadDelay;
+  }
+
+  respawn () {
+    this.bulletsPerShot = this.spawnSettings.bulletsPerShot;
+    this.character = this.spawnSettings.character;
+    this.velocity = this.spawnSettings.velocity;
+    this.spread = this.spawnSettings.spread;
+    this.rate = this.spawnSettings.rate;
   }
 
   render () {
