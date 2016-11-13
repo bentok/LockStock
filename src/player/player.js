@@ -51,8 +51,9 @@ export class Player {
     this.lives = 5;
     this.spawnPoint = this.host ? SpawnPoints.getLeftSpawnPoint() : SpawnPoints.getRightSpawnPoint();
     setInterval(() => {
-      if (this.peerConnection && this.peerConnection.connection) {
-        this.peerConnection.send(this.positionPayload);
+      const position = this.positionPayload;
+      if (this.peerConnection && this.peerConnection.connection && position) {
+        this.peerConnection.send(position);
       }
     }, 50);
 
