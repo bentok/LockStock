@@ -154,7 +154,7 @@ export class Player {
 
   /**
    * Adds powerUp effects to user
-   * @param {String} powerUpType Name of powerup 
+   * @param {String} powerUpType Name of powerup
    */
   addPowerUp(powerUpType){
     switch ( powerUpType ) {
@@ -310,7 +310,7 @@ export class Player {
   }
 
   /**
-   * On peer connection to oponent 
+   * On peer connection to oponent
    */
   connect (opponentId) {
     this.peerConnection.connect(opponentId);
@@ -393,7 +393,7 @@ export class Player {
    * Grooms payload for sending to peer
    */
   get positionPayload () {
-    if (this.sprite && this.sprite.body) {
+    if (this.sprite && this.sprite.body && this.sprite.position) {
       return {
         type: 'OPPONENT_POSITION',
         velocity: {

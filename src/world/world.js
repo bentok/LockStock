@@ -54,7 +54,7 @@ export class World {
     this.gravityPads = [];
     this.powerUps = [];
     const interval =  setInterval(() => {
-      if (game.music._sound) {
+      if (game.music && game.music._sound) {
         if (this.gravity.antiGravity && game.music._sound.playbackRate.value > 0.5) {
           game.music._sound.playbackRate.value -= 0.1;
         } else if (game.music._sound.playbackRate.value < 1) {
