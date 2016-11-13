@@ -103,7 +103,6 @@ export class Player {
     function contact (body, bodyB, shapeA, shapeB, equation) {
       if ( body ) {
         if (body.sprite && body.sprite.key === 'bullet' ) {
-          console.log(body);
           this.subtractHealth(20);
         }
         if (body.sprite && body.sprite.key === 'map' ) {
@@ -180,11 +179,11 @@ export class Player {
     }
 
     // Jump
-    if (this.jumpButton.isDown ) {
+    if (this.jumpButton.isDown) {
       if (this.jumpTimer > this.game.time.now) {
         this.standing = false;
         this.sprite.body.velocity.y = this.speed * -10;
-      } else if ( this.standing ) {
+      } else if (this.move.canJump()) {
         this.jumpTimer = this.game.time.now + 250;
       }
     }
