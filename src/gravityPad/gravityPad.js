@@ -16,6 +16,13 @@ const gravityPadColors = {
 
 export class GravityPad {
 
+  /**
+   * @param {String} key Named gravity pad
+   * @param {Number} x X coordinate
+   * @param {Number} x Y coordinate
+   * @param {String} type Type of pad to instantiate
+   * @param {Number} angle Rotation of sprite
+   */
   constructor ( { key = '', x = 0, y = 0, type = 'antiGravity', angle = 0 } = {} ) {
     this.game = game;
     this.currentLocation = {
@@ -28,9 +35,9 @@ export class GravityPad {
     this.key = key;
   }
 
-/**
- * Render event in the Phaser cycle.
- */
+  /**
+   * Render event in the Phaser cycle.
+   */
   render () {
     this.pad = this.game.gravityPadsLayer.create(this.currentLocation.x, this.currentLocation.y, `button_${this.color}`);
     this.pad.scale.setTo(PAD_SCALE, PAD_SCALE);
@@ -68,6 +75,9 @@ export class GravityPad {
     }
   }
 
+  /**
+   * Runs on create event in Phaser cycle.
+   */
   setup () {
     this.emitter.width = 100;
     this.emitter.height = 100;
@@ -86,6 +96,9 @@ export class GravityPad {
     this.emitter.start(false, 1000, 5, 0);
   }
 
+  /**
+   * Set whether gravity button has been set
+   */
   set pressed (pressed) {
     if (pressed) {
       this.pad.loadTexture(`button_${this.color}_pressed`);
@@ -95,6 +108,9 @@ export class GravityPad {
     this._pressed = pressed;
   }
 
+  /**
+   * Get wether gravity button has been pressed or not
+   */
   get pressed () {
     return this._pressed;
   }

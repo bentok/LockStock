@@ -1,5 +1,9 @@
 import { game } from '../game';
 
+/**
+ * Health bar can be instantiated on any character and updates based on the character's health attributes
+ */
+
 export class HealthBar {
   constructor({ character = {}, width = 200, height = 10 } = {}) {
     this.game = game;
@@ -10,6 +14,9 @@ export class HealthBar {
     this.healthBarHeight = height - 4;
   }
 
+  /**
+   * Runs on Phaser render cycle
+   */
   render () {
     const healthBarContainer = this.game.add.bitmapData(this.containerWidth, this.containerHeight);
     healthBarContainer.ctx.rect(0, 0, this.containerWidth, this.containerHeight);
@@ -27,6 +34,9 @@ export class HealthBar {
     this.lives = this.game.add.text(150, 32, `Lives: ${ this.character.lives }`, { font: '12px Arial', fill: '#000000' });
   }
 
+  /**
+   * Runs on game update loop
+   */
   update () {
     /**
      * Tweens the healthbar sprite.
