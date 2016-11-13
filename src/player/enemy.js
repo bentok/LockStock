@@ -11,4 +11,7 @@ export class Enemy extends Player {
     this.checkForFallToDeath();
     this.getAimDirection();
   }
+  set aimDirection (aimDirection) {
+    this._aimDirection = aimDirection;
+  }
 }

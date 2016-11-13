@@ -18,7 +18,7 @@ function preload () {
   game.scale.pageAlignHorizontally = true;
   game.scale.pageAlignVertically = true;
 
-  game.input.onDown.add(() => game.scale.startFullScreen(false), this);
+  //game.input.onDown.add(() => game.scale.startFullScreen(false), this);
 
   game.stage.backgroundColor = '#2d2d2d';
 
