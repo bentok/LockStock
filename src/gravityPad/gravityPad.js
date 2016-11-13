@@ -53,6 +53,7 @@ export class GravityPad {
     function contact (body, bodyB, shapeA, shapeB, equation) {
       if ( body ) {
         world.changeGravityDirection(this.type);
+        this.pressed = true;
       }
     }
   }
@@ -73,5 +74,18 @@ export class GravityPad {
     this.emitter.gravity = 0;
 
     this.emitter.start(false, 1000, 5, 0);
+  }
+
+  set pressed (pressed) {
+    if (pressed) {
+      this.pad.loadTexture(`button_${this.color}_pressed`);
+    } else {
+      this.pad.loadTexture(`button_${this.color}`);
+    }
+    this._pressed = pressed;
+  }
+
+  get pressed () {
+    return this._pressed;
   }
 }
