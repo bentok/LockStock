@@ -137,6 +137,7 @@ export class World {
     this.gravityTimer = this.game.time.now + 5000;
     for (const padId in this.gravityPads) {
       this.gravityPads[padId].pressed = false;
+      this.gravityPads[padId].emitter.on = true;
     }
     const gravityValues = {
       'default': { x: 0, y: 400 },

@@ -64,6 +64,7 @@ export class GravityPad {
           }
         }
         this.pressed = true;
+        this.emitter.on = false;
       }
     }
   }
