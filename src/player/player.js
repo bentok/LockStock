@@ -3,7 +3,7 @@ import { Death } from './death';
 import { Move } from '../move/move';
 import { Weapon } from '../weapon/weapon';
 import { PeerConnection } from '../peerConnection/peerConnection';
-import { HealthBar } from '../hud/HealthBar';
+import { HealthBar } from '../hud/healthBar';
 import { PowerIndicator } from '../hud/powerIndicator';
 import { LAND_SCALE, WORLD_WIDTH, WORLD_HEIGHT } from  '../world/world';
 import { SpawnPoints } from '../world/spawnPoint';
