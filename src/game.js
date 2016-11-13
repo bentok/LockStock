@@ -55,12 +55,12 @@ function create () {
   game.physics.startSystem(Phaser.Physics.P2JS);
   game.physics.p2.setImpactEvents(true);
 
-  const muteStyles = {
+  const textStyles = {
     fill: '#00ff00',
     fontSize: '14px',
     font: 'Courier'
   };
-  const muteText = game.add.text(WORLD_WIDTH * LAND_SCALE - 3, 40, 'M - Toggle Mute', muteStyles);
+  const muteText = game.add.text(WORLD_WIDTH * LAND_SCALE - 3, 40, 'M - Toggle Mute', textStyles);
 
   muteText.anchor.x = 1;
   muteText.anchor.y = 1;
@@ -69,6 +69,15 @@ function create () {
   mute.onDown.add(() => {
     game.music.mute = !game.music.mute;
   }, this);
+
+
+  const fullScreenText = game.add.text(WORLD_WIDTH * LAND_SCALE - 3, 56, 'F - Toggle Fullscreen', textStyles);
+
+  const fullScreen = game.input.keyboard.addKey(Phaser.Keyboard.F);
+  fullScreen.onDown.add(() => {
+    game.scale.startFullScreen(false);
+  });
+
   game.input.mouse.capture = true;
 
   world.setup();
