@@ -16,9 +16,7 @@ export class Enemy extends Player {
   setupReticle () {}
   moveReticle () {}
   calculateKickback () {}
-  set aimDirection (aimDirection) {
-    this._aimDirection = aimDirection;
-  }
+  set aimDirection (_ignored) { }
 
   render () {
     this.sprite = this.game.playerLayer.create(this.spawnPoint.x, this.spawnPoint.y, `${this.playerColor}Player`);

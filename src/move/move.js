@@ -10,14 +10,12 @@ export class Move {
   left () {
     this.character.sprite.play('run');
     this.character.sprite.body.velocity.x = this.character.speed * -10;
-    this.character.direction = 'left';
     this.updatePeer();
   }
 
   right () {
     this.character.sprite.play('run');
     this.character.sprite.body.velocity.x = this.character.speed * 10;
-    this.character.direction = 'right';
     this.updatePeer();
   }
 

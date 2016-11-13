@@ -37,7 +37,6 @@ export class Player {
     this.game = game;
     this.death = new Death({ character: this });
     this.weapon = new Weapon({ character: this });
-    this.direction = 'right';
     this.aimDirection = 'right';
     this.jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.shootButton = game.input.activePointer.leftButton;
@@ -116,14 +115,14 @@ export class Player {
         if (body.sprite && body.sprite.key === 'power-up' ) {
           if ( body.active ) {
             switch ( body.powerUpType ) {
-              case 'autofire':
-                this.hasAutoFire = true;
-                break;
-              case 'dblshot':
-                this.weapon.doubleShot();
-                break;
-              default:
-                break;
+            case 'autofire':
+              this.hasAutoFire = true;
+              break;
+            case 'dblshot':
+              this.weapon.doubleShot();
+              break;
+            default:
+              break;
 
             }
           }
@@ -173,6 +172,11 @@ export class Player {
   }
 
   updatePositionAndVelocity (position, velocity) {
+    if (this.sprite.position.x > position.x) {
+      this.aimDirection = 'right';
+    } else {
+      this.aimDirection = 'left';
+    }
     this.sprite.position.x = position.x;
     this.sprite.position.y = position.y;
     // if (velocity) {
@@ -181,6 +185,8 @@ export class Player {
     //  this.sprite.body.velocity.mx = velocity.mx;
     //  this.sprite.body.velocity.my = velocity.my;
     // }
+    //
+
   }
 
   playerControls () {
@@ -287,16 +293,25 @@ export class Player {
     world.addOpponent(position);
   }
 
-  set aimDirection (aimDirection) {
-    this._aimDirection = aimDirection;
-    if (
-        this.sprite && this.sprite.scale && (
-            aimDirection === 'right' && this.sprite.scale.x < 0 ||
-            aimDirection === 'left' && this.sprite.scale.x > 0
-        )
-    ) {
-      this.sprite.scale.x *= -1;
+  look ( direction ) {
+    if (direction === 'left') {
+      this.sprite.scale.x = PLAYER_SCALE * LAND_SCALE * -1;
+    } else {
+      this.sprite.scale.x = PLAYER_SCALE * LAND_SCALE;
     }
+  }
+  set aimDirection (aimDirection) {
+    if (!this.sprite) {
+      return;
+    }
+    this.look(aimDirection);
+    if (this._aimDirection !== aimDirection && this.peerConnection && this.peerConnection.connection) {
+      this.peerConnection.send({
+        type: 'OPPONENT_AIM_FLIP',
+        aimDirection
+      });
+    }
+    this._aimDirection = aimDirection;
   }
 
   get aimDirection () {

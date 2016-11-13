@@ -1,3 +1,5 @@
+import { PLAYER_SCALE } from '../player/player';
+import { LAND_SCALE } from '../world/world';
 /**
  * Wrapper class for peerJS peer.
  */
@@ -45,6 +47,9 @@ class Connection {
         break;
       case 'OPPONENT_POSITION':
         this.parentPlayer.opponent.updatePositionAndVelocity(data.position, data.velocity);
+        break;
+      case 'OPPONENT_AIM_FLIP':
+        this.parentPlayer.opponent.look(data.aimDirection);
         break;
       }
     });
