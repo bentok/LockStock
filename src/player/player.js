@@ -64,6 +64,8 @@ export class Player {
     this.hasAutoFire = this.spawnSettings.hasAutoFire;
     this.health = this.spawnSettings.health;
     this.speed = this.spawnSettings.speed;
+    this.sprite.body.velocity.x = 0;
+    this.sprite.body.velocity.y = 0;
     this.sprite.body.x = this.spawnSettings.x;
     this.sprite.body.y = this.spawnSettings.y;
   }
@@ -261,6 +263,22 @@ export class Player {
   set location ({ x = 0, y = 0 } = {}) {
     this.sprite.position.x = this.spawnPoint.x = x;
     this.sprite.position.y = this.spawnPoint.y = y;
+  }
+
+  set aimDirection (aimDirection) {
+    this._aimDirection = aimDirection;
+    if (
+        this.sprite && this.sprite.scale && (
+            aimDirection === 'right' && this.sprite.scale.x < 0 ||
+            aimDirection === 'left' && this.sprite.scale.x > 0
+        )
+    ) {
+      this.sprite.scale.x *= -1;
+    }
+  }
+
+  get aimDirection () {
+    return this._aimDirection;
   }
 
   /**
