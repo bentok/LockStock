@@ -3,14 +3,13 @@ import { Death } from './death';
 import { Move } from '../move/move';
 import { Weapon } from '../weapon/weapon';
 import { PeerConnection } from '../peerConnection/peerConnection';
+import { HealthBar} from '../hud/HealthBar';
 import { LAND_SCALE, WORLD_WIDTH, WORLD_HEIGHT } from  '../world/world';
 import { SpawnPoints } from '../world/spawnPoint';
 
 export const RETICLE_SCALE = 0.5; // always half of LAND_SCALE
 export const PLAYER_SCALE = 2; // 4 times LAND_SCALE
-
-export const PLAYER_MAX_HEALTH = 100;
-
+export const PLAYER_MAX_HEALTH = 500;
 export const PLAYER_COLORS = [
   'green', 'blue', 'pink'
 ];
@@ -32,11 +31,13 @@ export class Player {
    * @param {Number} x X coordinate of spawn location. Defaults to center of world.
    * @param {Number} Y Y coordinate of spawn location. Defaults to center of world.
    */
-  constructor ({ health = 100, maxHealth = 100, speed = 10, hasAutoFire = false } = {}) {
+  constructor ({ health = 500, speed = 10, hasAutoFire = false } = {}) {
     this.playerColor = PLAYER_COLORS[0];
+    this.maxHealth = PLAYER_MAX_HEALTH;
     this.game = game;
     this.death = new Death({ character: this });
     this.weapon = new Weapon({ character: this });
+    this.healthBar = new HealthBar({ character: this });
     this.aimDirection = 'right';
     this.jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.shootButton = game.input.activePointer.leftButton;
@@ -50,6 +51,11 @@ export class Player {
       health,
       speed,
     };
+    setInterval(() => {
+      if (this.peerConnection && this.peerConnection.connection) {
+        this.peerConnection.send(this.positionPayload);
+      }
+    }, 50);
 
     /**
      * Character stats can have modifiers
@@ -57,11 +63,6 @@ export class Player {
     this.hasAutoFire = hasAutoFire;
     this.health = health;
     this.speed = speed;
-    setInterval(() => {
-      if (this.peerConnection && this.peerConnection.connection) {
-        this.peerConnection.send(this.positionPayload);
-      }
-    }, 50);
   }
 
   respawn () {
@@ -78,6 +79,7 @@ export class Player {
  * Render event in the Phaser cycle.
  */
   render () {
+    this.healthBar.render();
     this.sprite = this.game.playerLayer.create(this.spawnPoint.x, this.spawnPoint.y, `${this.playerColor}Player`);
     this.sprite.animations.add('run', [0, 1, 2, 3, 4, 5, 6, 7], 15, true);
     this.sprite.animations.add('injure', [7]);
@@ -276,6 +278,7 @@ export class Player {
    */
   subtractHealth (amount) {
     this.health = this.health - amount >= 0 ? this.health -= amount : 0;
+    this.healthBar.update();
     if ( this.health <= 0 ) {
       this.death.subtractLife();
     }

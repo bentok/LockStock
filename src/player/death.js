@@ -12,6 +12,7 @@ export class Death {
     this.character.lives--;
     this.character.respawn();
     this.character.weapon.respawn();
+    this.character.healthBar.update();
 
     if (this.character.lives <= 0) {
       console.log(`Game over ${this.character.name}`);
