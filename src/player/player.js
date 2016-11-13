@@ -282,6 +282,7 @@ export class Player {
       if (pad.key === key) {
         world.changeGravityDirection(pad.type);
         pad.pressed = true;
+        pad.emitter.on = false;
         break;
       }
     }
