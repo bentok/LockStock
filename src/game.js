@@ -58,9 +58,9 @@ function create () {
   game.music.play();
   game.deathOne = game.add.audio('death1', 1);
   game.deathTwo = game.add.audio('death2', 1);
-  game.normalShot = game.add.audio('normalshot', 1);
-  game.bigShot = game.add.audio('bigshot', 1);
-  game.fastShot = game.add.audio('fastshot', 1);
+  game.normalShot = game.add.audio('normalshot', 0.3);
+  game.bigShot = game.add.audio('bigshot', 0.3);
+  game.fastShot = game.add.audio('fastshot', 0.3);
   const backdrop = game.add.tileSprite(0, 0, 1024, 1024, 'backdrop');
   game.backdropLayer.add(backdrop);
   game.physics.startSystem(Phaser.Physics.ARCADE);
