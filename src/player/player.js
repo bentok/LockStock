@@ -103,6 +103,7 @@ export class Player {
     function contact (body, bodyB, shapeA, shapeB, equation) {
       if ( body ) {
         if (body.sprite && body.sprite.key === 'bullet' ) {
+          console.log(body);
           this.subtractHealth(20);
         }
         if (body.sprite && body.sprite.key === 'map' ) {
