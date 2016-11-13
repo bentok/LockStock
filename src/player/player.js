@@ -119,22 +119,12 @@ export class Player {
         }
         if (body.sprite && body.sprite.key === 'power-up' ) {
           if ( body.active ) {
-            switch ( body.powerUpType ) {
-            case 'autofire':
-              this.hasAutoFire = true;
-              this.powerIndicator.togglePowerOn('autofire');
-              break;
-            case 'dblshot':
-              this.weapon.doubleShot();
-              this.powerIndicator.togglePowerOn('dblshot');
-              break;
-            case 'highAcuracy':
-              this.weapon.highAcuracy();
-              this.powerIndicator.togglePowerOn('highAcuracy');
-              break;
-            default:
-              break;
-            }
+            let powerUpType = body.powerUpType;
+            this.peerConnection.send({
+              type: 'OPPONENT_POWER_UP',
+              powerUpType
+            });
+            this.addPowerUp(powerUpType);
           }
         }
       }
@@ -148,6 +138,25 @@ export class Player {
     this.weapon.render();
 
     this.setupReticle();
+  }
+
+  addPowerUp(powerUpType){
+    switch ( powerUpType ) {
+      case 'autofire':
+        this.hasAutoFire = true;
+        this.powerIndicator.togglePowerOn('autofire');
+        break;
+      case 'dblshot':
+        this.weapon.doubleShot();
+        this.powerIndicator.togglePowerOn('dblshot');
+        break;
+      case 'highAcuracy':
+        this.weapon.highAcuracy();
+        this.powerIndicator.togglePowerOn('highAcuracy');
+        break;
+      default:
+        break;
+    }
   }
 
   setupReticle () {

@@ -54,6 +54,9 @@ class Connection {
       case 'OPPONENT_AIM_FLIP':
         this.parentPlayer.opponent.look(data.aimDirection);
         break;
+      case 'OPPONENT_POWER_UP':
+        this.parentPlayer.opponent.addPowerUp(data.powerUpType);
+        break;
       case 'GRAVITY_BUTTON_PRESSED':
         this.parentPlayer.pressGravityPad(data.key);
         break;
