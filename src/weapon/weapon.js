@@ -6,7 +6,7 @@ export class Weapon extends Phaser.State {
     super();
     this.game = game;
     this.character = character;
-    this.velocity = 1000;
+    this.velocity = 600;
     this.rate = 60;
     this.spread = 10;
     this.bulletsPerShot = 5;
@@ -31,10 +31,11 @@ export class Weapon extends Phaser.State {
     // Offset to avoid collision between player and their own bullets
     const aimOffset = this.character.aimDirection === 'right' ? 20 : -20;
     if (this.game.time.now > this.nextFire && this.game.projectilesLayer.countDead() > 0) {
-        this.nextFire = this.game.time.now + this.rate;
-        let projectiles =  [];
-        for (let i = 0; i < this.bulletsPerShot; i++) {
-          projectiles.push(this.game.projectilesLayer.getFirstDead());
+      this.nextFire = this.game.time.now + this.rate;
+      let projectiles =  [];
+      for (let i = 0; i < this.bulletsPerShot; i++) {
+        projectiles.push(this.game.projectilesLayer.getFirstDead());
+        if (projectiles[i]) {
           projectiles[i].reset(this.character.sprite.x + aimOffset, this.character.sprite.y);
           // Number of shells fired per shot
           this.discharge(this.bulletsPerShot);
@@ -45,8 +46,17 @@ export class Weapon extends Phaser.State {
             velocity: this.velocity
           }
           this.game.physics.arcade.moveToXY(dest.projectile, dest.x, dest.y, dest.velocity);
+          console.log(projectiles[i]);
+          projectiles[i].body.onBeginContact.add(contact, projectiles[i]);
+
+          function contact (body) {
+            if (body && body.sprite.key !== 'bullet' ) {
+              projectiles[i].destroy();
+            }
+          }
         }
-        return true;
+      }
+      return true;
     }
     return false;
   }

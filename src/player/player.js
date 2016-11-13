@@ -92,10 +92,10 @@ export class Player {
 
     function contact (body, bodyB, shapeA, shapeB, equation) {
       if ( body ) {
-        if (body.sprite.key === 'bullet' ) {
+        if (body.sprite && body.sprite.key === 'bullet' ) {
           this.subtractHealth(20);
         }
-        if (body.sprite.key === 'map' ) {
+        if (body.sprite && body.sprite.key === 'map' ) {
           this.standing = true;
         }
       } else {
