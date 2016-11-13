@@ -23,6 +23,7 @@ export class World {
     this.game = game;
     this.healthBar = new HealthBar();
     this.user = new Player({
+      host: !idMatches, // If there's no id in the url, then it's the host
       x: 300,
       y: 170
     });

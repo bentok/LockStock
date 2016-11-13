@@ -1,3 +1,4 @@
+import { SpawnPoints } from '../world/spawnPoint';
 import { Player, PLAYER_SCALE } from './player';
 import { LAND_SCALE, WORLD_WIDTH, WORLD_HEIGHT } from  '../world/world';
 
@@ -7,7 +8,9 @@ export class Enemy extends Player {
     this.name = 'Enemy1';
     this.isEnemy = false;
     // Selects a color for the enemy player from the other colors left after green is taken.
-    this.playerColor = Player.PLAYER_COLORS[Math.floor(Math.random() * Player.PLAYER_COLORS.length)];
+    this.playerColor = Player.PLAYER_COLORS[Math.floor(Math.random() * (Player.PLAYER_COLORS.length - 1)) + 1];
+    this.spawnPoint.x = x;
+    this.spawnPoint.y = y;
   }
   update () {
     this.checkForFallToDeath();
