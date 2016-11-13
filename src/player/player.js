@@ -211,7 +211,7 @@ export class Player {
       if (!this.followThrough) {
         const shot = this.weapon.fire({ aimX: this.reticle.body.x, aimY: this.reticle.body.y });
         if ( shot ) {
-          this.calculateKickback();
+          this.weapon.calculateKickback();
         }
         if (!this.hasAutoFire) {
           this.followThrough = true;
@@ -237,31 +237,6 @@ export class Player {
       this.aimDirection = 'left';
     } else {
       this.aimDirection = 'right';
-    }
-  }
-
-  /**
-   * Calculate the velocity push-back when weapon is fired.
-   */
-  calculateKickback () {
-    if ( this.sprite.x > this.reticle.x ) {
-      let difference = (this.sprite.x - this.reticle.x) / 10;
-      difference = difference > 10 ? 10 : difference;
-      this.sprite.body.velocity.x = difference * 40;
-    } else {
-      let difference = (this.reticle.x - this.sprite.x) / 10;
-      difference = difference > 10 ? 10 : difference;
-      this.sprite.body.velocity.x = -(difference * 40);
-    }
-
-    if ( this.sprite.y > this.reticle.y ) {
-      let difference = (this.sprite.y - this.reticle.y) / 10;
-      difference = difference > 10 ? 10 : difference;
-      this.sprite.body.velocity.y = difference * 40;
-    } else {
-      let difference = (this.reticle.y - this.sprite.y) / 10;
-      difference = difference > 10 ? 10 : difference;
-      this.sprite.body.velocity.y = -(difference * 40 );
     }
   }
 
