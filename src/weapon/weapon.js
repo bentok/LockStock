@@ -74,6 +74,10 @@ export class Weapon extends Phaser.State {
     this.currentCapacity = this.capacity;
   }
 
+  doubleShot() {
+    this.bulletsPerShot = 10;
+  }
+
   set bulletVelocity (newVelocity = this.velocity) {
     this.velocity = newVelocity;
   }

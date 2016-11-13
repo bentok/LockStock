@@ -117,9 +117,19 @@ export class Player {
         if (body.sprite && body.sprite.key === 'map' ) {
           this.standing = true;
         }
-        if (body.sprite && body.sprite.key === 'autofire-power-up' ) {
+        if (body.sprite && body.sprite.key === 'power-up' ) {
           if ( body.active ) {
-            this.hasAutoFire = true;
+            switch ( body.powerUpType ) {
+              case 'autofire':
+                this.hasAutoFire = true;
+                break;
+              case 'dblshot':
+                this.weapon.doubleShot();
+                break;
+              default:
+                break;
+
+            }
           }
         }
       } else {

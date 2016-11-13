@@ -89,8 +89,14 @@ export class World {
 
     this.powerUps.push( new PowerUp({
       x: 500,
-      y: 320,
+      y: 325,
       type: 'autofire'
+    }) );
+
+    this.powerUps.push( new PowerUp({
+      x: 600,
+      y: 145,
+      type: 'dblshot'
     }) );
 
     for (const powerUp of this.powerUps) {
