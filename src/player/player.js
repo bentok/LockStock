@@ -4,6 +4,7 @@ import { Move } from '../move/move';
 import { Weapon } from '../weapon/weapon';
 import { PeerConnection } from '../peerConnection/peerConnection';
 import { LAND_SCALE, WORLD_WIDTH, WORLD_HEIGHT } from  '../world/world';
+import { SpawnPoints } from '../world/spawnPoint';
 
 const RETICLE_SCALE = 0.5; // always half of LAND_SCALE
 const PLAYER_SCALE = 3; // 4 times LAND_SCALE
@@ -23,27 +24,24 @@ export class Player {
    * @param {Number} x X coordinate of spawn location. Defaults to center of world.
    * @param {Number} Y Y coordinate of spawn location. Defaults to center of world.
    */
-  constructor ({ health = 100, maxHealth = 100, speed = 15, hasAutoFire = false, x = WORLD_WIDTH * LAND_SCALE / 2, y = WORLD_HEIGHT * LAND_SCALE / 2 } = {}) {
+  constructor ({ health = 100, maxHealth = 100, speed = 15, hasAutoFire = false } = {}) {
     this.game = game;
     this.death = new Death({ character: this });
     this.move = new Move({ character: this });
     this.weapon = new Weapon({ character: this });
-    this.spawnLocation = {
-      x,
-      y
-    };
     this.direction = 'right';
     this.aimDirection = 'right';
     this.jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.shootButton = game.input.activePointer.leftButton;
     this.peerConnection = new PeerConnection(new Peer({ key: this.game.peerApiKey }), this);
     this.lives = 1;
+    this.spawnPoint = new SpawnPoints().getSpawnPoint();
     this.spawnSettings = {
+      x: this.spawnPoint.x,
+      y: this.spawnPoint.y,
       hasAutoFire,
       health,
       speed,
-      x,
-      y
     };
 
     /**
@@ -66,8 +64,8 @@ export class Player {
  * Render event in the Phaser cycle.
  */
   render () {
-    this.sprite = this.game.playerLayer.create(this.spawnLocation.x, this.spawnLocation.y, 'player');
-    this.reticle = this.game.uiLayer.create(this.spawnLocation.x, this.spawnLocation.y, 'reticle');
+    this.sprite = this.game.playerLayer.create(this.spawnPoint.x, this.spawnPoint.y, 'player');
+    this.reticle = this.game.uiLayer.create(this.spawnPoint.x, this.spawnPoint.y, 'reticle');
     this.reticle.scale.setTo(RETICLE_SCALE * LAND_SCALE, RETICLE_SCALE * LAND_SCALE);
     this.sprite.scale.setTo(PLAYER_SCALE * LAND_SCALE, PLAYER_SCALE * LAND_SCALE);
 
@@ -247,8 +245,8 @@ export class Player {
    * Set the location of the character.
    */
   set location ({ x = 0, y = 0 } = {}) {
-    this.sprite.position.x = this.spawnLocation.x = x;
-    this.sprite.position.y = this.spawnLocation.y = y;
+    this.sprite.position.x = this.spawnPoint.x = x;
+    this.sprite.position.y = this.spawnPoint.y = y;
   }
 
   /**
