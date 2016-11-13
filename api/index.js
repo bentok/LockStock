@@ -6,7 +6,7 @@ router.get('/', function (request, response) {
 });
 
 router.get('/peerKey', function (request, response) {
-  response.send({ apiKey: process.env.PEER_JS_KEY });
+  response.send({ apiKey: "dcflx3d7r6mholxr" });
 });
 
 module.exports = router;
