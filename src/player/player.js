@@ -6,12 +6,12 @@ import { PeerConnection } from '../peerConnection/peerConnection';
 import { LAND_SCALE, WORLD_WIDTH, WORLD_HEIGHT } from  '../world/world';
 import { SpawnPoints } from '../world/spawnPoint';
 
-const RETICLE_SCALE = 0.5; // always half of LAND_SCALE
-const PLAYER_SCALE = 2; // 4 times LAND_SCALE
+export const RETICLE_SCALE = 0.5; // always half of LAND_SCALE
+export const PLAYER_SCALE = 2; // 4 times LAND_SCALE
 
-const PLAYER_MAX_HEALTH = 100;
+export const PLAYER_MAX_HEALTH = 100;
 
-const PLAYER_COLORS = [
+export const PLAYER_COLORS = [
   'green', 'blue', 'pink'
 ];
 
@@ -58,6 +58,11 @@ export class Player {
     this.hasAutoFire = hasAutoFire;
     this.health = health;
     this.speed = speed;
+    setInterval(() => {
+      if (this.peerConnection && this.peerConnection.connection) {
+        this.peerConnection.send(this.positionPayload);
+      }
+    }, 50);
   }
 
   respawn () {
@@ -74,7 +79,6 @@ export class Player {
  * Render event in the Phaser cycle.
  */
   render () {
-
     this.sprite = this.game.playerLayer.create(this.spawnPoint.x, this.spawnPoint.y, `${this.playerColor}Player`);
     this.sprite.animations.add('run', [0, 1, 2, 3, 4, 5, 6, 7], 15, true);
     this.sprite.animations.add('injure', [7]);
@@ -82,17 +86,12 @@ export class Player {
     this.sprite.animations.add('jump', [9]);
     this.sprite.scale.setTo(PLAYER_SCALE * LAND_SCALE, PLAYER_SCALE * LAND_SCALE);
     this.sprite.anchor.setTo(0.5, 0.5);
-    this.reticle = this.game.uiLayer.create(this.spawnPoint.x, this.spawnPoint.y, 'reticle');
-    this.reticle.scale.setTo(RETICLE_SCALE * LAND_SCALE, RETICLE_SCALE * LAND_SCALE);
     this.move = new Move({ character: this });
 
     // Applies p2 physics to player, and collision with world bounds
     this.game.physics.p2.enable(this.game.playerLayer, false, true);
-    this.game.physics.p2.enable(this.reticle, false);
 
 
-    this.reticle.body.kinematic = true;
-    this.reticle.body.data.shapes[0].sensor = true;
 
     this.keys = this.game.input.keyboard.createCursorKeys();
     this.wasd = {
@@ -103,9 +102,6 @@ export class Player {
     };
 
     this.sprite.body.onBeginContact.add(contact, this);
-
-    this.game.input.addMoveCallback(this.moveReticle, this);
-
     function contact (body, bodyB, shapeA, shapeB, equation) {
       if ( body ) {
         if (body.sprite && body.sprite.key === 'bullet' ) {
@@ -143,9 +139,20 @@ export class Player {
     this.sprite.body.collideWorldBounds = true;
     this.sprite.checkWorldBounds = true;
 
-    this.reticle.body.static = true;
     this.weapon.render();
 
+    this.setupReticle();
+  }
+
+  setupReticle () {
+    this.reticle = this.game.uiLayer.create(this.spawnPoint.x, this.spawnPoint.y, 'reticle');
+    this.game.physics.p2.enable(this.reticle, false);
+    this.reticle.scale.setTo(RETICLE_SCALE * LAND_SCALE, RETICLE_SCALE * LAND_SCALE);
+    this.game.input.addMoveCallback(this.moveReticle, this);
+
+    this.reticle.body.static = true;
+    this.reticle.body.kinematic = true;
+    this.reticle.body.data.shapes[0].sensor = true;
   }
 
   /**
@@ -168,12 +175,12 @@ export class Player {
   updatePositionAndVelocity (position, velocity) {
     this.sprite.position.x = position.x;
     this.sprite.position.y = position.y;
-    if (velocity) {
-      this.sprite.body.velocity.x = velocity.x;
-      this.sprite.body.velocity.y = velocity.y;
-      this.sprite.body.velocity.mx = velocity.mx;
-      this.sprite.body.velocity.my = velocity.my;
-    }
+    // if (velocity) {
+    //  this.sprite.body.velocity.x = velocity.x;
+    //  this.sprite.body.velocity.y = velocity.y;
+    //  this.sprite.body.velocity.mx = velocity.mx;
+    //  this.sprite.body.velocity.my = velocity.my;
+    // }
   }
 
   playerControls () {
@@ -280,14 +287,6 @@ export class Player {
     world.addOpponent(position);
   }
 
-  /**
-   * Set the location of the character.
-   */
-  set location ({ x = 0, y = 0 } = {}) {
-    this.sprite.position.x = this.spawnPoint.x = x;
-    this.sprite.position.y = this.spawnPoint.y = y;
-  }
-
   set aimDirection (aimDirection) {
     this._aimDirection = aimDirection;
     if (
@@ -321,19 +320,21 @@ export class Player {
   }
 
   get positionPayload () {
-    return {
-      type: 'OPPONENT_POSITION',
-      velocity: {
-        x: this.sprite.body.velocity.x,
-        y: this.sprite.body.velocity.y,
-        mx: this.sprite.body.velocity.mx,
-        my: this.sprite.body.velocity.my,
-      },
-      position: {
-        x: this.sprite.position.x,
-        y: this.sprite.position.y
-      }
-    };
+    if (this.sprite && this.sprite.body) {
+      return {
+        type: 'OPPONENT_POSITION',
+        velocity: {
+          x: this.sprite.body.velocity.x,
+          y: this.sprite.body.velocity.y,
+          mx: this.sprite.body.velocity.mx,
+          my: this.sprite.body.velocity.my,
+        },
+        position: {
+          x: this.sprite.position.x,
+          y: this.sprite.position.y
+        }
+      };
+    }
   }
 
 }

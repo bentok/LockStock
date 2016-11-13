@@ -15,6 +15,10 @@ export class World {
     return LAND_SCALE;
   }
   constructor () {
+    const urlQuery = window.location.search.slice(1);
+    const idRegex = /id=(\w+)/;
+    const idMatches = idRegex.exec(urlQuery);
+
     this.game = game;
     this.user = new Player({
       x: 300,
@@ -30,11 +34,7 @@ export class World {
       fontSize: '14px',
       font: 'Courier'
     };
-    const urlQuery = window.location.search.slice(1);
-    const idRegex = /id=(\w+)/;
-    const idMatches = idRegex.exec(urlQuery);
     if (idMatches) {
-      this.user.spawnPoint.x = 750;
       this.user.connect(idMatches[1]);
     }
     this.user.id.then((id) => {
@@ -109,9 +109,7 @@ export class World {
   }
 
   update () {
-    for (const player of this.players) {
-      player.update();
-    }
+    this.user.update();
     for (const powerUp of this.powerUps) {
       powerUp.render();
     }
@@ -200,6 +198,9 @@ export class World {
   addOpponent (position) {
     const opponentPlayer = new Enemy(position);
     this.players.push(opponentPlayer);
+    if (this.user.opponent) {
+      this.user.opponent.sprite.destroy();
+    }
     this.user.opponent = opponentPlayer;
     opponentPlayer.render();
   }

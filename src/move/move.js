@@ -8,9 +8,6 @@ export class Move {
   }
 
   left () {
-//     if (this.character.sprite.scale.x > 0) {
-//       this.character.sprite.scale.x *= -1;
-//     }
     this.character.sprite.play('run');
     this.character.sprite.body.velocity.x = this.character.speed * -10;
     this.character.direction = 'left';
@@ -18,9 +15,6 @@ export class Move {
   }
 
   right () {
-//    if (this.character.sprite.scale.x < 0) {
-//      this.character.sprite.scale.x *= -1;
-//    }
     this.character.sprite.play('run');
     this.character.sprite.body.velocity.x = this.character.speed * 10;
     this.character.direction = 'right';
