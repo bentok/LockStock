@@ -110,10 +110,9 @@ export class Player {
     function contact (body, bodyB, shapeA, shapeB, equation) {
       if ( body ) {
         if (body.sprite && body.sprite.key === 'bullet' ) {
-          if (body.velocity.x > 500 || body.velocity.x < -500 || body.velocity.y > 500 || body.velocity.y < -500) {
-            this.sprite.play('injure');
-            this.subtractHealth(20);
-          }
+          this.sprite.play('injure');
+          const velocity = body.velocity.x > body.velocity.y ? body.velocity.x : body.velocity.y;
+          this.subtractHealth(velocity * 0.04);
         }
         if (body.sprite && body.sprite.key === 'map' ) {
           this.standing = true;
