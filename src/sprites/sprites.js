@@ -45,9 +45,12 @@ export class Sprites {
   load () {
 
     // Load player sprites
-    this.game.load.spritesheet('greenPlayer', '/images/player_sprites/p1_spritesheet.png', 73, 95, 15);
-    this.game.load.spritesheet('bluePlayer', '/images/player_sprites/p2_spritesheet.png', 73, 95, 15);
-    this.game.load.spritesheet('pinkPlayer', '/images/player_sprites/p3_spritesheet.png', 73, 95, 15);
+    this.game.load.spritesheet('greenPlayer', '/images/player_sprites/p1_spritesheet.png', 73, 95, 17);
+    this.game.load.spritesheet('bluePlayer', '/images/player_sprites/p2_spritesheet.png', 73, 95, 17);
+    this.game.load.spritesheet('pinkPlayer', '/images/player_sprites/p3_spritesheet.png', 73, 95, 17);
+    this.game.load.image('greenPlayerInjured', '/images/player_sprites/p1_injured.png');
+    this.game.load.image('bluePlayerInjured', '/images/player_sprites/p2_injured.png');
+    this.game.load.image('pinkPlayerInjured', '/images/player_sprites/p3_injured.png');
 
     // Load images - arguments(name, path)
     this.game.load.image('reticle', './images/reticle.png');

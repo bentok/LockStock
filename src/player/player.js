@@ -77,6 +77,9 @@ export class Player {
 
     this.sprite = this.game.playerLayer.create(this.spawnPoint.x, this.spawnPoint.y, `${this.playerColor}Player`);
     this.sprite.animations.add('run', [0, 1, 2, 3, 4, 5, 6, 7], 15, true);
+    this.sprite.animations.add('injure', [7]);
+    this.sprite.animations.add('idle', [5]);
+    this.sprite.animations.add('jump', [9]);
     this.sprite.scale.setTo(PLAYER_SCALE * LAND_SCALE, PLAYER_SCALE * LAND_SCALE);
     this.sprite.anchor.setTo(0.5, 0.5);
     this.reticle = this.game.uiLayer.create(this.spawnPoint.x, this.spawnPoint.y, 'reticle');
@@ -107,7 +110,7 @@ export class Player {
       if ( body ) {
         if (body.sprite && body.sprite.key === 'bullet' ) {
           if (body.velocity.x > 500 || body.velocity.x < -500 || body.velocity.y > 500 || body.velocity.y < -500) {
-            this.sprite.frame = 7;
+            this.sprite.play('injure');
             this.subtractHealth(20);
           }
         }
@@ -120,7 +123,7 @@ export class Player {
           }
         }
       } else {
-        this.sprite.frame = 7;
+        this.sprite.play('injure');
         this.subtractHealth(10);
       }
       this.standing = true;
