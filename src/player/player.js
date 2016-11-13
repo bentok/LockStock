@@ -105,16 +105,20 @@ export class Player {
     function contact (body, bodyB, shapeA, shapeB, equation) {
       if ( body ) {
         if (body.sprite && body.sprite.key === 'bullet' ) {
-          this.subtractHealth(20);
+          if (body.velocity.x > 500 || body.velocity.x < -500 || body.velocity.y > 500 || body.velocity.y < -500) {
+            this.sprite.frame = 7;
+            this.subtractHealth(20);
+          }
         }
         if (body.sprite && body.sprite.key === 'map' ) {
           this.standing = true;
         }
       } else {
-        this.death.subtractLife();
+        this.sprite.frame = 7;
+        this.subtractHealth(10);
       }
       this.standing = true;
-    }
+    } 
 
     this.sprite.body.fixedRotation = true;
     this.sprite.body.collideWorldBounds = true;
@@ -244,7 +248,7 @@ export class Player {
   }
 
   checkForFallToDeath () {
-    if ( this.sprite.y > WORLD_HEIGHT * LAND_SCALE + 200 ) {
+    if ( this.sprite.y >= WORLD_HEIGHT * LAND_SCALE - 20 ) {
       this.death.subtractLife();
     }
   }
