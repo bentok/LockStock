@@ -141,6 +141,7 @@ export class World {
   changeGravityDirection (newDirection) {
     for (let i = 0; i < this.gravityPads.length; ++i) {
       this.gravityPads[i].pressed = false;
+      this.gravityPads[i].emitter.on = true;
     }
     this.gravityTimer = this.game.time.now + 5000;
     switch ( newDirection ) {
@@ -157,7 +158,7 @@ export class World {
       this.game.physics.p2.gravity.x = -400;
       break;
     case 'antiGravity' :
-      this.game.physics.p2.gravity.y = 0;
+      this.game.physics.p2.gravity.y = 5;
       this.game.physics.p2.gravity.x = 0;
       break;
     default :

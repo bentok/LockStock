@@ -54,6 +54,7 @@ export class GravityPad {
       if ( body ) {
         world.changeGravityDirection(this.type);
         this.pressed = true;
+        this.emitter.on = false;
       }
     }
   }
