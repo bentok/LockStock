@@ -116,10 +116,12 @@ export class Player {
   updatePositionAndVelocity (position, velocity) {
     this.sprite.position.x = position.x;
     this.sprite.position.y = position.y;
-    this.sprite.body.velocity.x = velocity.x;
-    this.sprite.body.velocity.y = velocity.y;
-    this.sprite.body.velocity.mx = velocity.mx;
-    this.sprite.body.velocity.my = velocity.my;
+    if (velocity) {
+      this.sprite.body.velocity.x = velocity.x;
+      this.sprite.body.velocity.y = velocity.y;
+      this.sprite.body.velocity.mx = velocity.mx;
+      this.sprite.body.velocity.my = velocity.my;
+    }
   }
 
   playerControls () {
@@ -220,7 +222,7 @@ export class Player {
     this.peerConnection.connect(opponentId);
   }
 
-  addOpponent(position) {
+  addOpponent (position) {
     world.addOpponent(position);
   }
 

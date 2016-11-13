@@ -29,16 +29,18 @@ export class World {
       fontSize: '14px',
       font: 'Courier'
     };
+    const urlQuery = window.location.search.slice(1);
+    const idRegex = /id=(\w+)/;
+    const idMatches = idRegex.exec(urlQuery);
+    if (idMatches) {
+      this.user.spawnLocation.x = 750;
+      this.user.connect(idMatches[1]);
+    }
     this.user.id.then((id) => {
       const userIdText = this.game.add.text(WORLD_WIDTH * LAND_SCALE - 3, 24, id, userIdStyles);
       userIdText.anchor.x = 1;
       userIdText.anchor.y = 1;
-      const urlQuery = window.location.search.slice(1);
-      const idRegex = /id=(\w+)/;
-      const idMatches = idRegex.exec(urlQuery);
-      if (idMatches) {
-        this.user.connect(idMatches[1]);
-      } else {
+      if (!idMatches) {
         window.prompt( 'Copy to clipboard and send to opponent', `${window.location.host}?id=${id}`);
       }
     });
