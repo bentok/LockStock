@@ -4,7 +4,8 @@
   "description": "Node app used to shoot each other",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "postinstall": "gulp build"
   },
   "dependencies": {
     "express": "^4.13.3",
