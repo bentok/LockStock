@@ -4,6 +4,7 @@ import { Map1Json } from '../maps/Level1/map';
 import { Sprites } from '../sprites/sprites';
 import { GravityPad } from '../gravityPad/gravityPad';
 import { PowerUp } from '../powerUp/powerUp';
+import { HealthBar } from '../hud/healthBar';
 
 export const LAND_SCALE = 0.2;
 export const WORLD_WIDTH = 4900;
@@ -20,6 +21,7 @@ export class World {
     const idMatches = idRegex.exec(urlQuery);
 
     this.game = game;
+    this.healthBar = new HealthBar();
     this.user = new Player({
       x: 300,
       y: 170
@@ -51,7 +53,6 @@ export class World {
   }
 
   setup () {
-
     this.makeWater();
 
     this.user.name = 'Player 1';
