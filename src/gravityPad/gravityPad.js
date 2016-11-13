@@ -16,7 +16,7 @@ const gravityPadColors = {
 
 export class GravityPad {
 
-  constructor ( { x = 0, y = 0, type = 'antiGravity', angle = 0 } = {} ) {
+  constructor ( { key = '', x = 0, y = 0, type = 'antiGravity', angle = 0 } = {} ) {
     this.game = game;
     this.currentLocation = {
       x,
@@ -25,6 +25,7 @@ export class GravityPad {
     this.type = type;
     this.color = gravityPadColors[type] || 'blue';
     this.angle = angle;
+    this.key = key;
   }
 
 /**
@@ -53,15 +54,11 @@ export class GravityPad {
     function contact (body, bodyB, shapeA, shapeB, equation) {
       if ( body ) {
         world.changeGravityDirection(this.type);
-        for (const gravityPadKey in world.gravityPads) {
-          if (world.gravityPads[gravityPadKey] === this) {
-            if (world.user.peerConnection && world.user.peerConnection.connection) {
-              world.user.peerConnection.connection.send({
-                type: 'GRAVITY_BUTTON_PRESSED',
-                key: gravityPadKey
-              });
-            }
-          }
+        if (world.user.peerConnection && world.user.peerConnection.connection) {
+          world.user.peerConnection.connection.send({
+            type: 'GRAVITY_BUTTON_PRESSED',
+            key: this.key
+          });
         }
         this.pressed = true;
         this.emitter.on = false;

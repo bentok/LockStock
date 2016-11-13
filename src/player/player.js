@@ -299,9 +299,13 @@ export class Player {
   }
 
   pressGravityPad (key) {
-    const pad = world.gravityPads[key];
-    world.changeGravityDirection(pad.type);
-    pad.pressed = true;
+    for (const pad of world.gravityPads) {
+      if (pad.key === key) {
+        world.changeGravityDirection(pad.type);
+        pad.pressed = true;
+        break;
+      }
+    }
   }
 
   look ( direction ) {

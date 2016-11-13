@@ -48,7 +48,7 @@ export class World {
       }
     });
 
-    this.gravityPads = {};
+    this.gravityPads = [];
     this.powerUps = [];
   }
 
@@ -63,35 +63,39 @@ export class World {
     this.game.physics.p2.gravity.y = 0;
     this.game.physics.p2.restitution = 0.05;
 
-    this.gravityPads.antigravity = new GravityPad({
+    this.gravityPads.push(new GravityPad({
+      key: 'antiGravity',
       x: 500,
       y: 333,
       type: 'antiGravity'
-    });
+    }));
 
-    this.gravityPads.left = new GravityPad({
+    this.gravityPads.push(new GravityPad({
+      key: 'left',
       x: 727,
       y: 377,
       type: 'left',
       angle: 45
-    });
+    }));
 
-    this.gravityPads.right = new GravityPad({
+    this.gravityPads.push(new GravityPad({
+      key: 'right',
       x: 282,
       y: 377,
       type: 'right',
       angle: -45
-    });
+    }));
 
-    this.gravityPads.up = new GravityPad({
+    this.gravityPads.push(new GravityPad({
+      key: 'up',
       x: 500,
       y: 423,
       type: 'up',
       angle: 180
-    });
+    }));
 
-    for (const padId in this.gravityPads) {
-      this.gravityPads[padId].render();
+    for (const pad of this.gravityPads) {
+      pad.render();
     }
 
     this.powerUps.push( new PowerUp({
@@ -135,9 +139,9 @@ export class World {
 
   changeGravityDirection (direction = 'default') {
     this.gravityTimer = this.game.time.now + 5000;
-    for (const padId in this.gravityPads) {
-      this.gravityPads[padId].pressed = false;
-      this.gravityPads[padId].emitter.on = true;
+    for (const pad of this.gravityPads) {
+      pad.pressed = false;
+      pad.emitter.on = true;
     }
     const gravityValues = {
       'default': { x: 0, y: 400 },
