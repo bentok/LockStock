@@ -3,8 +3,7 @@ import { LAND_SCALE } from  '../world/world';
 
 const POWERUP_SCALE = 0.5;
 /**
- * Gravity Pad
- * @class Player
+ * Power Up
  */
 export class PowerUp {
 
