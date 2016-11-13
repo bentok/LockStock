@@ -48,6 +48,9 @@ class Connection {
       case 'OPPONENT_POSITION':
         this.parentPlayer.opponent.updatePositionAndVelocity(data.position, data.velocity);
         break;
+      case 'OPPONENT_SHOOT':
+        this.parentPlayer.opponent.weapon.fire(data, false);
+        break;
       case 'OPPONENT_AIM_FLIP':
         this.parentPlayer.opponent.look(data.aimDirection);
         break;

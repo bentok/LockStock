@@ -19,7 +19,7 @@ export class Weapon extends Phaser.State {
     this.bulletsPerShot = bulletsPerShot;
     this.damage = baseDamage * this.bulletsPerShot;
     this.capacity = capacity;
-    this.currentCapacity = this.capacity; //spawn with full clip
+    this.currentCapacity = this.capacity; // spawn with full clip
     this.nextFire = 0;
     this.reloadDelay = reloadDelay;
   }
@@ -42,12 +42,19 @@ export class Weapon extends Phaser.State {
     this.game.physics.p2.enable(this.game.projectilesLayer, false, true);
   }
 
-  fire () {
+  fire ({ aimX, aimY } = { aimX: 0, aimY: 0 }, sendToOpponent = true) {
+    if (sendToOpponent && this.character.peerConnection && this.character.peerConnection.connection) {
+      this.character.peerConnection.send({
+        type: 'OPPONENT_SHOOT',
+        aimX,
+        aimY
+      });
+    }
     // Offset to avoid collision between player and their own bullets
     const aimOffset = this.character.aimDirection === 'right' ? 20 : -20;
     if (this.game.time.now > this.nextFire && this.game.projectilesLayer.countDead() > 0) {
       this.nextFire = this.game.time.now + this.rate;
-      let projectiles =  [];
+      const projectiles =  [];
       for (let i = 0; i < this.bulletsPerShot; i++) {
         projectiles.push(this.game.projectilesLayer.getFirstDead());
         if (projectiles[i]) {
@@ -56,15 +63,15 @@ export class Weapon extends Phaser.State {
           this.discharge(this.bulletsPerShot);
           const dest = {
             projectile: projectiles[i],
-            x: this.calculateTrajectory({ i, coordinate: this.character.reticle.body.x }),
-            y: this.calculateTrajectory({ i, coordinate: this.character.reticle.body.y }),
+            x: this.calculateTrajectory({ i, coordinate: aimX }),
+            y: this.calculateTrajectory({ i, coordinate: aimY }),
             velocity: this.velocity
-          }
+          };
           this.game.physics.arcade.moveToXY(dest.projectile, dest.x, dest.y, dest.velocity);
         }
         setTimeout(() => {
           projectiles[i].destroy();
-        }, 10000)
+        }, 10000);
       }
       return true;
     }
@@ -79,7 +86,7 @@ export class Weapon extends Phaser.State {
   discharge (shells) {
     this.currentCapacity = this.currentCapacity - shells > 0 ? this.currentCapacity - shells : 0;
     // TEMP
-    if( this.currentCapacity === 0 ){
+    if ( this.currentCapacity === 0 ) {
       this.reload();
     }
   }
@@ -89,11 +96,11 @@ export class Weapon extends Phaser.State {
     this.currentCapacity = this.capacity;
   }
 
-  doubleShot() {
+  doubleShot () {
     this.bulletsPerShot = 10;
   }
 
-  highAcuracy() {
+  highAcuracy () {
     this.spread = 0;
     this.reloadDelay = 100;
     this.bulletsPerShot = 1;

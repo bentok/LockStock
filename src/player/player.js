@@ -3,7 +3,7 @@ import { Death } from './death';
 import { Move } from '../move/move';
 import { Weapon } from '../weapon/weapon';
 import { PeerConnection } from '../peerConnection/peerConnection';
-import { HealthBar} from '../hud/HealthBar';
+import { HealthBar } from '../hud/HealthBar';
 import { LAND_SCALE, WORLD_WIDTH, WORLD_HEIGHT } from  '../world/world';
 import { SpawnPoints } from '../world/spawnPoint';
 
@@ -117,17 +117,17 @@ export class Player {
         if (body.sprite && body.sprite.key === 'power-up' ) {
           if ( body.active ) {
             switch ( body.powerUpType ) {
-              case 'autofire':
-                this.hasAutoFire = true;
-                break;
-              case 'dblshot':
-                this.weapon.doubleShot();
-                break;
-              case 'highAcuracy':
-                this.weapon.highAcuracy();
-                break;
-              default:
-                break;
+            case 'autofire':
+              this.hasAutoFire = true;
+              break;
+            case 'dblshot':
+              this.weapon.doubleShot();
+              break;
+            case 'highAcuracy':
+              this.weapon.highAcuracy();
+              break;
+            default:
+              break;
             }
           }
         }
@@ -208,7 +208,7 @@ export class Player {
     // Shoot
     if (this.shootButton.isDown) {
       if (!this.followThrough) {
-        const shot = this.weapon.fire();
+        const shot = this.weapon.fire({ aimX: this.reticle.body.x, aimY: this.reticle.body.y });
         if ( shot ) {
           this.calculateKickback();
         }
