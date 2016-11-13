@@ -11,11 +11,19 @@ const PLAYER_SCALE = 2; // 4 times LAND_SCALE
 
 const PLAYER_MAX_HEALTH = 100;
 
+const PLAYER_COLORS = [
+  'green', 'blue', 'pink'
+];
+
 /**
  * Player
  * @class Player
  */
 export class Player {
+
+  static get PLAYER_COLORS () {
+    return PLAYER_COLORS;
+  }
 
   /**
    * @param {Number} health Current health of the character
@@ -25,6 +33,7 @@ export class Player {
    * @param {Number} Y Y coordinate of spawn location. Defaults to center of world.
    */
   constructor ({ health = 100, maxHealth = 100, speed = 15, hasAutoFire = false } = {}) {
+    this.playerColor = PLAYER_COLORS[0];
     this.game = game;
     this.death = new Death({ character: this });
     this.weapon = new Weapon({ character: this });
@@ -63,7 +72,8 @@ export class Player {
  * Render event in the Phaser cycle.
  */
   render () {
-    this.sprite = this.game.playerLayer.create(this.spawnPoint.x, this.spawnPoint.y, 'greenPlayer');
+
+    this.sprite = this.game.playerLayer.create(this.spawnPoint.x, this.spawnPoint.y, `${this.playerColor}Player`);
     this.sprite.animations.add('run', [0, 1, 2, 3, 4, 5, 6, 7], 15, true);
     this.sprite.scale.setTo(PLAYER_SCALE * LAND_SCALE, PLAYER_SCALE * LAND_SCALE);
     this.sprite.anchor.setTo(0.5, 0.5);
