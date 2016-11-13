@@ -23,7 +23,7 @@ export class Player {
    * @param {Number} x X coordinate of spawn location. Defaults to center of world.
    * @param {Number} Y Y coordinate of spawn location. Defaults to center of world.
    */
-  constructor ({ health = 100, maxHealth = 100, speed = 15, x = WORLD_WIDTH * LAND_SCALE / 2, y = WORLD_HEIGHT * LAND_SCALE / 2 } = {}) {
+  constructor ({ health = 100, maxHealth = 100, speed = 15, hasAutoFire = false, x = WORLD_WIDTH * LAND_SCALE / 2, y = WORLD_HEIGHT * LAND_SCALE / 2 } = {}) {
     this.game = game;
     this.death = new Death({ character: this });
     this.move = new Move({ character: this });
@@ -38,21 +38,28 @@ export class Player {
     this.shootButton = game.input.activePointer.leftButton;
     this.peerConnection = new PeerConnection(new Peer({ key: this.game.peerApiKey }), this);
     this.lives = 1;
+    this.spawnSettings = {
+      hasAutoFire,
+      health,
+      speed,
+      x,
+      y
+    };
 
     /**
      * Character stats can have modifiers
      */
-    this.hasAutoFire = false;
+    this.hasAutoFire = hasAutoFire;
     this.health = health;
     this.speed = speed;
   }
 
   respawn() {
-    this.hasAutoFire = false;
-    this.health = PLAYER_MAX_HEALTH;
-    this.speed = speed;
-    this.character.sprite.body.x = this.spawnLocation.x;
-    this.character.sprite.body.y = this.spawnLocation.y;
+    this.hasAutoFire = this.spawnSettings.hasAutoFire;
+    this.health = this.spawnSettings.health;
+    this.speed = this.spawnSettings.speed;
+    this.sprite.body.x = this.spawnSettings.x;
+    this.sprite.body.y = this.spawnSettings.y;
   }
 
 /**
