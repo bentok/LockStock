@@ -8,6 +8,9 @@ import { PowerIndicator } from '../hud/powerIndicator';
 import { LAND_SCALE, WORLD_WIDTH, WORLD_HEIGHT } from  '../world/world';
 import { SpawnPoints } from '../world/spawnPoint';
 
+/**
+ * Define consts for use with Player
+ */
 export const RETICLE_SCALE = 0.5; // always half of LAND_SCALE
 export const PLAYER_SCALE = 2; // 4 times LAND_SCALE
 export const PLAYER_MAX_HEALTH = 500;
@@ -47,16 +50,20 @@ export class Player {
     this.peerConnection = new PeerConnection(new Peer({ key: this.game.peerApiKey }), this);
     this.lives = 5;
     this.spawnPoint = this.host ? SpawnPoints.getLeftSpawnPoint() : SpawnPoints.getRightSpawnPoint();
-    this.spawnSettings = {
-      hasAutoFire,
-      health,
-      speed,
-    };
     setInterval(() => {
       if (this.peerConnection && this.peerConnection.connection) {
         this.peerConnection.send(this.positionPayload);
       }
     }, 50);
+
+    /**
+     * Preserves initial settings for restoring on respawn
+     */
+    this.spawnSettings = {
+      hasAutoFire,
+      health,
+      speed,
+    };
 
     /**
      * Character stats can have modifiers
@@ -66,6 +73,9 @@ export class Player {
     this.speed = speed;
   }
 
+  /**
+   * Defines player stats to reset on respawn
+   */
   respawn () {
     this.spawnPoint = SpawnPoints.getSpawnPoint();
     this.hasAutoFire = this.spawnSettings.hasAutoFire;
@@ -96,8 +106,7 @@ export class Player {
     // Applies p2 physics to player, and collision with world bounds
     this.game.physics.p2.enable(this.game.playerLayer, false, true);
 
-
-
+    // Defines keyboard controls
     this.keys = this.game.input.keyboard.createCursorKeys();
     this.wasd = {
       up: this.game.input.keyboard.addKey(Phaser.Keyboard.W),
@@ -106,6 +115,7 @@ export class Player {
       right: this.game.input.keyboard.addKey(Phaser.Keyboard.D),
     };
 
+    // Detect contact with any other sprite. Perform actions based on name of sprite (body.sprite.key)
     this.sprite.body.onBeginContact.add(contact, this);
     function contact (body, bodyB, shapeA, shapeB, equation) {
       if ( body ) {
@@ -161,6 +171,9 @@ export class Player {
     }
   }
 
+  /**
+   * Setup aiming reticle sprite
+   */
   setupReticle () {
     this.reticle = this.game.uiLayer.create(this.spawnPoint.x, this.spawnPoint.y, 'reticle');
     this.game.physics.p2.enable(this.reticle, false);
@@ -189,6 +202,9 @@ export class Player {
     this.checkForFallToDeath();
   }
 
+  /**
+   * Updates position and velocity of a body
+   */
   updatePositionAndVelocity (position, velocity) {
     if (this.sprite.position.x > position.x) {
       this.aimDirection = 'right';
@@ -199,6 +215,9 @@ export class Player {
     this.sprite.position.y = position.y;
   }
 
+  /**
+   * Sets up player controlls and actions
+   */
   playerControls () {
     // Keyboard controls
     const canJump = this.move.canJump();
@@ -246,6 +265,9 @@ export class Player {
     }
   }
 
+  /**
+   * Gets aim diirection. Used for sprite animation and origin position of bullets.
+   */
   getAimDirection () {
     if ( this.sprite.x > this.reticle.x ) {
       this.aimDirection = 'left';
@@ -274,20 +296,33 @@ export class Player {
     }
   }
 
+  /**
+   * Checks if player has hit the bottom of the level
+   */
   checkForFallToDeath () {
     if ( this.sprite.y >= WORLD_HEIGHT * LAND_SCALE - 20 ) {
       this.death.subtractLife();
     }
   }
 
+  /**
+   * On peer connection to oponent 
+   */
   connect (opponentId) {
     this.peerConnection.connect(opponentId);
   }
 
+  /**
+   * Add an opponent character to world
+   */
   addOpponent (position) {
     world.addOpponent(position);
   }
 
+  /**
+   * On pressing gravity pad
+   * @param {String} key Named gravity pad
+   */
   pressGravityPad (key) {
     for (const pad of world.gravityPads) {
       if (pad.key === key) {
@@ -299,6 +334,10 @@ export class Player {
     }
   }
 
+  /**
+   * Looks toward a direction
+   * @param {String} direction Left or right
+   */
   look ( direction ) {
     if (direction === 'left') {
       this.sprite.scale.x = PLAYER_SCALE * LAND_SCALE * -1;
@@ -320,6 +359,9 @@ export class Player {
     this._aimDirection = aimDirection;
   }
 
+  /**
+   * Getter for aim direction for syncing with opponent
+   */
   get aimDirection () {
     return this._aimDirection;
   }
@@ -336,10 +378,16 @@ export class Player {
     }
   }
 
+  /**
+   * Getter for id for use with peer connections
+   */
   get id () {
     return this.peerConnection.id;
   }
 
+  /**
+   * Grooms payload for sending to peer
+   */
   get positionPayload () {
     if (this.sprite && this.sprite.body) {
       return {
