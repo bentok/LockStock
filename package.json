@@ -10,7 +10,11 @@
   "dependencies": {
     "express": "^4.13.3",
     "gulp": "^3.9.1",
-    "phaser": "^2.6.2"
+    "phaser": "^2.6.2",
+    "babel-preset-es2015": "^6.18.0",
+    "babelify": "^7.3.0",
+    "browserify": "^13.1.1",
+    "vinyl-source-stream": "^1.1.0"
   },
   "engines": {
     "node": "6.4.0"
@@ -30,11 +34,5 @@
     "David Johnson",
     "Edmund Quintero"
   ],
-  "license": "MIT",
-  "devDependencies": {
-    "babel-preset-es2015": "^6.18.0",
-    "babelify": "^7.3.0",
-    "browserify": "^13.1.1",
-    "vinyl-source-stream": "^1.1.0"
-  }
+  "license": "MIT"
 }
