@@ -19,10 +19,11 @@ function preload () {
   game.scale.pageAlignVertically = true;
   game.stage.disableVisibilityChange = true;
 
-  //game.input.onDown.add(() => game.scale.startFullScreen(false), this);
+  // game.input.onDown.add(() => game.scale.startFullScreen(false), this);
 
-  game.stage.backgroundColor = '#2d2d2d';
+  game.load.image('backdrop', `images/world_backgrounds/${Math.floor(Math.random() * 8) + 1}.jpg`);
 
+  game.backdropLayer = game.add.group();
   game.playerLayer = game.add.group();
   game.projectilesLayer = game.add.group();
   game.landLayer = game.add.group();
@@ -46,6 +47,7 @@ function preload () {
  * create
  */
 function create () {
+  game.backdropLayer.create(0, 0, 'backdrop');
   game.physics.startSystem(Phaser.Physics.ARCADE);
   game.physics.startSystem(Phaser.Physics.P2JS);
   game.physics.p2.setImpactEvents(true);
