@@ -131,9 +131,6 @@ export class Player {
             }
           }
         }
-      } else {
-        this.sprite.play('injure');
-        this.subtractHealth(10);
       }
       this.standing = true;
     }
