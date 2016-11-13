@@ -36,6 +36,7 @@ function preload () {
   game.world.bringToTop(game.playerLayer);
   game.world.bringToTop(game.projectilesLayer);
   game.world.bringToTop(game.uiLayer);
+  game.world.bounds = new Phaser.Rectangle(50, 0, LAND_SCALE * WORLD_WIDTH - 100, LAND_SCALE * WORLD_HEIGHT);
 
   new Sprites().load();
 
