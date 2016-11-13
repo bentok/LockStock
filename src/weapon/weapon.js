@@ -33,7 +33,6 @@ export class Weapon extends Phaser.State {
   }
 
   render () {
-    this.game.projectilesLayer = this.game.add.group();
     this.game.projectilesLayer.enableBody = true;
     this.game.projectilesLayer.physicsBodyType = Phaser.Physics.P2;
     this.game.projectilesLayer.createMultiple(1000, 'bullet');
