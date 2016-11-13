@@ -35,7 +35,7 @@ export class Weapon extends Phaser.State {
   render () {
     this.game.projectilesLayer.enableBody = true;
     this.game.projectilesLayer.physicsBodyType = Phaser.Physics.P2;
-    this.game.projectilesLayer.createMultiple(1000, 'bullet');
+    this.game.projectilesLayer.createMultiple(400, 'bullet');
     this.game.projectilesLayer.setAll('checkWorldBounds', true);
     this.game.projectilesLayer.setAll('outOfBoundsKill', true);
     this.game.physics.p2.enable(this.game.projectilesLayer, false, true);
@@ -69,7 +69,7 @@ export class Weapon extends Phaser.State {
           this.game.physics.arcade.moveToXY(dest.projectile, dest.x, dest.y, dest.velocity);
         }
         setTimeout(() => {
-          projectiles[i].destroy();
+          projectiles[i].kill();
         }, 10000);
       }
       return true;
