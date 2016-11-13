@@ -3,19 +3,19 @@ export class SpawnPoints {
     this.spawnPoints = [
       {
         x: 300,
-        y: 180
+        y: 165
       },
       {
         x: 600,
-        y: 150
+        y: 135
       },
       {
         x: 750,
-        y: 220
+        y: 205
       },
       {
         x: 310,
-        y: 250
+        y: 235
       },
       {
         x: 340,
