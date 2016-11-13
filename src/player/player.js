@@ -4,6 +4,7 @@ import { Move } from '../move/move';
 import { Weapon } from '../weapon/weapon';
 import { PeerConnection } from '../peerConnection/peerConnection';
 import { HealthBar } from '../hud/HealthBar';
+import { PowerIndicator } from '../hud/powerIndicator';
 import { LAND_SCALE, WORLD_WIDTH, WORLD_HEIGHT } from  '../world/world';
 import { SpawnPoints } from '../world/spawnPoint';
 
@@ -39,6 +40,7 @@ export class Player {
     this.death = new Death({ character: this });
     this.weapon = new Weapon({ character: this });
     this.healthBar = new HealthBar({ character: this });
+    this.powerIndicator = new PowerIndicator();
     this.aimDirection = 'right';
     this.jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     this.shootButton = game.input.activePointer.leftButton;
@@ -73,6 +75,7 @@ export class Player {
     this.sprite.body.velocity.y = 0;
     this.sprite.body.x = this.spawnPoint.x;
     this.sprite.body.y = this.spawnPoint.y;
+    this.powerIndicator.toggleAllOff()
   }
 
 /**
@@ -80,6 +83,7 @@ export class Player {
  */
   render () {
     this.healthBar.render();
+    this.powerIndicator.render();
     this.sprite = this.game.playerLayer.create(this.spawnPoint.x, this.spawnPoint.y, `${this.playerColor}Player`);
     this.sprite.animations.add('run', [0, 1, 2, 3, 4, 5, 6, 7], 15, true);
     this.sprite.animations.add('injure', [7]);
@@ -119,12 +123,15 @@ export class Player {
             switch ( body.powerUpType ) {
             case 'autofire':
               this.hasAutoFire = true;
+              this.powerIndicator.togglePowerOn('autofire');
               break;
             case 'dblshot':
               this.weapon.doubleShot();
+              this.powerIndicator.togglePowerOn('dblshot');
               break;
             case 'highAcuracy':
               this.weapon.highAcuracy();
+              this.powerIndicator.togglePowerOn('highAcuracy');
               break;
             default:
               break;
