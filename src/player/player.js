@@ -152,6 +152,10 @@ export class Player {
     this.setupReticle();
   }
 
+  /**
+   * Adds powerUp effects to user
+   * @param {String} powerUpType Name of powerup 
+   */
   addPowerUp(powerUpType){
     switch ( powerUpType ) {
       case 'autofire':
