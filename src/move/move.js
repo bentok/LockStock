@@ -8,13 +8,11 @@ export class Move {
   }
 
   left () {
-    this.character.sprite.play('run');
     this.character.sprite.body.velocity.x = this.character.speed * -10;
     this.updatePeer();
   }
 
   right () {
-    this.character.sprite.play('run');
     this.character.sprite.body.velocity.x = this.character.speed * 10;
     this.updatePeer();
   }
@@ -36,8 +34,8 @@ export class Move {
   canJump () {
     const yAxis = p2.vec2.fromValues(0, 1);
     let result = false;
-    for (let i = 0; i < game.physics.p2.world.narrowphase.contactEquations.length; i++) {
-      const c = game.physics.p2.world.narrowphase.contactEquations[i];
+    for (let i = 0; i < this.game.physics.p2.world.narrowphase.contactEquations.length; i++) {
+      const c = this.game.physics.p2.world.narrowphase.contactEquations[i];
       if (c.bodyA === this.character.sprite.body.data || c.bodyB === this.character.sprite.body.data) {
         let d = p2.vec2.dot(c.normalA, yAxis);
         if (c.bodyA === this.character.sprite.body.data) {
