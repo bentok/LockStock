@@ -21,6 +21,12 @@ function preload () {
 
 
   game.load.audio('music', '/music/song1.mp3');
+  game.load.audio('death1', '/sounds/death1.wav');
+  game.load.audio('death2', '/sounds/death2.wav');
+  game.load.audio('normalshot', '/sounds/normalshot.wav');
+  game.load.audio('bigshot', '/sounds/bigshot.wav');
+  game.load.audio('fastshot', '/sounds/fastshot.wav');
+
   game.load.image('backdrop', `images/world_backgrounds/${Math.floor(Math.random() * 8) + 1}.jpg`);
 
   game.backdropLayer = game.add.group();
@@ -48,8 +54,13 @@ function preload () {
  * create
  */
 function create () {
-  game.music = game.add.audio('music', 1, true);
+  game.music = game.add.audio('music', 0.25, true);
   game.music.play();
+  game.deathOne = game.add.audio('death1', 1);
+  game.deathTwo = game.add.audio('death2', 1);
+  game.normalShot = game.add.audio('normalshot', 1);
+  game.bigShot = game.add.audio('bigshot', 1);
+  game.fastShot = game.add.audio('fastshot', 1);
   const backdrop = game.add.tileSprite(0, 0, 1024, 1024, 'backdrop');
   game.backdropLayer.add(backdrop);
   game.physics.startSystem(Phaser.Physics.ARCADE);

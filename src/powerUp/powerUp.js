@@ -17,18 +17,18 @@ export class PowerUp {
     this.reActivate = 5000;
     this.fadeTimer = 0;
 
-    switch ( this.type ){
-      case 'autofire':
-        this.frame = 6;
-        break;
-      case 'dblshot':
-        this.frame = 11;
-        break;
-      case 'highAcuracy':
-        this.frame = 7;
-        break;
-      default:
-        this.frame = 0;
+    switch ( this.type ) {
+    case 'autofire':
+      this.frame = 6;
+      break;
+    case 'dblshot':
+      this.frame = 11;
+      break;
+    case 'highAcuracy':
+      this.frame = 7;
+      break;
+    default:
+      this.frame = 0;
     }
   }
 
@@ -50,7 +50,7 @@ export class PowerUp {
     this.powerUp.body.onBeginContact.add(contact, this);
 
     function contact (body, bodyB, shapeA, shapeB, equation) {
-      if( body ){
+      if ( body ) {
         if ( (body.sprite.key === 'greenPlayer' || body.sprite.key === 'bluePlayer' || body.sprite.key === 'pinkPlayer') && this.fadeTimer <= this.game.time.now ) {
           this.fadeTimer = this.game.time.now + this.reActivate;
         }
@@ -58,17 +58,17 @@ export class PowerUp {
     }
   }
 
-  render() {
-    if( this.fadeTimer > this.game.time.now ){
+  render () {
+    if ( this.fadeTimer > this.game.time.now ) {
       this.powerUp.body.active = false;
-      if( this.powerUp.alpha >= 0.2 ) {
+      if ( this.powerUp.alpha >= 0.2 ) {
         this.powerUp.alpha -= 0.1;
         this.powerUp.scale.x = this.powerUp.scale.x > 0 ? this.powerUp.scale.x - 0.1 : 0;
         this.powerUp.scale.y = this.powerUp.scale.y > 0 ? this.powerUp.scale.y - 0.1 : 0;
       }
     } else {
       this.powerUp.body.active = true;
-      if( this.powerUp.alpha < 1 ) {
+      if ( this.powerUp.alpha < 1 ) {
         this.powerUp.scale.x = this.powerUp.scale.x < POWERUP_SCALE ? this.powerUp.scale.x + 0.1 : POWERUP_SCALE;
         this.powerUp.scale.y = this.powerUp.scale.y < POWERUP_SCALE ? this.powerUp.scale.y + 0.1 : POWERUP_SCALE;
         this.powerUp.alpha += 0.1;

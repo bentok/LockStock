@@ -83,6 +83,13 @@ export class Weapon extends Phaser.State {
   }
 
   discharge (shells) {
+    if (this.bulletsPerShot > 5) {
+      this.game.bigShot.play();
+    } else if (this.bulletsPerShot > 1) {
+      this.game.normalShot.play();
+    } else {
+      this.game.fastShot.play();
+    }
     this.currentCapacity = this.currentCapacity - shells > 0 ? this.currentCapacity - shells : 0;
     // TEMP
     if ( this.currentCapacity === 0 ) {

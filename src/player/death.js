@@ -9,6 +9,7 @@ export class Death {
   }
 
   subtractLife () {
+    Math.floor(Math.random() * 2) === 0 ? game.deathOne.play() : game.deathTwo.play();
     this.character.lives--;
     this.character.respawn();
     this.character.weapon.respawn();

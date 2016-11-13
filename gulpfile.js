@@ -3,7 +3,7 @@ const browserify = require('browserify');
 const source = require('vinyl-source-stream');
 
 gulp.task('default', ['build', 'watch']);
-gulp.task('build', ['copyImages', 'copyMusic', 'copyMaps', 'copyVendorAssets', 'browserify']);
+gulp.task('build', ['copyImages', 'copySounds', 'copyMusic', 'copyMaps', 'copyVendorAssets', 'browserify']);
 
 gulp.task('watch', () => {
   gulp.watch('src/**/*.js', ['browserify']);
@@ -13,7 +13,11 @@ gulp.task('watch', () => {
 gulp.task('copyImages', () => gulp.src('src/images/**/*.*')
   .pipe(gulp.dest('public/images')));
 
-// Copy images to public
+// Copy sounds to public
+gulp.task('copySounds', () => gulp.src('src/sounds/**/*.*')
+  .pipe(gulp.dest('public/sounds')));
+
+// Copy music to public
 gulp.task('copyMusic', () => gulp.src('src/music/**/*.*')
   .pipe(gulp.dest('public/music')));
 
