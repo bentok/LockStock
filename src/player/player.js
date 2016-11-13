@@ -7,7 +7,7 @@ import { LAND_SCALE, WORLD_WIDTH, WORLD_HEIGHT } from  '../world/world';
 import { SpawnPoints } from '../world/spawnPoint';
 
 const RETICLE_SCALE = 0.5; // always half of LAND_SCALE
-const PLAYER_SCALE = 3; // 4 times LAND_SCALE
+const PLAYER_SCALE = 2; // 4 times LAND_SCALE
 
 const PLAYER_MAX_HEALTH = 100;
 
@@ -27,7 +27,6 @@ export class Player {
   constructor ({ health = 100, maxHealth = 100, speed = 15, hasAutoFire = false } = {}) {
     this.game = game;
     this.death = new Death({ character: this });
-    this.move = new Move({ character: this });
     this.weapon = new Weapon({ character: this });
     this.direction = 'right';
     this.aimDirection = 'right';
@@ -52,7 +51,7 @@ export class Player {
     this.speed = speed;
   }
 
-  respawn() {
+  respawn () {
     this.hasAutoFire = this.spawnSettings.hasAutoFire;
     this.health = this.spawnSettings.health;
     this.speed = this.spawnSettings.speed;
@@ -64,10 +63,13 @@ export class Player {
  * Render event in the Phaser cycle.
  */
   render () {
-    this.sprite = this.game.playerLayer.create(this.spawnPoint.x, this.spawnPoint.y, 'player');
+    this.sprite = this.game.playerLayer.create(this.spawnPoint.x, this.spawnPoint.y, 'greenPlayer');
+    this.sprite.animations.add('run', [0, 1, 2, 3, 4, 5, 6, 7], 15, true);
+    this.sprite.scale.setTo(PLAYER_SCALE * LAND_SCALE, PLAYER_SCALE * LAND_SCALE);
+    this.sprite.anchor.setTo(0.5, 0.5);
     this.reticle = this.game.uiLayer.create(this.spawnPoint.x, this.spawnPoint.y, 'reticle');
     this.reticle.scale.setTo(RETICLE_SCALE * LAND_SCALE, RETICLE_SCALE * LAND_SCALE);
-    this.sprite.scale.setTo(PLAYER_SCALE * LAND_SCALE, PLAYER_SCALE * LAND_SCALE);
+    this.move = new Move({ character: this });
 
     // Applies p2 physics to player, and collision with world bounds
     this.game.physics.p2.enable(this.game.playerLayer, false, true);

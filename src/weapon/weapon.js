@@ -29,7 +29,7 @@ export class Weapon extends Phaser.State {
 
   fire () {
     // Offset to avoid collision between player and their own bullets
-    const aimOffset = this.character.aimDirection === 'right' ? 15 : -15;
+    const aimOffset = this.character.aimDirection === 'right' ? 20 : -20;
     if (this.game.time.now > this.nextFire && this.game.projectilesLayer.countDead() > 0) {
         this.nextFire = this.game.time.now + this.rate;
         let projectiles =  [];

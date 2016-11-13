@@ -44,6 +44,11 @@ export class Sprites {
    */
   load () {
 
+    // Load player sprites
+    this.game.load.spritesheet('greenPlayer', '/images/player_sprites/p1_spritesheet.png', 73, 95, 15);
+    this.game.load.spritesheet('bluePlayer', '/images/player_sprites/p2_spritesheet.png', 73, 95, 15);
+    this.game.load.spritesheet('pinkPlayer', '/images/player_sprites/p3_spritesheet.png', 73, 95, 15);
+
     // Load images - arguments(name, path)
     this.game.load.image('reticle', './images/reticle.png');
     this.game.load.image('player', './images/character.png');
