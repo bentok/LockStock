@@ -298,6 +298,12 @@ export class Player {
     world.addOpponent(position);
   }
 
+  pressGravityPad (key) {
+    const pad = world.gravityPads[key];
+    world.changeGravityDirection(pad.type);
+    pad.pressed = true;
+  }
+
   look ( direction ) {
     if (direction === 'left') {
       this.sprite.scale.x = PLAYER_SCALE * LAND_SCALE * -1;

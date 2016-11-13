@@ -48,7 +48,7 @@ export class World {
       }
     });
 
-    this.gravityPads = [];
+    this.gravityPads = {};
     this.powerUps = [];
   }
 
@@ -63,35 +63,35 @@ export class World {
     this.game.physics.p2.gravity.y = 0;
     this.game.physics.p2.restitution = 0.05;
 
-    this.gravityPads.push( new GravityPad({
+    this.gravityPads.antigravity = new GravityPad({
       x: 500,
       y: 333,
       type: 'antiGravity'
-    }) );
+    });
 
-    this.gravityPads.push( new GravityPad({
+    this.gravityPads.left = new GravityPad({
       x: 727,
       y: 377,
       type: 'left',
       angle: 45
-    }) );
+    });
 
-    this.gravityPads.push( new GravityPad({
+    this.gravityPads.right = new GravityPad({
       x: 282,
       y: 377,
       type: 'right',
       angle: -45
-    }) );
+    });
 
-    this.gravityPads.push( new GravityPad({
+    this.gravityPads.up = new GravityPad({
       x: 500,
       y: 423,
       type: 'up',
       angle: 180
-    }) );
+    });
 
-    for (const pad of this.gravityPads) {
-      pad.render();
+    for (const padId in this.gravityPads) {
+      this.gravityPads[padId].render();
     }
 
     this.powerUps.push( new PowerUp({
@@ -127,43 +127,27 @@ export class World {
     this.gravityCycle();
   }
 
-  removeGravity () {
-    this.game.physics.p2.gravity.y = 0;
-    this.gravityTimer = this.game.time.now + 5000;
-  }
-
   gravityCycle () {
     if ( this.gravityTimer < this.game.time.now ) {
       this.changeGravityDirection();
     }
   }
 
-  changeGravityDirection (newDirection) {
-    for (let i = 0; i < this.gravityPads.length; ++i) {
-      this.gravityPads[i].pressed = false;
-    }
+  changeGravityDirection (direction = 'default') {
     this.gravityTimer = this.game.time.now + 5000;
-    switch ( newDirection ) {
-    case 'up' :
-      this.game.physics.p2.gravity.y = -400;
-      this.game.physics.p2.gravity.x = 0;
-      break;
-    case 'right' :
-      this.game.physics.p2.gravity.y = 0;
-      this.game.physics.p2.gravity.x = 400;
-      break;
-    case 'left' :
-      this.game.physics.p2.gravity.y = 0;
-      this.game.physics.p2.gravity.x = -400;
-      break;
-    case 'antiGravity' :
-      this.game.physics.p2.gravity.y = 0;
-      this.game.physics.p2.gravity.x = 0;
-      break;
-    default :
-      this.game.physics.p2.gravity.y = 400;
-      this.game.physics.p2.gravity.x = 0;
+    for (const padId in this.gravityPads) {
+      this.gravityPads[padId].pressed = false;
     }
+    const gravityValues = {
+      'default': { x: 0, y: 400 },
+      'up': { x: 0, y: -400 },
+      'right': { x: 400, y: 0 },
+      'left': { x: -400, y: 0 },
+      'antiGravity': { x: 0, y: 5 }
+    };
+
+    this.game.physics.p2.gravity.x = gravityValues[direction].x;
+    this.game.physics.p2.gravity.y = gravityValues[direction].y;
   }
 
   makeWater () {

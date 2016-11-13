@@ -53,6 +53,16 @@ export class GravityPad {
     function contact (body, bodyB, shapeA, shapeB, equation) {
       if ( body ) {
         world.changeGravityDirection(this.type);
+        for (const gravityPadKey in world.gravityPads) {
+          if (world.gravityPads[gravityPadKey] === this) {
+            if (world.user.peerConnection && world.user.peerConnection.connection) {
+              world.user.peerConnection.connection.send({
+                type: 'GRAVITY_BUTTON_PRESSED',
+                key: gravityPadKey
+              });
+            }
+          }
+        }
         this.pressed = true;
       }
     }
