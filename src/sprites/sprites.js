@@ -57,7 +57,7 @@ export class Sprites {
     this.game.load.image('player', './images/character.png');
     this.game.load.image('bullet', './images/bullet.png');
     this.game.load.spritesheet('rain', './images/rain.png', 17, 17);
-    this.game.load.spritesheet('power-up', './images/power-up.svg', 73, 73, 12);
+    this.game.load.spritesheet('power-up', './images/power-up.svg', 74, 74, 12);
     this.game.load.image('blue_ball', './images/button_sprites/blue_ball.png', 17, 17);
     this.game.load.image('green_ball', './images/button_sprites/green_ball.png', 17, 17);
     this.game.load.image('red_ball', './images/button_sprites/red_ball.png', 17, 17);
